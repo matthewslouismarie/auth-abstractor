@@ -27,7 +27,7 @@ class AuthenticationRequestController
     {
         $status = $authRequest->getStatus();
         if ($status->is(Status::ONGOING)) {
-            $authentifier = new $authRequest->getCurrentAuthentifier();
+            $authentifier = $authRequest->getCurrentAuthentifier();
             $this->httpResponse = $authentifier->process($httpRequest);
 
         } else if ($status->is(Status::SUCCEEDED)) {
