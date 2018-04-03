@@ -2,7 +2,8 @@
 
 namespace LM\Authentifier\Controller;
 
-use GuzzleHttp\Psr7;
+use GuzzleHttp\Psr7\Response;
+use LM\Authentifier\Model\DataManager;
 use Psr\Http\Message\ResponseInterface;
 
 /**
