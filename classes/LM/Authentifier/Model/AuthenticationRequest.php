@@ -2,10 +2,10 @@
 
 namespace LM\Authentifier\Model;
 
-use LM\Authentifier\Authentifier\IAuthentifier;
 use LM\Authentifier\Authentifier\U2fAuthentifier;
 use LM\Authentifier\Configuration\IConfiguration;
 use LM\Authentifier\Enum\AuthenticationRequest\Status;
+use LM\Authentifier\Model\DataManager;
 
 /**
  * @todo Interface?
@@ -14,17 +14,28 @@ class AuthenticationRequest
 {
     private $config;
 
+    private $dataManager;
+
     private $status;
 
-    public function __construct(IConfiguration $config, Status $status)
+    public function __construct(
+        DataManager $dataManager,
+        IConfiguration $config,
+        Status $status)
     {
         $this->config = $config;
+        $this->dataManager = $dataManager;
         $this->status = $status;
     }
 
     public function getConfiguration(): IConfiguration
     {
         return $this->config;
+    }
+
+    public function getDataManager(): DataManager
+    {
+        return $this->dataManager;
     }
 
     public function getStatus(): Status
@@ -35,8 +46,8 @@ class AuthenticationRequest
     /**
      * @todo
      */
-    public function getCurrentAuthentifier(): IAuthentifier
+    public function getCurrentAuthentifier(): string
     {
-        return new U2fAuthentifier($this->config);
+        return U2fAuthentifier::class;
     }
 }
