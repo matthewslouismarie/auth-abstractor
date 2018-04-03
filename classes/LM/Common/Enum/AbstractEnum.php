@@ -3,6 +3,7 @@
 namespace LM\Common\Enum;
 
 use InvalidArgumentException;
+use ReflectionClass;
 
 abstract class AbstractEnum implements IEnum
 {
