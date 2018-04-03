@@ -2,6 +2,7 @@
 
 namespace LM\Authentifier\Controller;
 
+use DI\Container;
 use LM\Authentifier\Configuration\IConfiguration;
 use LM\Authentifier\Model\AuthenticationRequest;
 use LM\Authentifier\Model\DataManager;
@@ -26,6 +27,7 @@ class AuthenticationRequestController
         RequestInterface $httpRequest,
         AuthenticationRequest $authRequest)
     {
+        $container = new Container();
         $status = $authRequest->getStatus();
         if ($status->is(Status::ONGOING)) {
             $authentifier = $authRequest->getCurrentAuthentifier();
