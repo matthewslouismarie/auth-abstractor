@@ -24,6 +24,9 @@ use Twig_Function;
 use Twig_Loader_Filesystem;
 use Symfony\Bridge\Twig\Extension\FormExtension;
 use Symfony\Component\Form\FormRenderer;
+use Symfony\Component\Translation\Translator;
+use Symfony\Component\Translation\Loader\XliffFileLoader;
+use Symfony\Bridge\Twig\Extension\TranslationExtension;
 
 /**
  * @todo Is it better to delegatehttpRequest to the library used the responsability of
@@ -105,6 +108,18 @@ class AuthenticationRequestController
 
     public function initializeFormComponent(Twig_Environment &$twig): FormFactoryInterface
     {
+        $translator = new Translator('en');
+        // somehow load some translations into it
+        $translator->addLoader('xlf', new XliffFileLoader());
+        // $translator->addResource(
+        //     'xlf',
+        //     __DIR__.'/path/to/translations/messages.en.xlf',
+        //     'en'
+        // );
+
+        // adds the TranslationExtension (gives us trans and transChoice filters)
+        $twig->addExtension(new TranslationExtension($translator));
+
         $csrfGenerator = new UriSafeTokenGenerator();
         $csrfStorage = new NativeSessionTokenStorage();
         $csrfManager = new CsrfTokenManager($csrfGenerator, $csrfStorage);
