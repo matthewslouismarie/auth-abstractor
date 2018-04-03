@@ -2,7 +2,6 @@
 
 namespace LM\Authentifier\Controller;
 
-use GuzzleHttp\Psr7\Response;
 use LM\Authentifier\Model\AuthenticationRequest;
 use LM\Authentifier\Model\DataManager;
 use LM\Authentifier\Enum\AuthenticationRequest\Status;
@@ -15,15 +14,21 @@ use Psr\Http\Message\ResponseInterface;
  */
 class AuthenticationRequestController
 {
-    private $response;
+    private $httpResponse;
 
-    public function __construct(AuthenticationRequest $authRequest)
+    /**
+     * @todo Current authentifier stored in request?
+     * @todo Request handling shouldn't be in construct().
+     */
+    public function __construct(
+        HttpRequest $httpRequest,
+        AuthenticationRequest $authRequest)
     {
         $status = $authRequest->getStatus();
-        if ($status->is(Status::NOT_STARTED)) {
-            $this->response = new Response(200, [], "Hello you");
-        } else if ($status->is(Status::ONGOING)) {
-            $this->response = new Response(200, [], "Ongoing");
+        if ($status->is(Status::ONGOING)) {
+            $authentifier = new $authRequest->getCurrentAuthentifier();
+            $this->httpResponse = $authentifier->process($httpRequest);
+
         } else if ($status->is(Status::SUCCEEDED)) {
             $this->response = new Response(200, [], "Succeeded");
         } else if ($status->is(Status::FAILED)) {
@@ -33,9 +38,9 @@ class AuthenticationRequestController
         }
     }
 
-    public function getResponse(): ResponseInterface
+    public function getHttpResponse(): ResponseInterface
     {
-        return $this->response;
+        return $this->httpResponse;
     }
 
     public function getDataManager(): DataManager
