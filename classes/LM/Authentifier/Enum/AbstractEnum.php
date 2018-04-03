@@ -31,7 +31,7 @@ abstract class AbstractEnum implements IEnum
         return $this->value;
     }
 
-    public function is(AbstractEnum $enum): bool
+    public function is(IEnum $enum): bool
     {
         return $this->value === $enum->getValue()
         && get_class($enum) === static::class;
