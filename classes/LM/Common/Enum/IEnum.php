@@ -6,5 +6,5 @@ interface IEnum
 {
     public function getValue(): string;
 
-    public function is(IEnum $enum): bool;
+    public function is(string $value): bool;
 }
