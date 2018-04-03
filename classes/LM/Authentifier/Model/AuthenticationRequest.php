@@ -3,6 +3,7 @@
 namespace LM\Authentifier\Model;
 
 use LM\Authentifier\Enum\AuthenticationRequest\Status;
+use LM\Authentifier\Authentifier\IAuthentifier;
 use LM\Authentifier\Authentifier\U2fAuthentifier;
 
 /**
