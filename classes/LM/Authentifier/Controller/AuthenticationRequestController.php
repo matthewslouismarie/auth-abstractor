@@ -19,14 +19,15 @@ use Symfony\Component\Form\Extension\Csrf\CsrfExtension;
 use Symfony\Component\Security\Csrf\TokenStorage\NativeSessionTokenStorage;
 use Symfony\Component\Security\Csrf\TokenGenerator\UriSafeTokenGenerator;
 use Symfony\Component\Security\Csrf\CsrfTokenManager;
-use Twig_Environment;
-use Twig_Function;
-use Twig_Loader_Filesystem;
 use Symfony\Bridge\Twig\Extension\FormExtension;
 use Symfony\Component\Form\FormRenderer;
 use Symfony\Component\Translation\Translator;
 use Symfony\Component\Translation\Loader\XliffFileLoader;
 use Symfony\Bridge\Twig\Extension\TranslationExtension;
+use Twig_Environment;
+use Twig_FactoryRuntimeLoader;
+use Twig_Function;
+use Twig_Loader_Filesystem;
 
 /**
  * @todo Is it better to delegatehttpRequest to the library used the responsability of
@@ -59,7 +60,6 @@ class AuthenticationRequestController
         $twig = new Twig_Environment($loader, [
             "cache" => false,
         ]);
-        $defaultFormTheme = 'form_div_layout.html.twig';
 
         $assetFunction = new Twig_Function("asset", [$authRequest->getConfiguration(), "getAssetUri"]);
         $twig->addFunction($assetFunction);
@@ -109,15 +109,12 @@ class AuthenticationRequestController
     public function initializeFormComponent(Twig_Environment &$twig): FormFactoryInterface
     {
         $translator = new Translator('en');
-        // somehow load some translations into it
         $translator->addLoader('xlf', new XliffFileLoader());
         // $translator->addResource(
         //     'xlf',
         //     __DIR__.'/path/to/translations/messages.en.xlf',
         //     'en'
         // );
-
-        // adds the TranslationExtension (gives us trans and transChoice filters)
         $twig->addExtension(new TranslationExtension($translator));
 
         $csrfGenerator = new UriSafeTokenGenerator();
@@ -127,21 +124,15 @@ class AuthenticationRequestController
         $defaultFormTheme = "form_div_layout.html.twig";
 
         $formEngine = new TwigRendererEngine(array($defaultFormTheme), $twig);
-        $twig->addRuntimeLoader(new \Twig_FactoryRuntimeLoader(array(
+        $twig->addRuntimeLoader(new Twig_FactoryRuntimeLoader(array(
             FormRenderer::class => function () use ($formEngine, $csrfManager) {
                 return new FormRenderer($formEngine, $csrfManager);
             },
         )));
         $twig->addExtension(new FormExtension());
 
-        // ... (see the previous CSRF Protection section for more information)
-
-        // adds the FormExtension to Twig
-
-        // creates a form factory
         $formFactory = Forms::createFormFactoryBuilder()
-            // ...
-            // ->addExtension(new CsrfExtension($csrfManager))
+            ->addExtension(new CsrfExtension($csrfManager))
             ->getFormFactory()
         ;
 
