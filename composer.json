@@ -12,6 +12,7 @@
         "psr/http-message": "^1.0",
         "guzzlehttp/psr7": "^1.4",
         "twig/twig": "^2.0",
-        "symfony/asset": "^4.0"
+        "symfony/asset": "^4.0",
+        "php-di/php-di": "^6.0"
     }
 }
