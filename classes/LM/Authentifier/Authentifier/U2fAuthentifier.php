@@ -6,6 +6,8 @@ use GuzzleHttp\Psr7\Response;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\RequestInterface;
 use LM\Authentifier\Configuration\IConfiguration;
+use LM\Authentifier\Form\Submission\U2fAuthenticationSubmission;
+use LM\Authentifier\Form\Type\U2fAuthenticationType;
 use LM\Authentifier\Model\DataManager;
 use LM\Authentifier\Model\RequestDatum;
 use LM\Common\Model\StringObject;
@@ -55,8 +57,8 @@ class U2fAuthentifier implements IAuthentifier
                 ->getForm()
             ;
 
-        //     $submission = new NewU2fAuthenticationSubmission();
-        //     $form = $this->createForm(NewU2fAuthenticationType::class, $submission);
+        $submission = new U2fAuthenticationSubmission();
+        $form = $this->formFactory->create(U2fAuthenticationType::class, $submission);
 
         //     $u2fAuthenticationRequest = $u2fAuthenticationManager->generate($username, $usedU2fKeyIds);
         //     $secureSession->setObject(
