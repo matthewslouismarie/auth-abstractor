@@ -22,6 +22,11 @@ class AuthenticationRequest
         $this->status = $status;
     }
 
+    public function getConfiguration(): IConfiguration
+    {
+        return $this->config;
+    }
+
     public function getStatus(): Status
     {
         return $this->status;
