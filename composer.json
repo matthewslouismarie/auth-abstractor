@@ -10,6 +10,7 @@
     },
     "require": {
         "psr/http-message": "^1.0",
-        "guzzlehttp/psr7": "^1.4"
+        "guzzlehttp/psr7": "^1.4",
+        "twig/twig": "^2.0"
     }
 }

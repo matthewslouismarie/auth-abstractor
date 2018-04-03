@@ -10,6 +10,10 @@ class U2fAuthentifier implements IAuthentifier
 {
     public function process(RequestInterface $request): ResponseInterface
     {
-        return new Response(200, [], "U2fAuthentifier");
+        $loader = new Twig_Loader_Filesystem("/templates");
+        $twig = new Twig_Environment($loader, array(
+            "cache" => "/cache",
+        ));
+        return new Response(200, [], $twig->render("u2f.html.twig"));
     }
 }
