@@ -1,0 +1,8 @@
+{
+    "name": "matthewslouismarie/authentifier",
+    "autoload": {
+        "psr-4": {
+            "LM\\": "classes/LM"
+        }
+    }
+}
