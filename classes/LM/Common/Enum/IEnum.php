@@ -1,6 +1,6 @@
 <?php
 
-namespace LM\Authentifier\Enum;
+namespace LM\Common\Enum;
 
 interface IEnum
 {

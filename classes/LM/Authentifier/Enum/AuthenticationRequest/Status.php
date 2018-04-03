@@ -2,7 +2,7 @@
 
 namespace LM\Authentifier\Enum\AuthenticationRequset;
 
-use LM\Authentifier\Enum\AbstractEnum;
+use LM\Common\Enum\AbstractEnum;
 
 class Status implements AbstractEnum
 {
