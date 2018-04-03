@@ -22,7 +22,7 @@ class AuthenticationRequestController
 
     public function getResponse(): ResponseInterface
     {
-        return $response;
+        return $this->response;
     }
 
     public function getDataManager(): DataManager
