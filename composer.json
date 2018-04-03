@@ -4,5 +4,8 @@
         "psr-4": {
             "LM\\": "classes/LM"
         }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^7"
     }
 }
