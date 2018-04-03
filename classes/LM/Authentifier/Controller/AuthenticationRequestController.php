@@ -5,6 +5,7 @@ namespace LM\Authentifier\Controller;
 use LM\Authentifier\Model\AuthenticationRequest;
 use LM\Authentifier\Model\DataManager;
 use LM\Authentifier\Enum\AuthenticationRequest\Status;
+use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
 /**
@@ -21,7 +22,7 @@ class AuthenticationRequestController
      * @todo Request handling shouldn't be in construct().
      */
     public function __construct(
-        HttpRequest $httpRequest,
+        RequestInterface $httpRequest,
         AuthenticationRequest $authRequest)
     {
         $status = $authRequest->getStatus();
