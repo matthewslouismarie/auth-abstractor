@@ -9,14 +9,25 @@ use LM\Authentifier\Configuration\IConfiguration;
 use LM\Authentifier\Model\DataManager;
 use LM\Authentifier\Model\RequestDatum;
 use LM\Common\Model\StringObject;
+use LM\Common\Model\ArrayObject;
 use Twig_Environment;
+use Symfony\Component\Form\Forms;
+use Symfony\Bridge\Twig\Extension\FormExtension;
+use Symfony\Bridge\Twig\Form\TwigRendererEngine;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\FormRenderer;
 
 class U2fAuthentifier implements IAuthentifier
 {
+    private $formFactory;
+
     private $twig;
 
-    public function __construct(Twig_Environment $twig)
+    public function __construct(FormFactoryInterface $formFactory, Twig_Environment $twig)
     {
+        $this->formFactory = $formFactory;
         $this->twig = $twig;
     }
 
@@ -30,15 +41,20 @@ class U2fAuthentifier implements IAuthentifier
                 ->toString()
             ;
 
-        //     $usedU2fKeyIdsTdm = $tdmconfig
-        //         ->getBy('key', 'used_u2f_key_ids')
-        //     ;
-        //     $usedU2fKeyIds = (0 === $usedU2fKeyIdsTdm->getSize()) ? [] : $usedU2fKeyIdsTdm
-        //         ->getOnlyValue()
-        //         ->getValue(ArrayObject::class)
-        //         ->toArray()
-        //     ;
-    
+            $usedU2fKeyIdsTdm = $dm
+                ->get(RequestDatum::KEY_PROPERTY, "used_u2f_key_ids")
+            ;
+            $usedU2fKeyIds = (0 === $usedU2fKeyIdsTdm->getSize()) ? [] : $usedU2fKeyIdsTdm
+                ->getOnlyValue()
+                ->getObject(RequestDatum::VALUE_PROPERTY, ArrayObject::class)
+                ->toArray()
+            ;
+            $form = $this->formFactory->createBuilder()
+                ->add('task', TextType::class)
+                ->add('dueDate', DateType::class)
+                ->getForm()
+            ;
+
         //     $submission = new NewU2fAuthenticationSubmission();
         //     $form = $this->createForm(NewU2fAuthenticationType::class, $submission);
 
@@ -76,6 +92,8 @@ class U2fAuthentifier implements IAuthentifier
         // }
 
 
-        return new Response(200, [], $this->twig->render("u2f.html.twig"));
+        return new Response(200, [], $this->twig->render("u2f.html.twig", [
+            "form" => $form->createView(),
+        ]));
     }
 }
