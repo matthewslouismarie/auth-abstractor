@@ -18,5 +18,6 @@
 
 {%- block body -%}
 {%- include "partials/_u2f_steps.html.twig" -%}
-{# {{ form(form, {"attr": {"id": form.vars.id}}) }} #}
+
+{{ form(form) }}
 {%- endblock -%}
