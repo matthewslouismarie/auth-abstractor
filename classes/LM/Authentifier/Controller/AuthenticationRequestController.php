@@ -19,24 +19,17 @@ class AuthenticationRequestController
 
     public function __construct(AuthenticationRequest $authRequest)
     {
-        switch ($authRequest->getStatus()) {
-            case Status::NOT_STARTED:
-                $this->response = new Response(200, [], "Hello you");
-                break;
-
-            case Status::ONGOING:
-                break;
-
-            case Status::SUCCEEDED:
-                break;
-
-            case Status::FAILED;
-                break;
-
-            default:
-                // should never happens, means the system is at fault, error in
-                // the code
-                throw new UnexpectedValueException();
+        $status = $authRequest->getStatus();
+        if ($status->is(Status::NOT_STARTED)) {
+            $this->response = new Response(200, [], "Hello you");
+        } else if ($status->is(Status::ONGOING)) {
+            $this->response = new Response(200, [], "Ongoing");
+        } else if ($status->is(Status::SUCCEEDED)) {
+            $this->response = new Response(200, [], "Succeeded");
+        } else if ($status->is(Status::FAILED)) {
+            $this->response = new Response(200, [], "Failed");
+        } else {
+            throw new UnexpectedValueException();
         }
     }
 
