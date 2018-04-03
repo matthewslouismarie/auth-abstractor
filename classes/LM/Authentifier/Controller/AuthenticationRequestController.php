@@ -1,6 +1,9 @@
 <?php
 
-namespace LM\Authentifier\AuthenticationRequestController;
+namespace LM\Authentifier\Controller;
+
+use GuzzleHttp\Psr7;
+use Psr\Http\Message\ResponseInterface;
 
 /**
  * @todo Is it better to delegate to the library used the responsability of
@@ -9,7 +12,19 @@ namespace LM\Authentifier\AuthenticationRequestController;
  */
 class AuthenticationRequestController
 {
-    public function processRequest(TransitingDataManager $tdm): TransitingDataManager
+    private $response;
+
+    public function __construct(DataManager $tdm)
+    {
+        $this->response = new Response(200, [], 'Hello');
+    }
+
+    public function getResponse(): ResponseInterface
+    {
+        return $response;
+    }
+
+    public function getDataManager(): DataManager
     {
 
     }
