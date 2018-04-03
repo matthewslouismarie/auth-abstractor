@@ -5,7 +5,7 @@ namespace LM\Authentifier\Controller;
 use GuzzleHttp\Psr7\Response;
 use LM\Authentifier\Model\AuthenticationRequest;
 use LM\Authentifier\Model\DataManager;
-use LM\Enum\AuthenticationRequest\Status;
+use LM\Authentifier\Enum\AuthenticationRequest\Status;
 use Psr\Http\Message\ResponseInterface;
 
 /**
