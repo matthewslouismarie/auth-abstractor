@@ -10,7 +10,7 @@ class Status implements AbstractEnum
 
     const ONGOING = "ONGOING";
 
-    const SUCEEDED = "SUCEEDED";
+    const SUCEEDED = "SUCCEEDED";
 
     const FAILED = "FAILED";
 }

@@ -27,7 +27,7 @@ class AuthenticationRequestController
             case Status::ONGOING:
                 break;
 
-            case Status::SUCEEDED:
+            case Status::SUCCEEDED:
                 break;
 
             case Status::FAILED;
