@@ -2,6 +2,7 @@
 
 namespace LM\Authentifier\Controller;
 
+use LM\Authentifier\Configuration\IConfiguration;
 use LM\Authentifier\Model\AuthenticationRequest;
 use LM\Authentifier\Model\DataManager;
 use LM\Authentifier\Enum\AuthenticationRequest\Status;

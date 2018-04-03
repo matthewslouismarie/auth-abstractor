@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Welcome!{% endblock %}</title>
+    {% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset("style.min.css") }}">
+    {% endblock %}
+    {% block scripts %}{% endblock %}
+  </head>
+  <body class="document-body">
+    <main class="main-content">
+      <div class="content-wrapper">
+        {% block body %}{% endblock %}
+      </div>
+    </main>
+    {% block javascripts %}{% endblock %}
+  </body>
+</html>

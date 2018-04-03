@@ -1,1 +1,22 @@
-Hi!
+{% extends 'base.html.twig' %}
+
+{%- block title -%}Please activate your U2F key{%- endblock -%}
+
+{%- block scripts -%}
+<script src="{{ asset("jquery.min.js") }}"></script>
+<script src="{{ asset("u2f-api.js") }}"></script>
+<script>
+  const completeAuth = function fCompleteAuth(authResponse)
+  {
+    $('#{{ form.u2fTokenResponse.vars.id }}').val(JSON.stringify(authResponse));
+    $("#{{ form.vars.id }}").submit();
+  }
+  var sign_requests = {{ sign_requests_json | raw }};
+  u2f.sign(sign_requests, completeAuth);
+</script>
+{%- endblock -%}
+
+{%- block body -%}
+{%- include "partials/_u2f_steps.html.twig" -%}
+{# {{ form(form, {"attr": {"id": form.vars.id}}) }} #}
+{%- endblock -%}
