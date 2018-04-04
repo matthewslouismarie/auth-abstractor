@@ -58,10 +58,10 @@ class U2fAuthentifier implements IAuthentifier
      * @todo Support for multiple key authentications.
      */
     public function process(
-        AuthenticationProcess $authRequest,
+        AuthenticationProcess $process,
         RequestInterface $httpRequest): AuthentifierResponse
     {
-        $username = $authRequest
+        $username = $process
             ->getDataManager()
             ->get(RequestDatum::KEY_PROPERTY, "username")
             ->getOnlyValue()
@@ -69,7 +69,7 @@ class U2fAuthentifier implements IAuthentifier
             ->toString()
         ;
 
-        $usedU2fKeyIdsDm = $authRequest
+        $usedU2fKeyIdsDm = $process
             ->getDataManager()
             ->get(RequestDatum::KEY_PROPERTY, "used_u2f_key_ids")
         ;
@@ -79,7 +79,7 @@ class U2fAuthentifier implements IAuthentifier
             ->toArray(IntegerObject::class)
         ;
 
-        $registrations = $authRequest
+        $registrations = $process
             ->getDataManager()
             ->get(RequestDatum::KEY_PROPERTY, "u2f_registrations")
             ->getOnlyValue()
@@ -97,7 +97,7 @@ class U2fAuthentifier implements IAuthentifier
 
         $form->handleRequest($this->httpFoundationFactory->createRequest($httpRequest));
         if ($form->isSubmitted() && $form->isValid()) {
-            $signRequests = $authRequest
+            $signRequests = $process
                 ->getDataManager()
                 ->get(RequestDatum::KEY_PROPERTY, "u2f_sign_requests")
                 ->getOnlyValue()
@@ -119,7 +119,7 @@ class U2fAuthentifier implements IAuthentifier
                 }
             }
             $response = new Response(404, [], "Yo");
-            $newDm = $authRequest
+            $newDm = $process
                 ->getDataManager()
                 ->replace(
                     new RequestDatum(
@@ -131,9 +131,10 @@ class U2fAuthentifier implements IAuthentifier
                     new PersistOperation($newRegistration, new Operation(Operation::UPDATE))))
             ;
             $updatedAuthRequest = new AuthenticationProcess(
+                $process->getConfiguration(),
                 $newDm,
-                $authRequest->getConfiguration(),
-                new Status(Status::SUCCEEDED))
+                new Status(Status::SUCCEEDED),
+                $process->getCallback())
             ;
 
             return new AuthentifierResponse($updatedAuthRequest, $response);
@@ -170,7 +171,7 @@ class U2fAuthentifier implements IAuthentifier
             "form" => $form->createView(),
             "sign_requests_json" => json_encode(array_values($signRequests)),
         ]));
-        $newDm = $authRequest
+        $newDm = $process
             ->getDataManager()
             ->replace(
                 new RequestDatum(
@@ -179,9 +180,10 @@ class U2fAuthentifier implements IAuthentifier
                 RequestDatum::KEY_PROPERTY)
         ;
         $updatedAuthRequest = new AuthenticationProcess(
+            $process->getConfiguration(),
             $newDm,
-            $authRequest->getConfiguration(),
-            $authRequest->getStatus())
+            $process->getStatus(),
+            $process->getCallback())
         ;
 
         return new AuthentifierResponse($updatedAuthRequest, $response);

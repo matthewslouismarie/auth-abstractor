@@ -8,6 +8,7 @@ use LM\Authentifier\Authentifier\IAuthentifier;
 use LM\Authentifier\Configuration\IApplicationConfiguration;
 use LM\Authentifier\Model\AuthenticationProcess;
 use LM\Authentifier\Model\DataManager;
+use LM\Authentifier\Model\AuthentifierResponse;
 use LM\Authentifier\Enum\AuthenticationProcess\Status;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -38,8 +39,6 @@ use Twig_Loader_Filesystem;
 class AuthenticationKernel
 {
     private $appConfig;
-
-    private $authentifierResponse;
 
     private $container;
 
@@ -95,12 +94,11 @@ class AuthenticationKernel
             ->addExtension(new HttpFoundationExtension())
             ->getFormFactory()
         ;
-        $formFactory = $this->initializeFormComponent($twig);
 
         $containerBuilder = new ContainerBuilder();
         $containerBuilder->addDefinitions([
-            IApplicationConfiguration::class => function () use ($authRequest) {
-                return $authRequest->getConfiguration();
+            IApplicationConfiguration::class => function () use ($appConfig) {
+                return $appConfig;
             },
             Twig_Environment::class => function () use ($twig) {
                 return $twig;
@@ -113,41 +111,34 @@ class AuthenticationKernel
     }
 
     public function processHttpRequest(
-        RequestInterface $request,
-        AuthenticationProcess $process)
+        RequestInterface $httpRequest,
+        AuthenticationProcess $authProcess): AuthentifierResponse
     {
-        $status = $process->getStatus();
+        $status = $authProcess->getStatus();
         if ($status->is(new Status(Status::ONGOING))) {
-            if (!is_a($process->getCurrentAuthentifier()), IAuthentifier, true) {
+            if (!is_a($authProcess->getCurrentAuthentifier(), IAuthentifier::class, true)) {
                 throw new Exception();
             }
             $authentifier = $this
                 ->container
-                ->get($process->getCurrentAuthentifier())
+                ->get($authProcess->getCurrentAuthentifier())
             ;
-            $this->authentifierResponse = $authentifier->process($authRequest, $httpRequest);
+            $authResponse = $authentifier->process($authProcess, $httpRequest);
+            $newProcess = $authResponse->getProcess();
+            if ($newProcess->getStatus()->is(new Status(Status::SUCCEEDED))) {
+                return new AuthentifierResponse(
+                    $newProcess,
+                    $newProcess->getCallback()->filterSuccessResponse($authResponse->getHttpResponse()))
+                ;
+            } elseif ($newProcess->getStatus()->is(new Status(Status::FAILED))) {
+                
+            }
 
+            return $authResponse;
         } else if ($status->is(new Status(Status::SUCCEEDED))) {
         } else if ($status->is(new Status(Status::FAILED))) {
         } else {
             throw new UnexpectedValueException();
         }
-    }
-
-
-    public function getHttpResponse(): ResponseInterface
-    {
-        return $this
-            ->authentifierResponse
-            ->getHttpResponse()
-        ;
-    }
-
-    public function getAuthenticationProcess(): AuthenticationProcess
-    {
-        return $this
-            ->authentifierResponse
-            ->getAuthenticationProcess()
-        ;
     }
 }
