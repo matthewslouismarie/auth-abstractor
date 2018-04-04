@@ -2,7 +2,7 @@
 
 namespace LM\Authentifier\U2f;
 
-use LM\Authentifier\Configuration\IConfiguration;
+use LM\Authentifier\Configuration\IApplicationConfiguration;
 use Firehed\U2F\Server;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -10,7 +10,7 @@ class U2fServerGenerator
 {
     private $appId;
 
-    public function __construct(IConfiguration $userConfig)
+    public function __construct(IApplicationConfiguration $userConfig)
     {
         $this->appId = $userConfig->getAppId();
     }

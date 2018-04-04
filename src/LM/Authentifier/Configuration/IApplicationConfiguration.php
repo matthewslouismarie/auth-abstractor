@@ -8,7 +8,7 @@ use Twig_Function;
  * @todo Rename to IExternalConfiguration or ExternalEnvironment or… ?
  * Or even better, UserConfiguration.
  */
-interface IConfiguration
+interface IApplicationConfiguration
 {
     public function getAssetUri(string $assetId): string;
 

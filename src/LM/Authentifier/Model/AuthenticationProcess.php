@@ -3,8 +3,8 @@
 namespace LM\Authentifier\Model;
 
 use LM\Authentifier\Authentifier\U2fAuthentifier;
-use LM\Authentifier\Configuration\IConfiguration;
-use LM\Authentifier\Enum\AuthenticationRequest\Status;
+use LM\Authentifier\Configuration\IApplicationConfiguration;
+use LM\Authentifier\Enum\AuthenticationProcess\Status;
 use LM\Authentifier\Model\DataManager;
 use LM\Authentifier\Model\PersistOperation;
 use Serializable;
@@ -12,7 +12,7 @@ use Serializable;
 /**
  * @todo Interface?
  */
-class AuthenticationRequest implements Serializable
+class AuthenticationProcess implements Serializable
 {
     private $config;
 
@@ -22,7 +22,7 @@ class AuthenticationRequest implements Serializable
 
     public function __construct(
         DataManager $dataManager,
-        IConfiguration $config,
+        IApplicationConfiguration $config,
         Status $status)
     {
         $this->config = $config;
@@ -30,7 +30,7 @@ class AuthenticationRequest implements Serializable
         $this->status = $status;
     }
 
-    public function getConfiguration(): IConfiguration
+    public function getConfiguration(): IApplicationConfiguration
     {
         return $this->config;
     }

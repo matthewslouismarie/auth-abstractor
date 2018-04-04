@@ -9,21 +9,21 @@ use Psr\Http\Message\ResponseInterface;
  */
 class AuthentifierResponse
 {
-    private $authenticationRequest;
+    private $authenticationProcess;
 
     private $response;
 
     public function __construct(
-        AuthenticationRequest $authenticationRequest,
+        AuthenticationProcess $authenticationProcess,
         ResponseInterface $response)
     {
-        $this->authenticationRequest = $authenticationRequest;
+        $this->AuthenticationProcess = $authenticationProcess;
         $this->response = $response;
     }
 
-    public function getAuthenticationRequest(): AuthenticationRequest
+    public function getAuthenticationProcess(): AuthenticationProcess
     {
-        return $this->authenticationRequest;
+        return $this->AuthenticationProcess;
     }
 
     public function getHttpResponse(): ResponseInterface

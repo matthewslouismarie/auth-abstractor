@@ -7,13 +7,13 @@ use Firehed\U2F\SignRequest;
 use GuzzleHttp\Psr7\Response;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\RequestInterface;
-use LM\Authentifier\Configuration\IConfiguration;
-use LM\Authentifier\Enum\AuthenticationRequest\Status;
+use LM\Authentifier\Configuration\IApplicationConfiguration;
+use LM\Authentifier\Enum\AuthenticationProcess\Status;
 use LM\Authentifier\Enum\Persistence\Operation;
 use LM\Authentifier\Form\Submission\U2fAuthenticationSubmission;
 use LM\Authentifier\Form\Type\U2fAuthenticationType;
 use LM\Authentifier\Model\AuthentifierResponse;
-use LM\Authentifier\Model\AuthenticationRequest;
+use LM\Authentifier\Model\AuthenticationProcess;
 use LM\Authentifier\Model\DataManager;
 use LM\Authentifier\Model\PersistOperation;
 use LM\Authentifier\Model\RequestDatum;
@@ -58,7 +58,7 @@ class U2fAuthentifier implements IAuthentifier
      * @todo Support for multiple key authentications.
      */
     public function process(
-        AuthenticationRequest $authRequest,
+        AuthenticationProcess $authRequest,
         RequestInterface $httpRequest): AuthentifierResponse
     {
         $username = $authRequest
@@ -130,7 +130,7 @@ class U2fAuthentifier implements IAuthentifier
                     "persist_operations",
                     new PersistOperation($newRegistration, new Operation(Operation::UPDATE))))
             ;
-            $updatedAuthRequest = new AuthenticationRequest(
+            $updatedAuthRequest = new AuthenticationProcess(
                 $newDm,
                 $authRequest->getConfiguration(),
                 new Status(Status::SUCCEEDED))
@@ -140,7 +140,7 @@ class U2fAuthentifier implements IAuthentifier
         }
         //     return $this->render('identity_checker/u2f.html.twig', [
         //         'form' => $form->createView(),
-        //         'sign_requests_json' => $u2fAuthenticationRequest->getJsonSignRequests(),
+        //         'sign_requests_json' => $u2fAuthenticationProcess->getJsonSignRequests(),
         //     ]);
         // }
         // catch (ClientErrorException $e) {
@@ -178,7 +178,7 @@ class U2fAuthentifier implements IAuthentifier
                     new ArrayObject($signRequests, SignRequest::class)),
                 RequestDatum::KEY_PROPERTY)
         ;
-        $updatedAuthRequest = new AuthenticationRequest(
+        $updatedAuthRequest = new AuthenticationProcess(
             $newDm,
             $authRequest->getConfiguration(),
             $authRequest->getStatus())
