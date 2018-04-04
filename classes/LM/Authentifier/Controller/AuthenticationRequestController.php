@@ -36,7 +36,7 @@ use Twig_Loader_Filesystem;
  */
 class AuthenticationRequestController
 {
-    private $httpResponse;
+    private $authentifierResponse;
 
     /**
      * @todo Current authentifier stored in request?
@@ -80,17 +80,15 @@ class AuthenticationRequestController
         ]);
         $container = $containerBuilder->build();
         $status = $authRequest->getStatus();
-        if ($status->is(Status::ONGOING)) {
+        if ($status->is(new Status(Status::ONGOING))) {
             if (!$container->get($authRequest->getCurrentAuthentifier()) instanceof IAuthentifier) {
                 throw new Exception();
             }
             $authentifier = $container->get($authRequest->getCurrentAuthentifier());
-            $this->httpResponse = $authentifier->process($httpRequest, $authRequest->getDataManager());
+            $this->authentifierResponse = $authentifier->process($authRequest, $httpRequest);
 
-        } else if ($status->is(Status::SUCCEEDED)) {
-            $this->response = new Response(200, [], "Succeeded");
-        } else if ($status->is(Status::FAILED)) {
-            $this->response = new Response(200, [], "Failed");
+        } else if ($status->is(new Status(Status::SUCCEEDED))) {
+        } else if ($status->is(new Status(Status::FAILED))) {
         } else {
             throw new UnexpectedValueException();
         }
@@ -98,12 +96,18 @@ class AuthenticationRequestController
 
     public function getHttpResponse(): ResponseInterface
     {
-        return $this->httpResponse;
+        return $this
+            ->authentifierResponse
+            ->getHttpResponse()
+        ;
     }
 
-    public function getDataManager(): DataManager
+    public function getAuthenticationRequest(): AuthenticationRequest
     {
-
+        return $this
+            ->authentifierResponse
+            ->getAuthenticationRequest()
+        ;
     }
 
     public function initializeFormComponent(Twig_Environment &$twig): FormFactoryInterface

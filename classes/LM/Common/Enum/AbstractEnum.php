@@ -19,7 +19,7 @@ abstract class AbstractEnum implements IEnum
         return $reflectionClass->getConstants();
     }
 
-    public function __construct($value)
+    public function __construct(string $value)
     {
         if (!in_array($value, static::getConstants(), true)) {
             throw new InvalidArgumentException();
@@ -32,11 +32,25 @@ abstract class AbstractEnum implements IEnum
         return $this->value;
     }
 
-    /**
-     * @todo Doesn't check for class!
-     */
-    public function is($value): bool
+    public function is(IEnum $enum): bool
     {
-        return $this->value === $value;
+        if (get_class($enum) !== get_class($this)) {
+            return false;
+        }
+        if ($this->value !== $enum->getValue()) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public function serialize()
+    {
+        return serialize($this->value);
+    }
+
+    public function unserialize($serialized)
+    {
+        $this->value = unserialize($serialized);
     }
 }

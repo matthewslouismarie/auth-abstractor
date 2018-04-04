@@ -57,6 +57,6 @@ class RequestDatum implements IDataHolder
 
     public function unserialize($serialized)
     {
-        $this->items = unserialize($serialized);
+        $this->values = unserialize($serialized);
     }
 }

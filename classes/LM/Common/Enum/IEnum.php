@@ -2,9 +2,11 @@
 
 namespace LM\Common\Enum;
 
-interface IEnum
+use Serializable;
+
+interface IEnum extends Serializable
 {
     public function getValue(): string;
 
-    public function is(string $value): bool;
+    public function is(IEnum $value): bool;
 }
