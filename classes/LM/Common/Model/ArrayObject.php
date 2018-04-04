@@ -20,6 +20,11 @@ class ArrayObject implements Serializable
         $this->items = $items;
     }
 
+    public function getSize(): int
+    {
+        return count($this->items);
+    }
+
     public function toArray(string $class): array
     {
         foreach ($this->items as $item) {

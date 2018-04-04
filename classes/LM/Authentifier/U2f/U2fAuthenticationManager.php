@@ -3,6 +3,8 @@
 namespace LM\Authentifier\U2f;
 
 use Firehed\U2F\Registration;
+use Firehed\U2F\SignRequest;
+use Firehed\U2F\SignResponse;
 use LM\Authentifier\Exception\NoRegisteredU2fTokenException;
 use LM\Common\Model\ArrayObject;
 
@@ -43,34 +45,23 @@ class U2fAuthenticationManager
     }
 
     public function processResponse(
-        U2fAuthenticationRequest $u2fAuthenticationRequest,
-        string $username,
-        string $u2fTokenResponse): int
+        ArrayObject $registrations,
+        ArrayObject $signRequests,
+        string $u2fTokenResponse): Registration
     {
         $server = $this
-            ->u2fService
+            ->u2fServerGenerator
             ->getServer()
         ;
 
         $server
-            ->setRegistrations($registrations)
-            ->setSignRequests($u2fAuthenticationRequest->getSignRequests())
+            ->setRegistrations($registrations->toArray(Registration::class))
+            ->setSignRequests($signRequests->toArray(SignRequest::class))
         ;
         $response = SignResponse::fromJson($u2fTokenResponse);
         $registration = $server->authenticate($response);
 
-        $challenge = $response->getClientData()->getChallenge();
-        $u2fAuthenticatorId = $this->getAuthenticatorId($u2fAuthenticationRequest->getSignRequests(), $challenge);
-
-        $u2fToken = $this
-            ->em
-            ->getRepository(U2fToken::class)
-            ->find($u2fAuthenticatorId)
-        ;
-        $u2fToken->setCounter($response->getCounter());
-        $this->em->flush();
-
-        return $u2fAuthenticatorId;
+        return $registration;
     }
 
     private function getAuthenticatorId(

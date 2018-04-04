@@ -6,6 +6,7 @@ use LM\Authentifier\Authentifier\U2fAuthentifier;
 use LM\Authentifier\Configuration\IConfiguration;
 use LM\Authentifier\Enum\AuthenticationRequest\Status;
 use LM\Authentifier\Model\DataManager;
+use LM\Authentifier\Model\PersistOperation;
 use Serializable;
 
 /**
@@ -42,6 +43,15 @@ class AuthenticationRequest implements Serializable
     public function getStatus(): Status
     {
         return $this->status;
+    }
+
+    public function getPersistOperations(): array
+    {
+        return $this
+            ->dataManager
+            ->get(RequestDatum::KEY_PROPERTY, "persist_operations")
+            ->toArrayOfObjects(RequestDatum::VALUE_PROPERTY, PersistOperation::class)
+        ;
     }
 
     /**

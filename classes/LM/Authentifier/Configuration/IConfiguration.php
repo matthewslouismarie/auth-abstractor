@@ -13,4 +13,6 @@ interface IConfiguration
     public function getAssetUri(string $assetId): string;
 
     public function getAppId(): string;
+
+    public function save(): void;
 }
