@@ -11,6 +11,8 @@ use LM\Authentifier\Model\DataManager;
 use LM\Authentifier\Enum\AuthenticationRequest\Status;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
+use Symfony\Bridge\Twig\Extension\FormExtension;
+use Symfony\Bridge\Twig\Extension\TranslationExtension;
 use Symfony\Bridge\Twig\Form\TwigRendererEngine;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\Forms;
@@ -19,11 +21,10 @@ use Symfony\Component\Form\Extension\Csrf\CsrfExtension;
 use Symfony\Component\Security\Csrf\TokenStorage\NativeSessionTokenStorage;
 use Symfony\Component\Security\Csrf\TokenGenerator\UriSafeTokenGenerator;
 use Symfony\Component\Security\Csrf\CsrfTokenManager;
-use Symfony\Bridge\Twig\Extension\FormExtension;
 use Symfony\Component\Form\FormRenderer;
 use Symfony\Component\Translation\Translator;
 use Symfony\Component\Translation\Loader\XliffFileLoader;
-use Symfony\Bridge\Twig\Extension\TranslationExtension;
+use Symfony\Component\Form\Extension\HttpFoundation\HttpFoundationExtension;
 use Twig_Environment;
 use Twig_FactoryRuntimeLoader;
 use Twig_Function;
@@ -137,6 +138,7 @@ class AuthenticationRequestController
 
         $formFactory = Forms::createFormFactoryBuilder()
             ->addExtension(new CsrfExtension($csrfManager))
+            ->addExtension(new HttpFoundationExtension())
             ->getFormFactory()
         ;
 

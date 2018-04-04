@@ -22,8 +22,7 @@ class AuthenticationRequestFactory
         $dataManager = new DataManager([
             new RequestDatum("username", new StringObject($username)),
             new RequestDatum("used_u2f_key_ids", new ArrayObject([], IntegerObject::class)),
-            new RequestDatum("registrations", new ArrayObject($u2fRegistrationsArray, Registration::class)),
-            new RequestDatum("n_http_requests", new IntegerObject(0)),
+            new RequestDatum("u2f_registrations", new ArrayObject($u2fRegistrationsArray, Registration::class)),
         ]);
 
         return new AuthenticationRequest(
