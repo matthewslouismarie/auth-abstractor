@@ -3,9 +3,9 @@
 namespace LM\Authentifier\Model;
 
 use InvalidArgumentException;
+use LM\Authentifier\Exception\KeyAlreadyTakenException;
 use Serializable;
 use UnexpectedValueException;
-use LM\Authentifier\Exception\KeyAlreadyTakenException;
 
 /**
  * @todo Either does not expose RequestDatum, or expose it and is agnostic of
@@ -48,8 +48,8 @@ class DataManager implements Serializable
         return new self(
             array_filter(
                 $this->items,
-                function ($item) use ($key) {
-                    return $item->get($property) !== $item->get($property);
+                function ($currentItem) use ($item, $property) {
+                    return $currentItem->get($property) !== $item->get($property);
                 }
             )
         );
@@ -99,8 +99,8 @@ class DataManager implements Serializable
     public function replace(RequestDatum $newItem, string $property): self
     {
         return $this
-            ->filterOutBy($property, $newItem->get($property))
-            ->add($newValue)
+            ->filterOut($newItem, $property)
+            ->add($newItem)
         ;
     }
 

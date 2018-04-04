@@ -6,11 +6,12 @@ use LM\Authentifier\Authentifier\U2fAuthentifier;
 use LM\Authentifier\Configuration\IConfiguration;
 use LM\Authentifier\Enum\AuthenticationRequest\Status;
 use LM\Authentifier\Model\DataManager;
+use Serializable;
 
 /**
  * @todo Interface?
  */
-class AuthenticationRequest
+class AuthenticationRequest implements Serializable
 {
     private $config;
 
@@ -49,5 +50,22 @@ class AuthenticationRequest
     public function getCurrentAuthentifier(): string
     {
         return U2fAuthentifier::class;
+    }
+
+    public function serialize()
+    {
+        return serialize([
+            $this->config,
+            $this->dataManager,
+            $this->status,
+        ]);
+    }
+
+    public function unserialize($serialized)
+    {
+        list(
+            $this->config,
+            $this->dataManager,
+            $this->status) = unserialize($serialized);
     }
 }

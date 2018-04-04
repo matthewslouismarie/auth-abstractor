@@ -2,11 +2,14 @@
 
 namespace LM\Authentifier\Authentifier;
 
-use LM\Authentifier\Model\DataManager;
-use Psr\Http\Message\ResponseInterface;
+use LM\Authentifier\Model\AuthenticationRequest;
+use LM\Authentifier\Model\AuthentifierResponse;
 use Psr\Http\Message\RequestInterface;
 
 interface IAuthentifier
 {
-    public function process(RequestInterface $request, DataManager $dataManager): ResponseInterface;
+    public function process(
+        AuthenticationRequest $authRequest,
+        RequestInterface $request): AuthentifierResponse
+    ;
 }

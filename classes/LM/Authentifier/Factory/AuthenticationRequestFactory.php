@@ -23,6 +23,7 @@ class AuthenticationRequestFactory
             new RequestDatum("username", new StringObject($username)),
             new RequestDatum("used_u2f_key_ids", new ArrayObject([], IntegerObject::class)),
             new RequestDatum("registrations", new ArrayObject($u2fRegistrationsArray, Registration::class)),
+            new RequestDatum("n_http_requests", new IntegerObject(0)),
         ]);
 
         return new AuthenticationRequest(

@@ -3,12 +3,15 @@
 namespace LM\Authentifier\Authentifier;
 
 use Firehed\U2F\Registration;
+use Firehed\U2F\SignRequest;
 use GuzzleHttp\Psr7\Response;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\RequestInterface;
 use LM\Authentifier\Configuration\IConfiguration;
 use LM\Authentifier\Form\Submission\U2fAuthenticationSubmission;
 use LM\Authentifier\Form\Type\U2fAuthenticationType;
+use LM\Authentifier\Model\AuthentifierResponse;
+use LM\Authentifier\Model\AuthenticationRequest;
 use LM\Authentifier\Model\DataManager;
 use LM\Authentifier\Model\RequestDatum;
 use LM\Authentifier\U2f\U2fAuthenticationManager;
@@ -45,17 +48,20 @@ class U2fAuthentifier implements IAuthentifier
     /**
      * @todo Store the registrations in the datamanager differently.
      */
-    public function process(RequestInterface $request, DataManager $dm): ResponseInterface
+    public function process(
+        AuthenticationRequest $authRequest,
+        RequestInterface $request): AuthentifierResponse
     {
-        // try {
-        $username = $dm
+        $username = $authRequest
+            ->getDataManager()
             ->get(RequestDatum::KEY_PROPERTY, "username")
             ->getOnlyValue()
             ->getObject(RequestDatum::VALUE_PROPERTY, StringObject::class)
             ->toString()
         ;
 
-        $usedU2fKeyIdsDm = $dm
+        $usedU2fKeyIdsDm = $authRequest
+            ->getDataManager()
             ->get(RequestDatum::KEY_PROPERTY, "used_u2f_key_ids")
         ;
         $usedU2fKeyIds = (0 === $usedU2fKeyIdsDm->getSize()) ? [] : $usedU2fKeyIdsDm
@@ -64,35 +70,28 @@ class U2fAuthentifier implements IAuthentifier
             ->toArray(IntegerObject::class)
         ;
 
-        $registrations = $dm
-            // ->get(RequestDatum::CLASS_PROPERTY, Registration::class)
+        $registrations = $authRequest
+            ->getDataManager()
             ->get(RequestDatum::KEY_PROPERTY, "registrations")
             ->getOnlyValue()
             ->getObject(RequestDatum::VALUE_PROPERTY, ArrayObject::class)
-            // ->toArray(Registration::class)
         ;
-// var_dump($registrations);
+
         $form = $this->formFactory->createBuilder()
             ->add('task', TextType::class)
             ->add('dueDate', DateType::class)
             ->getForm()
         ;
+        $nHttpRequests = $authRequest
+            ->getDataManager()
+            ->get(RequestDatum::KEY_PROPERTY, "n_http_requests")
+            ->getOnlyValue()
+            ->get(RequestDatum::VALUE_PROPERTY)
+            ->toInteger()
+        ;
 
         $submission = new U2fAuthenticationSubmission();
         $form = $this->formFactory->create(U2fAuthenticationType::class, $submission);
-
-        $signRequests = $this
-            ->u2fAuthenticationManager
-            ->generate($username, $registrations, $usedU2fKeyIds)
-        ;
-        //     $secureSession->setObject(
-        //         $sid,
-        //         $dm->replaceByKey(new TransitingData(
-        //             'u2f_authentication_request',
-        //             'ic_u2f',
-        //             $u2fAuthenticationRequest)),
-        //         TransitingDataManager::class)
-        //     ;
 
         //     return $this->render('identity_checker/u2f.html.twig', [
         //         'form' => $form->createView(),
@@ -117,9 +116,35 @@ class U2fAuthentifier implements IAuthentifier
         //     return $this->render('identity_checker/errors/general_error.html.twig');
         // }
 
-        return new Response(200, [], $this->twig->render("u2f.html.twig", [
+        $signRequests = $this
+                    ->u2fAuthenticationManager
+                    ->generate($username, $registrations, $usedU2fKeyIds)
+                ;
+        
+        $response = new Response(200, [], $this->twig->render("u2f.html.twig", [
             "form" => $form->createView(),
             "sign_requests_json" => json_encode(array_values($signRequests)),
+            "tmp" => $nHttpRequests,
         ]));
+        $newDm = $authRequest
+            ->getDataManager()
+            ->replace(
+                new RequestDatum(
+                    "u2f_authentication_request",
+                    new ArrayObject($signRequests, SignRequest::class)),
+                RequestDatum::KEY_PROPERTY)
+            ->replace(
+                new RequestDatum(
+                    "n_http_requests",
+                    new IntegerObject($nHttpRequests + 1)),
+                RequestDatum::KEY_PROPERTY)
+        ;
+        $updatedAuthRequest = new AuthenticationRequest(
+            $newDm,
+            $authRequest->getConfiguration(),
+            $authRequest->getStatus())
+        ;
+
+        return new AuthentifierResponse($updatedAuthRequest, $response);
     }
 }
