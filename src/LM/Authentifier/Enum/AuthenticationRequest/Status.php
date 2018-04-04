@@ -1,6 +1,6 @@
 <?php
 
-namespace LM\Authentifier\Enum\AuthenticationRequest;
+namespace LM\Authentifier\Enum\AuthenticationProcess;
 
 use LM\Common\Enum\AbstractEnum;
 

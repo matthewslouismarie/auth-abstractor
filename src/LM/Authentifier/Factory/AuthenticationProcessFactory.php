@@ -3,21 +3,21 @@
 namespace LM\Authentifier\Factory;
 
 use Firehed\U2F\Registration;
-use LM\Authentifier\Configuration\IConfiguration;
-use LM\Authentifier\Enum\AuthenticationRequest\Status;
-use LM\Authentifier\Model\AuthenticationRequest;
+use LM\Authentifier\Configuration\IApplicationConfiguration;
+use LM\Authentifier\Enum\AuthenticationProcess\Status;
+use LM\Authentifier\Model\AuthenticationProcess;
 use LM\Authentifier\Model\DataManager;
 use LM\Authentifier\Model\RequestDatum;
 use LM\Common\Model\IntegerObject;
 use LM\Common\Model\ArrayObject;
 use LM\Common\Model\StringObject;
 
-class AuthenticationRequestFactory
+class AuthenticationProcessFactory
 {
-    public function createU2fAuthenticationRequest(
+    public function createU2fProcess(
         string $username,
         array $u2fRegistrationsArray,
-        IConfiguration $userConfiguration): AuthenticationRequest
+        IApplicationConfiguration $userConfiguration): AuthenticationProcess
     {
         $dataManager = new DataManager([
             new RequestDatum("username", new StringObject($username)),
@@ -25,7 +25,7 @@ class AuthenticationRequestFactory
             new RequestDatum("u2f_registrations", new ArrayObject($u2fRegistrationsArray, Registration::class)),
         ]);
 
-        return new AuthenticationRequest(
+        return new AuthenticationProcess(
             $dataManager,
             $userConfiguration,
             new Status(Status::ONGOING)

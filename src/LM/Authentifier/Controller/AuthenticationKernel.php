@@ -5,10 +5,10 @@ namespace LM\Authentifier\Controller;
 use DI\Container;
 use DI\ContainerBuilder;
 use LM\Authentifier\Authentifier\IAuthentifier;
-use LM\Authentifier\Configuration\IConfiguration;
-use LM\Authentifier\Model\AuthenticationRequest;
+use LM\Authentifier\Configuration\IApplicationConfiguration;
+use LM\Authentifier\Model\AuthenticationProcess;
 use LM\Authentifier\Model\DataManager;
-use LM\Authentifier\Enum\AuthenticationRequest\Status;
+use LM\Authentifier\Enum\AuthenticationProcess\Status;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Bridge\Twig\Extension\FormExtension;
@@ -35,9 +35,13 @@ use Twig_Loader_Filesystem;
  * storing and retrieving correctly the TransitingDataManager object or the
  * implementation of the storage mechanism?
  */
-class AuthenticationRequestController
+class AuthenticationKernel
 {
+    private $appConfig;
+
     private $authentifierResponse;
+
+    private $container;
 
     /**
      * @todo Current authentifier stored in request?
@@ -47,11 +51,8 @@ class AuthenticationRequestController
      * creating Twig.
      * @todo Ensure container keeps and reuses objects.
      */
-    public function __construct(
-        RequestInterface $httpRequest,
-        AuthenticationRequest $authRequest)
+    public function __construct(IApplicationConfiguration $appConfig)
     {
-        // Twig
         $loader = new Twig_Loader_Filesystem(
             [
                 realpath(__DIR__."/../../../../../../matthewslouismarie/authentifier/templates"),
@@ -61,58 +62,11 @@ class AuthenticationRequestController
         $twig = new Twig_Environment($loader, [
             "cache" => false,
         ]);
-
-        $assetFunction = new Twig_Function("asset", [$authRequest->getConfiguration(), "getAssetUri"]);
-        $twig->addFunction($assetFunction);
-        
-        $formFactory = $this->initializeFormComponent($twig);
-
-        $containerBuilder = new ContainerBuilder();
-        $containerBuilder->addDefinitions([
-            IConfiguration::class => function () use ($authRequest) {
-                return $authRequest->getConfiguration();
-            },
-            Twig_Environment::class => function () use ($twig) {
-                return $twig;
-            },
-            FormFactoryInterface::class => function () use ($formFactory) {
-                return $formFactory;
-            },
+        $assetFunction = new Twig_Function("asset", [
+            $appConfig,
+            "getAssetUri",
         ]);
-        $container = $containerBuilder->build();
-        $status = $authRequest->getStatus();
-        if ($status->is(new Status(Status::ONGOING))) {
-            if (!$container->get($authRequest->getCurrentAuthentifier()) instanceof IAuthentifier) {
-                throw new Exception();
-            }
-            $authentifier = $container->get($authRequest->getCurrentAuthentifier());
-            $this->authentifierResponse = $authentifier->process($authRequest, $httpRequest);
-
-        } else if ($status->is(new Status(Status::SUCCEEDED))) {
-        } else if ($status->is(new Status(Status::FAILED))) {
-        } else {
-            throw new UnexpectedValueException();
-        }
-    }
-
-    public function getHttpResponse(): ResponseInterface
-    {
-        return $this
-            ->authentifierResponse
-            ->getHttpResponse()
-        ;
-    }
-
-    public function getAuthenticationRequest(): AuthenticationRequest
-    {
-        return $this
-            ->authentifierResponse
-            ->getAuthenticationRequest()
-        ;
-    }
-
-    public function initializeFormComponent(Twig_Environment &$twig): FormFactoryInterface
-    {
+        $twig->addFunction($assetFunction);
         $translator = new Translator('en');
         $translator->addLoader('xlf', new XliffFileLoader());
         // $translator->addResource(
@@ -141,7 +95,59 @@ class AuthenticationRequestController
             ->addExtension(new HttpFoundationExtension())
             ->getFormFactory()
         ;
+        $formFactory = $this->initializeFormComponent($twig);
 
-        return $formFactory;
+        $containerBuilder = new ContainerBuilder();
+        $containerBuilder->addDefinitions([
+            IApplicationConfiguration::class => function () use ($authRequest) {
+                return $authRequest->getConfiguration();
+            },
+            Twig_Environment::class => function () use ($twig) {
+                return $twig;
+            },
+            FormFactoryInterface::class => function () use ($formFactory) {
+                return $formFactory;
+            },
+        ]);
+        $this->container = $containerBuilder->build();
+    }
+
+    public function processHttpRequest(
+        RequestInterface $request,
+        AuthenticationProcess $process)
+    {
+        $status = $process->getStatus();
+        if ($status->is(new Status(Status::ONGOING))) {
+            if (!is_a($process->getCurrentAuthentifier()), IAuthentifier, true) {
+                throw new Exception();
+            }
+            $authentifier = $this
+                ->container
+                ->get($process->getCurrentAuthentifier())
+            ;
+            $this->authentifierResponse = $authentifier->process($authRequest, $httpRequest);
+
+        } else if ($status->is(new Status(Status::SUCCEEDED))) {
+        } else if ($status->is(new Status(Status::FAILED))) {
+        } else {
+            throw new UnexpectedValueException();
+        }
+    }
+
+
+    public function getHttpResponse(): ResponseInterface
+    {
+        return $this
+            ->authentifierResponse
+            ->getHttpResponse()
+        ;
+    }
+
+    public function getAuthenticationProcess(): AuthenticationProcess
+    {
+        return $this
+            ->authentifierResponse
+            ->getAuthenticationProcess()
+        ;
     }
 }
