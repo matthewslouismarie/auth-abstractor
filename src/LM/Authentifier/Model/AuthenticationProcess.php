@@ -6,6 +6,7 @@ use LM\Authentifier\Authentifier\U2fAuthentifier;
 use LM\Authentifier\Configuration\IApplicationConfiguration;
 use LM\Authentifier\Enum\AuthenticationProcess\Status;
 use LM\Authentifier\Model\DataManager;
+use LM\Authentifier\Model\IAuthenticationCallback;
 use LM\Authentifier\Model\PersistOperation;
 use Serializable;
 
@@ -14,6 +15,8 @@ use Serializable;
  */
 class AuthenticationProcess implements Serializable
 {
+    private $callback;
+
     private $config;
 
     private $dataManager;
@@ -21,13 +24,20 @@ class AuthenticationProcess implements Serializable
     private $status;
 
     public function __construct(
-        DataManager $dataManager,
         IApplicationConfiguration $config,
-        Status $status)
+        DataManager $dataManager,
+        Status $status,
+        IAuthenticationCallback $callback)
     {
+        $this->callback = $callback;
         $this->config = $config;
         $this->dataManager = $dataManager;
         $this->status = $status;
+    }
+
+    public function getCallback(): IAuthenticationCallback
+    {
+        return $this->callback;
     }
 
     public function getConfiguration(): IApplicationConfiguration
@@ -65,6 +75,7 @@ class AuthenticationProcess implements Serializable
     public function serialize()
     {
         return serialize([
+            $this->callback,
             $this->config,
             $this->dataManager,
             $this->status,
@@ -74,6 +85,7 @@ class AuthenticationProcess implements Serializable
     public function unserialize($serialized)
     {
         list(
+            $this->callback,
             $this->config,
             $this->dataManager,
             $this->status) = unserialize($serialized);
