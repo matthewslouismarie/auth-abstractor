@@ -18,7 +18,6 @@ class AuthenticationProcessFactory
     public function createU2fProcess(
         string $username,
         array $u2fRegistrationsArray,
-        IApplicationConfiguration $appConfig,
         ?IAuthenticationCallback $callback = null): AuthenticationProcess
     {
         $dataManager = new DataManager([
@@ -28,7 +27,6 @@ class AuthenticationProcessFactory
         ]);
 
         return new AuthenticationProcess(
-            $appConfig,
             $dataManager,
             new Status(Status::ONGOING),
             $callback

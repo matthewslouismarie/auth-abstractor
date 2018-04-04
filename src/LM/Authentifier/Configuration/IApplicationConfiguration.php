@@ -3,6 +3,7 @@
 namespace LM\Authentifier\Configuration;
 
 use Twig_Function;
+use Psr\Container\ContainerInterface;
 
 /**
  * @todo Rename to IExternalConfiguration or ExternalEnvironment or… ?
@@ -14,5 +15,10 @@ interface IApplicationConfiguration
 
     public function getAppId(): string;
 
+    public function getContainer(): ContainerInterface;
+
+    /**
+     * @todo Delete. (Is made redundant by IAuthenticationCallback.)
+     */
     public function save(): void;
 }

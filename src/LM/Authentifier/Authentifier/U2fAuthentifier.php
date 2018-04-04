@@ -131,7 +131,6 @@ class U2fAuthentifier implements IAuthentifier
                     new PersistOperation($newRegistration, new Operation(Operation::UPDATE))))
             ;
             $updatedAuthRequest = new AuthenticationProcess(
-                $process->getConfiguration(),
                 $newDm,
                 new Status(Status::SUCCEEDED),
                 $process->getCallback())
@@ -180,7 +179,6 @@ class U2fAuthentifier implements IAuthentifier
                 RequestDatum::KEY_PROPERTY)
         ;
         $updatedAuthRequest = new AuthenticationProcess(
-            $process->getConfiguration(),
             $newDm,
             $process->getStatus(),
             $process->getCallback())

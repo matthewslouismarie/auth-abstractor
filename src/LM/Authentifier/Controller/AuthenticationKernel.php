@@ -52,6 +52,8 @@ class AuthenticationKernel
      */
     public function __construct(IApplicationConfiguration $appConfig)
     {
+        $this->appConfig = $appConfig;
+
         $loader = new Twig_Loader_Filesystem(
             [
                 realpath(__DIR__."/../../../../../../matthewslouismarie/authentifier/templates"),
@@ -126,17 +128,24 @@ class AuthenticationKernel
             $authResponse = $authentifier->process($authProcess, $httpRequest);
             $newProcess = $authResponse->getProcess();
             if ($newProcess->getStatus()->is(new Status(Status::SUCCEEDED))) {
+                $callback = $newProcess
+                    ->getCallback()
+                ;
+                $callback->wakeUp($this->appConfig->getContainer());
                 return new AuthentifierResponse(
                     $newProcess,
-                    $newProcess->getCallback()->filterSuccessResponse($authResponse->getHttpResponse()))
+                    $callback->filterSuccessResponse($newProcess, $authResponse->getHttpResponse()))
                 ;
             } elseif ($newProcess->getStatus()->is(new Status(Status::FAILED))) {
                 
+              throw new UnexpectedValueException();
             }
 
             return $authResponse;
         } else if ($status->is(new Status(Status::SUCCEEDED))) {
+            throw new UnexpectedValueException();
         } else if ($status->is(new Status(Status::FAILED))) {
+            throw new UnexpectedValueException();
         } else {
             throw new UnexpectedValueException();
         }
