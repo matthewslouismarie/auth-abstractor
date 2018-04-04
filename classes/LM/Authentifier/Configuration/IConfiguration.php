@@ -11,4 +11,6 @@ use Twig_Function;
 interface IConfiguration
 {
     public function getAssetUri(string $assetId): string;
+
+    public function getAppId(): string;
 }

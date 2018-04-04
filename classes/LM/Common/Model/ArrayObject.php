@@ -4,18 +4,30 @@ namespace LM\Common\Model;
 
 use Serializable;
 use UnexpectedValueException;
+use InvalidArgumentException;
 
 class ArrayObject implements Serializable
 {
     private $items;
 
-    public function __construct(array $items)
+    public function __construct(array $items, string $class)
     {
+        foreach ($items as $item) {
+            if (get_class($item) !== $class) {
+                throw new InvalidArgumentException();
+            }
+        }
         $this->items = $items;
     }
 
-    public function toArray(): array
+    public function toArray(string $class): array
     {
+        foreach ($this->items as $item) {
+            if (get_class($item) !== $class) {
+                throw new UnexpectedValueException();
+            }
+        }
+
         return $this->items;
     }
 

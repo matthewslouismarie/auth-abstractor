@@ -108,7 +108,20 @@ class DataManager implements Serializable
     {
         $values = [];
         foreach ($this->items as $item) {
-            $values[] = $item->get($item->get($property));
+            $values[] = $item->get($property);
+        }
+
+        return $values;
+    }
+
+    public function toArrayOfObjects(string $property, string $class): array
+    {
+        $values = [];
+        foreach ($this->items as $item) {
+            if (get_class($item->get($property)) !== $class) {
+                throw new UnexpectedValueException();
+            }
+            $values[] = $item->get($property);
         }
 
         return $values;

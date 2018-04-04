@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "c88e35abeaeebbf2ffc02dc079af715d",
+    "content-hash": "39194931219d799362f03d8e0868bc3b",
     "packages": [
         {
             "name": "guzzlehttp/psr7",
@@ -128,6 +128,42 @@
                 "tokenizer"
             ],
             "time": "2018-03-21T22:21:57+00:00"
+        },
+        {
+            "name": "matthewslouismarie/lm-u2f",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/matthewslouismarie/lm-u2f",
+                "reference": "b0931bab7817df3327901ca36cb4664562fa8f05"
+            },
+            "require": {
+                "matthewslouismarie/lm-web-framework": "dev-master"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "LM\\U2F\\": "",
+                    "Firehed\\U2F\\": "src/"
+                }
+            },
+            "time": "2018-01-27T18:36:29+00:00"
+        },
+        {
+            "name": "matthewslouismarie/lm-web-framework",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/matthewslouismarie/lm-web-framework",
+                "reference": "54b925828652df9c8783c9d46d9c12eaa348a830"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "LM\\": "classes/LM/"
+                }
+            },
+            "time": "2017-12-08T16:15:44+00:00"
         },
         {
             "name": "nikic/php-parser",
@@ -3016,9 +3052,11 @@
         }
     ],
     "aliases": [],
-    "minimum-stability": "stable",
-    "stability-flags": [],
-    "prefer-stable": false,
+    "minimum-stability": "dev",
+    "stability-flags": {
+        "matthewslouismarie/lm-u2f": 20
+    },
+    "prefer-stable": true,
     "prefer-lowest": false,
     "platform": [],
     "platform-dev": []
