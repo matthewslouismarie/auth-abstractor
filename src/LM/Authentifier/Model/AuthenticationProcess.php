@@ -17,20 +17,16 @@ class AuthenticationProcess implements Serializable
 {
     private $callback;
 
-    private $config;
-
     private $dataManager;
 
     private $status;
 
     public function __construct(
-        IApplicationConfiguration $config,
         DataManager $dataManager,
         Status $status,
         IAuthenticationCallback $callback)
     {
         $this->callback = $callback;
-        $this->config = $config;
         $this->dataManager = $dataManager;
         $this->status = $status;
     }
@@ -40,19 +36,17 @@ class AuthenticationProcess implements Serializable
         return $this->callback;
     }
 
-    public function getConfiguration(): IApplicationConfiguration
+    /**
+     * @todo
+     */
+    public function getCurrentAuthentifier(): string
     {
-        return $this->config;
+        return U2fAuthentifier::class;
     }
 
     public function getDataManager(): DataManager
     {
         return $this->dataManager;
-    }
-
-    public function getStatus(): Status
-    {
-        return $this->status;
     }
 
     public function getPersistOperations(): array
@@ -64,19 +58,26 @@ class AuthenticationProcess implements Serializable
         ;
     }
 
-    /**
-     * @todo
-     */
-    public function getCurrentAuthentifier(): string
+    public function getStatus(): Status
     {
-        return U2fAuthentifier::class;
+        return $this->status;
+    }
+
+    public function getUsername(): string
+    {
+        return $this
+            ->dataManager
+            ->get(RequestDatum::KEY_PROPERTY, "username")
+            ->getOnlyValue()
+            ->get(RequestDatum::VALUE_PROPERTY, PersistOperation::class)
+            ->toString()
+        ;
     }
 
     public function serialize()
     {
         return serialize([
             $this->callback,
-            $this->config,
             $this->dataManager,
             $this->status,
         ]);
@@ -86,7 +87,6 @@ class AuthenticationProcess implements Serializable
     {
         list(
             $this->callback,
-            $this->config,
             $this->dataManager,
             $this->status) = unserialize($serialized);
     }
