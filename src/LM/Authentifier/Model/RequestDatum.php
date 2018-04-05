@@ -35,7 +35,7 @@ class RequestDatum implements IDataHolder
     public function getObject(string $property, string $class)
     {
         $item = $this->values[$property];
-        if (get_class($item) !== $class) {
+        if (!is_a($item, $class)) {
             throw new UnexpectedValueException();
         }
 

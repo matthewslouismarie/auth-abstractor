@@ -4,14 +4,17 @@ namespace LM\Authentifier\Controller;
 
 use DI\Container;
 use DI\ContainerBuilder;
-use LM\Authentifier\Authentifier\IAuthentifier;
+use LM\Authentifier\Challenge\IChallenge;
 use LM\Authentifier\Configuration\IApplicationConfiguration;
 use LM\Authentifier\Model\AuthenticationProcess;
 use LM\Authentifier\Model\DataManager;
+use LM\Authentifier\Model\RequestDatum;
 use LM\Authentifier\Model\AuthentifierResponse;
 use LM\Authentifier\Enum\AuthenticationProcess\Status;
+use LM\Common\Model\StringObject;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
+use Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory;
 use Symfony\Bridge\Twig\Extension\FormExtension;
 use Symfony\Bridge\Twig\Extension\TranslationExtension;
 use Symfony\Bridge\Twig\Form\TwigRendererEngine;
@@ -30,6 +33,10 @@ use Twig_Environment;
 use Twig_FactoryRuntimeLoader;
 use Twig_Function;
 use Twig_Loader_Filesystem;
+use UnexpectedValueException;
+
+
+use App\Service\SecureSession;
 
 /**
  * @todo Is it better to delegatehttpRequest to the library used the responsability of
@@ -112,42 +119,74 @@ class AuthenticationKernel
         $this->container = $containerBuilder->build();
     }
 
+    /**
+     * @todo Check type of $challengeResponse.
+     */
     public function processHttpRequest(
         RequestInterface $httpRequest,
         AuthenticationProcess $authProcess): AuthentifierResponse
     {
         $status = $authProcess->getStatus();
         if ($status->is(new Status(Status::ONGOING))) {
-            if (!is_a($authProcess->getCurrentAuthentifier(), IAuthentifier::class, true)) {
-                throw new Exception();
-            }
-            $authentifier = $this
-                ->container
-                ->get($authProcess->getCurrentAuthentifier())
-            ;
-            $authResponse = $authentifier->process($authProcess, $httpRequest);
-            $newProcess = $authResponse->getProcess();
-            if ($newProcess->getStatus()->is(new Status(Status::SUCCEEDED))) {
-                $callback = $newProcess
-                    ->getCallback()
+            $challengeResponse = null;
+            while (true) {
+                $challenge = $this
+                    ->container
+                    ->get($authProcess->getCurrentChallenge())
                 ;
-                $callback->wakeUp($this->appConfig->getContainer());
-                return new AuthentifierResponse(
-                    $newProcess,
-                    $callback->filterSuccessResponse($newProcess, $authResponse->getHttpResponse()))
-                ;
-            } elseif ($newProcess->getStatus()->is(new Status(Status::FAILED))) {
-                
-              throw new UnexpectedValueException();
-            }
+                $challengeResponse = $challenge->process($authProcess, $httpRequest);
 
-            return $authResponse;
-        } else if ($status->is(new Status(Status::SUCCEEDED))) {
+                $psr7Factory = new DiactorosFactory();
+                $psrHttpResponse = $psr7Factory->createResponse($challengeResponse->getHttpResponse());
+                if ($challengeResponse->isAttempt()) {
+                    if ($challengeResponse->isSuccessful()) {
+                        $challenges = $challengeResponse
+                            ->getAuthenticationProcess()
+                            ->getChallenges()
+                        ;
+                        if ($challenges->hasNextItem()) {
+                            $challenges->setToNextItem();
+                            $newAuthenticationProcess = new AuthenticationProcess($challengeResponse
+                                ->getAuthenticationProcess()
+                                ->getDataManager()
+                                ->replace(
+                                    new RequestDatum("challenges", $challenges),
+                                    RequestDatum::KEY_PROPERTY))
+                            ;
+                            return new AuthentifierResponse(
+                                $newAuthenticationProcess,
+                                $psrHttpResponse)
+                            ;
+                        } else {
+                            $callback = $authProcess->getCallback();
+                            $callback->wakeUp($this->appConfig->getContainer());
+                            // update authProcess!
+                            return new AuthentifierResponse(
+                                $authProcess,
+                                $callback->filterSuccessResponse($authProcess, $psrHttpResponse))
+                            ;
+                        }
+                    } else {
+                        // increase and check error counter
+                        return new AuthentifierResponse($challengeResponse->getAuthenticationProcess(), $psrHttpResponse);
+                    }
+                } else {
+
+                    return new AuthentifierResponse($challengeResponse->getAuthenticationProcess(), $psrHttpResponse);
+                }
+            }
+            return $challengeResponse;
+        } elseif ($status->is(new Status(Status::SUCCEEDED))) {
             throw new UnexpectedValueException();
-        } else if ($status->is(new Status(Status::FAILED))) {
+        } elseif ($status->is(new Status(Status::FAILED))) {
             throw new UnexpectedValueException();
         } else {
             throw new UnexpectedValueException();
         }
+    }
+
+    public function processChallengeResponse(ChallengeResponse $challengeResponse)
+    {
+        
     }
 }
