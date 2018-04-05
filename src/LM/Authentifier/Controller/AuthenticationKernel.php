@@ -78,7 +78,7 @@ class AuthenticationKernel
         $twig->addExtension(new TranslationExtension($translator));
 
         $csrfGenerator = new UriSafeTokenGenerator();
-        $csrfStorage = new NativeSessionTokenStorage();
+        $csrfStorage = $this->appConfig->getTokenStorage();
         $csrfManager = new CsrfTokenManager($csrfGenerator, $csrfStorage);
 
         $defaultFormTheme = "form_div_layout.html.twig";
