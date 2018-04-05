@@ -2,22 +2,40 @@
 
 namespace LM\Common\Model;
 
+use InvalidArgumentException;
+use LM\Common\Type\TypeCheckerTrait;
 use Serializable;
 use UnexpectedValueException;
-use InvalidArgumentException;
 
 class ArrayObject implements Serializable
 {
+    use TypeCheckerTrait;
+
     private $items;
 
-    public function __construct(array $items, string $class)
+    public function __construct(array $items, string $type)
     {
+        $this->items = [];
         foreach ($items as $item) {
-            if (get_class($item) !== $class) {
-                throw new InvalidArgumentException();
+            $this->checkType($item, $type);
+            if ($this->isStringType($type)) {
+                $this->items[] = new StringObject($item);
+            } elseif ($this->isClassName($type)) {
+                $this->items = $items; 
             }
         }
-        $this->items = $items;
+    }
+
+    public function getCurrentItem(string $class)
+    {
+        $this->checkType(current($this->items), $class);
+
+        return current($this->items);
+    }
+
+    public function setToNextItem(): void
+    {
+        next($this->items);
     }
 
     public function getSize(): int
