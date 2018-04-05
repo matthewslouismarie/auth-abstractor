@@ -5,7 +5,7 @@ namespace LM\Authentifier\Model;
 use Psr\Http\Message\ResponseInterface;
 
 /**
- * @todo Interface? After all, it is mentionned in IAuthentifier.
+ * @todo Interface? After all, it is mentionned in IChallenge.
  */
 class AuthentifierResponse
 {

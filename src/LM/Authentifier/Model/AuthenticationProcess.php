@@ -2,46 +2,66 @@
 
 namespace LM\Authentifier\Model;
 
-use LM\Authentifier\Authentifier\U2fAuthentifier;
+use LM\Authentifier\Challenge\U2fChallenge;
 use LM\Authentifier\Configuration\IApplicationConfiguration;
 use LM\Authentifier\Enum\AuthenticationProcess\Status;
 use LM\Authentifier\Model\DataManager;
 use LM\Authentifier\Model\IAuthenticationCallback;
 use LM\Authentifier\Model\PersistOperation;
+use LM\Common\Model\ArrayObject;
+use LM\Common\Model\StringObject;
 use Serializable;
 
 /**
  * @todo Interface?
+ * @todo Data shouldn't be stored here.
  */
 class AuthenticationProcess implements Serializable
 {
-    private $callback;
-
     private $dataManager;
 
-    private $status;
-
-    public function __construct(
-        DataManager $dataManager,
-        Status $status,
-        IAuthenticationCallback $callback)
+    /**
+     * @todo Check authentifier names are valid here.
+     * @todo Should only take a dataManager.
+     */
+    public function __construct(DataManager $dataManager)
     {
-        $this->callback = $callback;
         $this->dataManager = $dataManager;
-        $this->status = $status;
+    }
+
+    public function getChallenges(): ArrayObject
+    {
+        return $this
+            ->dataManager
+            ->get(RequestDatum::KEY_PROPERTY, "challenges")
+            ->getOnlyValue()
+            ->getObject(RequestDatum::VALUE_PROPERTY, ArrayObject::class)
+        ;
     }
 
     public function getCallback(): IAuthenticationCallback
     {
-        return $this->callback;
+        return $this
+            ->dataManager
+            ->get(RequestDatum::KEY_PROPERTY, "callback")
+            ->getOnlyValue()
+            ->get(RequestDatum::VALUE_PROPERTY, IAuthenticationCallback::class)
+        ;
     }
 
     /**
-     * @todo
+     * @todo Should check for validity.
      */
-    public function getCurrentAuthentifier(): string
+    public function getCurrentChallenge(): string
     {
-        return U2fAuthentifier::class;
+        return $this
+            ->dataManager
+            ->get(RequestDatum::KEY_PROPERTY, "challenges")
+            ->getOnlyValue()
+            ->getObject(RequestDatum::VALUE_PROPERTY, ArrayObject::class)
+            ->getCurrentItem(StringObject::class)
+            ->toString()
+        ;
     }
 
     public function getDataManager(): DataManager
@@ -60,7 +80,12 @@ class AuthenticationProcess implements Serializable
 
     public function getStatus(): Status
     {
-        return $this->status;
+        return $this
+            ->dataManager
+            ->get(RequestDatum::KEY_PROPERTY, "status")
+            ->getOnlyValue()
+            ->get(RequestDatum::VALUE_PROPERTY, Status::class)
+        ;
     }
 
     public function getUsername(): string
@@ -76,18 +101,11 @@ class AuthenticationProcess implements Serializable
 
     public function serialize()
     {
-        return serialize([
-            $this->callback,
-            $this->dataManager,
-            $this->status,
-        ]);
+        return serialize($this->dataManager);
     }
 
     public function unserialize($serialized)
     {
-        list(
-            $this->callback,
-            $this->dataManager,
-            $this->status) = unserialize($serialized);
+        $this->dataManager = unserialize($serialized);
     }
 }

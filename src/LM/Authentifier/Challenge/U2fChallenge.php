@@ -1,10 +1,10 @@
 <?php
 
-namespace LM\Authentifier\Authentifier;
+namespace LM\Authentifier\Challenge;
 
 use Firehed\U2F\Registration;
 use Firehed\U2F\SignRequest;
-use GuzzleHttp\Psr7\Response;
+use Symfony\Component\HttpFoundation\Response;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\RequestInterface;
 use LM\Authentifier\Configuration\IApplicationConfiguration;
@@ -31,8 +31,10 @@ use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormRenderer;
 
-class U2fAuthentifier implements IAuthentifier
+class U2fChallenge implements IChallenge
 {
+    private $appConfig;
+
     private $formFactory;
 
     private $httpFoundationFactory;
@@ -42,11 +44,13 @@ class U2fAuthentifier implements IAuthentifier
     private $u2fAuthenticationManager;
 
     public function __construct(
+        IApplicationConfiguration $appConfig,
         FormFactoryInterface $formFactory,
         HttpFoundationFactory $httpFoundationFactory,
         Twig_Environment $twig,
         U2fAuthenticationManager $u2fAuthenticationManager)
     {
+        $this->appConfig = $appConfig;
         $this->formFactory = $formFactory;
         $this->httpFoundationFactory = $httpFoundationFactory;
         $this->twig = $twig;
@@ -59,7 +63,7 @@ class U2fAuthentifier implements IAuthentifier
      */
     public function process(
         AuthenticationProcess $process,
-        RequestInterface $httpRequest): AuthentifierResponse
+        RequestInterface $httpRequest): ChallengeResponse
     {
         $username = $process
             ->getDataManager()
@@ -79,17 +83,11 @@ class U2fAuthentifier implements IAuthentifier
             ->toArray(IntegerObject::class)
         ;
 
-        $registrations = $process
-            ->getDataManager()
-            ->get(RequestDatum::KEY_PROPERTY, "u2f_registrations")
-            ->getOnlyValue()
-            ->getObject(RequestDatum::VALUE_PROPERTY, ArrayObject::class)
-        ;
-
-        $form = $this->formFactory->createBuilder()
-            ->add('task', TextType::class)
-            ->add('dueDate', DateType::class)
-            ->getForm()
+        $registrations = new ArrayObject(
+            $this
+                ->appConfig
+                ->getU2fRegistrations($username),
+            Registration::class)
         ;
 
         $submission = new U2fAuthenticationSubmission();
@@ -118,7 +116,6 @@ class U2fAuthentifier implements IAuthentifier
                     break;
                 }
             }
-            $response = new Response(404, [], "Yo");
             $newDm = $process
                 ->getDataManager()
                 ->replace(
@@ -130,13 +127,13 @@ class U2fAuthentifier implements IAuthentifier
                     "persist_operations",
                     new PersistOperation($newRegistration, new Operation(Operation::UPDATE))))
             ;
-            $updatedAuthRequest = new AuthenticationProcess(
-                $newDm,
-                new Status(Status::SUCCEEDED),
-                $process->getCallback())
-            ;
 
-            return new AuthentifierResponse($updatedAuthRequest, $response);
+            return new ChallengeResponse(
+                new AuthenticationProcess($newDm),
+                new Response('so far so good'),
+                true,
+                true)
+            ;
         }
         //     return $this->render('identity_checker/u2f.html.twig', [
         //         'form' => $form->createView(),
@@ -166,7 +163,7 @@ class U2fAuthentifier implements IAuthentifier
                     ->generate($username, $registrations, $usedU2fKeyIds)
         ;
         
-        $response = new Response(200, [], $this->twig->render("u2f.html.twig", [
+        $httpResponse = new Response($this->twig->render("u2f.html.twig", [
             "form" => $form->createView(),
             "sign_requests_json" => json_encode(array_values($signRequests)),
         ]));
@@ -178,12 +175,12 @@ class U2fAuthentifier implements IAuthentifier
                     new ArrayObject($signRequests, SignRequest::class)),
                 RequestDatum::KEY_PROPERTY)
         ;
-        $updatedAuthRequest = new AuthenticationProcess(
-            $newDm,
-            $process->getStatus(),
-            $process->getCallback())
-        ;
 
-        return new AuthentifierResponse($updatedAuthRequest, $response);
+        return new ChallengeResponse(
+            new AuthenticationProcess($newDm),
+            $httpResponse,
+            $form->isSubmitted(),
+            false)
+        ;
     }
 }

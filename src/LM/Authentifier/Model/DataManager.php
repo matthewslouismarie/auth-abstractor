@@ -10,6 +10,7 @@ use UnexpectedValueException;
 /**
  * @todo Either does not expose RequestDatum, or expose it and is agnostic of
  * its fields.
+ * @todo Should not reference RequestDatum.
  */
 class DataManager implements Serializable
 {
@@ -55,6 +56,9 @@ class DataManager implements Serializable
         );
     }
 
+    /**
+     * @todo Rename to filter? Or to onlyKeep?
+     */
     public function get(string $property, $value): self
     {
         return new self(array_filter(

@@ -13,6 +13,8 @@ class ArrayObject implements Serializable
 
     private $items;
 
+    private $currentItemIndex;
+
     public function __construct(array $items, string $type)
     {
         $this->items = [];
@@ -21,21 +23,28 @@ class ArrayObject implements Serializable
             if ($this->isStringType($type)) {
                 $this->items[] = new StringObject($item);
             } elseif ($this->isClassName($type)) {
-                $this->items = $items; 
+                $this->items[] = $item; 
             }
         }
+        $this->currentItemIndex = 0;
+    }
+
+    public function hasNextItem(): bool
+    {
+        return $this->currentItemIndex + 1 < count($this->items);
     }
 
     public function getCurrentItem(string $class)
     {
-        $this->checkType(current($this->items), $class);
-
-        return current($this->items);
+        return $this->items[$this->currentItemIndex];
     }
 
+    /**
+     * @todo Mutable object!
+     */
     public function setToNextItem(): void
     {
-        next($this->items);
+        $this->currentItemIndex++;
     }
 
     public function getSize(): int
@@ -56,16 +65,16 @@ class ArrayObject implements Serializable
 
     public function serialize(): string
     {
-        return serialize($this->items);
+        return serialize([
+            $this->currentItemIndex,
+            $this->items])
+        ;
     }
 
     public function unserialize($serialized): void
     {
-        $unserialized = unserialize($serialized);
-        if (is_array($unserialized)) {
-            $this->items = $unserialized;
-        } else {
-            throw new UnexpectedValueException();
-        }
+        list(
+            $this->currentItemIndex,
+            $this->items) = unserialize($serialized);
     }
 }
