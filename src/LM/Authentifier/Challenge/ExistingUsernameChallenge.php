@@ -3,36 +3,25 @@
 namespace LM\Authentifier\Challenge;
 
 use Firehed\U2F\Registration;
-use Firehed\U2F\SignRequest;
-use Symfony\Component\HttpFoundation\Response;
-use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\RequestInterface;
 use LM\Authentifier\Configuration\IApplicationConfiguration;
-use LM\Authentifier\Enum\AuthenticationProcess\Status;
-use LM\Authentifier\Enum\Persistence\Operation;
-use LM\Authentifier\Form\Submission\ExistingUsernameSubmission;
-use LM\Authentifier\Form\Type\ExistingUsernameType;
-use LM\Authentifier\Model\AuthentifierResponse;
 use LM\Authentifier\Model\AuthenticationProcess;
 use LM\Authentifier\Model\DataManager;
-use LM\Authentifier\Model\PersistOperation;
 use LM\Authentifier\Model\RequestDatum;
 use LM\Authentifier\U2f\U2fAuthenticationManager;
-use LM\Common\Model\ArrayObject;
-use LM\Common\Model\IntegerObject;
 use LM\Common\Model\StringObject;
-use Twig_Environment;
-use Symfony\Component\Form\Forms;
 use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
-use Symfony\Bridge\Twig\Extension\FormExtension;
-use Symfony\Bridge\Twig\Form\TwigRendererEngine;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\Form\FormRenderer;
+use Symfony\Component\HttpFoundation\Response;
+use Twig_Environment;
 
 class ExistingUsernameChallenge implements IChallenge
 {
+    private $appConfig;
+
     private $formFactory;
 
     private $httpFoundationFactory;
@@ -42,11 +31,13 @@ class ExistingUsernameChallenge implements IChallenge
     private $u2fAuthenticationManager;
 
     public function __construct(
+        IApplicationConfiguration $appConfig,
         FormFactoryInterface $formFactory,
         HttpFoundationFactory $httpFoundationFactory,
         Twig_Environment $twig,
         U2fAuthenticationManager $u2fAuthenticationManager)
     {
+        $this->appConfig = $appConfig;
         $this->formFactory = $formFactory;
         $this->httpFoundationFactory = $httpFoundationFactory;
         $this->twig = $twig;
@@ -61,20 +52,30 @@ class ExistingUsernameChallenge implements IChallenge
         AuthenticationProcess $process,
         RequestInterface $httpRequest): ChallengeResponse
     {
-        $submission = new ExistingUsernameSubmission();
         $form = $this
             ->formFactory
-            ->create(ExistingUsernameType::class, $submission)
+            ->createBuilder()
+            ->add('username', TextType::class)
+            ->add('submit', SubmitType::class)
+            ->getForm()
         ;
 
         $form->handleRequest($this->httpFoundationFactory->createRequest($httpRequest));
+        if ($form->isSubmitted() && !$this->appConfig->isExistingMember($form['username']->getData())) {
+                $form
+                    ->get('username')
+                    ->addError(new FormError('The username is invalid.'))
+                ;
+            }
+
         if ($form->isSubmitted() && $form->isValid()) {
+
             $newDm = $process
                 ->getDataManager()
                 ->add(
                     new RequestDatum(
                         "username",
-                        new StringObject($submission->getUsername())))
+                        new StringObject($form->get('username')->getData())))
             ;
 
             return new ChallengeResponse(

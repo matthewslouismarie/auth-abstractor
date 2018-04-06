@@ -11,6 +11,7 @@ use LM\Authentifier\Model\DataManager;
 use LM\Authentifier\Model\RequestDatum;
 use LM\Authentifier\Model\AuthentifierResponse;
 use LM\Authentifier\Enum\AuthenticationProcess\Status;
+use LM\Authentifier\Exception\FinishedProcessException;
 use LM\Common\Model\StringObject;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -29,14 +30,13 @@ use Symfony\Component\Form\FormRenderer;
 use Symfony\Component\Translation\Translator;
 use Symfony\Component\Translation\Loader\XliffFileLoader;
 use Symfony\Component\Form\Extension\HttpFoundation\HttpFoundationExtension;
+use Symfony\Component\Form\Extension\Validator\ValidatorExtension;
 use Twig_Environment;
 use Twig_FactoryRuntimeLoader;
 use Twig_Function;
 use Twig_Loader_Filesystem;
 use UnexpectedValueException;
-
-
-use App\Service\SecureSession;
+use Symfony\Component\Validator\Validation;
 
 /**
  * @todo Is it better to delegatehttpRequest to the library used the responsability of
@@ -56,6 +56,7 @@ class AuthenticationKernel
      * @todo Add Twig Form Bridge path in initializeFormComponent and not when
      * creating Twig.
      * @todo Ensure container keeps and reuses objects.
+     * @todo Form validation doesn't work. Delete?
      */
     public function __construct(IApplicationConfiguration $appConfig)
     {
@@ -97,10 +98,12 @@ class AuthenticationKernel
             },
         )));
         $twig->addExtension(new FormExtension());
-
+        $validator = Validation::createValidator();
         $formFactory = Forms::createFormFactoryBuilder()
             ->addExtension(new CsrfExtension($csrfManager))
             ->addExtension(new HttpFoundationExtension())
+            ->addExtension(new HttpFoundationExtension())
+            ->addExtension(new ValidatorExtension($validator))
             ->getFormFactory()
         ;
 
@@ -123,6 +126,10 @@ class AuthenticationKernel
         RequestInterface $httpRequest,
         AuthenticationProcess $process): AuthentifierResponse
     {
+        if ($process->isFinished()) {
+            throw new FinishedProcessException();
+        }
+
         $processHandler = $this
             ->container
             ->get(AuthenticationProcessHandler::class)
