@@ -4,6 +4,7 @@ namespace LM\Authentifier\Challenge;
 
 use Firehed\U2F\ClientErrorException;
 use Firehed\U2F\Registration;
+use Firehed\U2F\SecurityException;
 use Firehed\U2F\SignRequest;
 use LM\Authentifier\Configuration\IApplicationConfiguration;
 use LM\Authentifier\Enum\Persistence\Operation;
@@ -67,22 +68,23 @@ class U2fChallenge implements IChallenge
             ->toString()
         ;
 
-        $usedU2fKeyIdsDm = $process
+        $usedU2fKeys = $process
             ->getDataManager()
-            ->get(RequestDatum::KEY_PROPERTY, "used_u2f_key_ids")
-        ;
-        $usedU2fKeyIds = (0 === $usedU2fKeyIdsDm->getSize()) ? [] : $usedU2fKeyIdsDm
+            ->get(RequestDatum::KEY_PROPERTY, "used_u2f_key_public_keys")
             ->getOnlyValue()
             ->getObject(RequestDatum::VALUE_PROPERTY, ArrayObject::class)
-            ->toArray(IntegerObject::class)
+            ->toArray('string')
         ;
 
-        $registrations = new ArrayObject(
-            $this
+        $registrations = $this
                 ->appConfig
-                ->getU2fRegistrations($username),
-            Registration::class)
+                ->getU2fRegistrations($username)
         ;
+        foreach ($registrations as $key => $registration) {
+            if (in_array($registration->getPublicKey(), $usedU2fKeys, true)) {
+                unset($registrations[$key]);
+            }
+        }
 
         $form = $this
             ->formFactory
@@ -105,15 +107,13 @@ class U2fChallenge implements IChallenge
                 $newRegistration = $this
                     ->u2fAuthenticationManager
                     ->processResponse(
-                        $registrations,
+                        new ArrayObject($registrations, Registration::class),
                         $signRequests,
                         $form['u2fTokenResponse']->getData())
                 ;
-                $nRegistrations = $registrations->getSize();
-                $registrationsArray = $registrations->toArray(Registration::class);
-                foreach ($registrationsArray as $key => $registration) {
+                foreach ($registrations as $key => $registration) {
                     if ($registration->getPublicKey() === $newRegistration->getPublicKey()) {
-                        $registrationsArray[$key] = $newRegistration;
+                        $registrations[$key] = $newRegistration;
                         break;
                     }
                 }
@@ -122,7 +122,12 @@ class U2fChallenge implements IChallenge
                     ->replace(
                         new RequestDatum(
                             "u2f_registrations",
-                            new ArrayObject($registrationsArray, Registration::class)),
+                            new ArrayObject($registrations, Registration::class)),
+                        RequestDatum::KEY_PROPERTY)
+                    ->replace(
+                        new RequestDatum(
+                            "used_u2f_key_public_keys",
+                            (new ArrayObject($usedU2fKeys, "string"))->add($newRegistration->getPublicKey(), 'string')),
                         RequestDatum::KEY_PROPERTY)
                     ->add(new RequestDatum(
                         "persist_operations",
@@ -140,7 +145,9 @@ class U2fChallenge implements IChallenge
         catch (ClientErrorException $e) {
             $form->addError(new FormError('You took too long to activate your key. Please try again.'));
         }
-        catch (NoRegisteredU2fTokenException $e) {
+        catch (SecurityException $e) {
+            $form->addError(new FormError('The U2F key is not recognised.'));
+        }  catch (NoRegisteredU2fTokenException $e) {
             return new ChallengeResponse(
                 new AuthenticationProcess($process),
                 $httpResponse,
@@ -154,7 +161,7 @@ class U2fChallenge implements IChallenge
 
         $signRequests = $this
                     ->u2fAuthenticationManager
-                    ->generate($username, $registrations, $usedU2fKeyIds)
+                    ->generate($username, new ArrayObject($registrations, Registration::class))
         ;
 
         $httpResponse = new Response($this->twig->render("u2f.html.twig", [

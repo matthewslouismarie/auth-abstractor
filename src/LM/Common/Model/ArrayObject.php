@@ -31,6 +31,15 @@ class ArrayObject implements Serializable
         $this->currentItemIndex = 0;
     }
 
+    public function add($value, string $type): self
+    {
+        $this->checkType($value, $type);
+        $items = $this->items;
+        $items[] = $value;
+
+        return new self($items, $type);
+    }
+
     public function hasNextItem(): bool
     {
         return $this->currentItemIndex + 1 < count($this->items);
@@ -57,12 +66,10 @@ class ArrayObject implements Serializable
         return count($this->items);
     }
 
-    public function toArray(string $class): array
+    public function toArray(string $type): array
     {
         foreach ($this->items as $item) {
-            if (get_class($item) !== $class) {
-                throw new UnexpectedValueException();
-            }
+            $this->checkType($item, $type);
         }
 
         return $this->items;
