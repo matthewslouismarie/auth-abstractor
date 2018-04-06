@@ -131,7 +131,7 @@ class U2fChallenge implements IChallenge
 
                 return new ChallengeResponse(
                     new AuthenticationProcess($newDm),
-                    new Response($this->twig->render("unspecified_error.html.twig")),
+                    null,
                     true,
                     true)
                 ;
