@@ -24,18 +24,13 @@ class U2fAuthenticationManager
      */
     public function generate(
         string $username,
-        ArrayObject $registrations,
-        array $idsToExclude = [])
+        ArrayObject $registrations)
     {
         $signRequests = $this
             ->u2fServerGenerator
             ->getServer()
             ->generateSignRequests($registrations->toArray(Registration::class))
         ;
-
-        foreach ($idsToExclude as $id) {
-            unset($signRequests[$id]);
-        }
 
         if (0 === count($signRequests)) {
             throw new NoRegisteredU2fTokenException();
@@ -62,16 +57,5 @@ class U2fAuthenticationManager
         $registration = $server->authenticate($response);
 
         return $registration;
-    }
-
-    private function getAuthenticatorId(
-        array $sign_requests,
-        string $challenge): string
-    {
-        foreach ($sign_requests as $authenticator_id => $sign_request) {
-            if ($sign_request->getChallenge() === $challenge) {
-                return $authenticator_id;
-            }
-        }
     }
 }

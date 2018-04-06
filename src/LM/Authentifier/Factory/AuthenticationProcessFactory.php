@@ -22,7 +22,7 @@ class AuthenticationProcessFactory
         IAuthenticationCallback $callback = null): AuthenticationProcess
     {
         $dataManager = new DataManager([
-            new RequestDatum("used_u2f_key_ids", new ArrayObject([], IntegerObject::class)),
+            new RequestDatum("used_u2f_key_public_keys", new ArrayObject([], 'string')),
             new RequestDatum("challenges", new ArrayObject($authentifiers, "string")),
             new RequestDatum("max_n_failed_attempts", new IntegerObject(3)),
             new RequestDatum("n_failed_attempts", new IntegerObject(0)),
