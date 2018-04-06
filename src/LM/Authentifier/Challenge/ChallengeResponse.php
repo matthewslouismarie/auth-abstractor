@@ -12,20 +12,20 @@ class ChallengeResponse
 
     private $httpResponse;
 
-    private $isAttempt;
+    private $isFailedAttempt;
 
-    private $isSuccessful;
+    private $isFinished;
 
     public function __construct(
         AuthenticationProcess $authenticationProcess,
-        Response $httpResponse,
-        bool $isAttempt,
-        bool $isSuccessful)
+        ?Response $httpResponse,
+        bool $isFailedAttempt,
+        bool $isFinished)
     {
         $this->authenticationProcess = $authenticationProcess;
         $this->httpResponse = $httpResponse;
-        $this->isAttempt = $isAttempt;
-        $this->isSuccessful = $isSuccessful;
+        $this->isFailedAttempt = $isFailedAttempt;
+        $this->isFinished = $isFinished;
     }
 
     public function getAuthenticationProcess(): AuthenticationProcess
@@ -33,18 +33,18 @@ class ChallengeResponse
         return $this->authenticationProcess;
     }
 
-    public function getHttpResponse(): Response
+    public function getHttpResponse(): ?Response
     {
         return $this->httpResponse;
     }
 
-    public function isAttempt(): bool
+    public function isFailedAttempt(): bool
     {
-        return $this->isAttempt;
+        return $this->isFailedAttempt;
     }
 
-    public function isSuccessful(): bool
+    public function isFinished(): bool
     {
-        return $this->isSuccessful;
+        return $this->isFinished;
     }
 }
