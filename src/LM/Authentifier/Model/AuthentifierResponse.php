@@ -15,7 +15,7 @@ class AuthentifierResponse
 
     public function __construct(
         AuthenticationProcess $process,
-        ResponseInterface $response)
+        ?ResponseInterface $response)
     {
         $this->process = $process;
         $this->response = $response;
@@ -26,7 +26,7 @@ class AuthentifierResponse
         return $this->process;
     }
 
-    public function getHttpResponse(): ResponseInterface
+    public function getHttpResponse(): ?ResponseInterface
     {
         return $this->response;
     }

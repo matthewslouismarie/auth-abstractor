@@ -119,74 +119,27 @@ class AuthenticationKernel
         $this->container = $containerBuilder->build();
     }
 
-    /**
-     * @todo Check type of $challengeResponse.
-     */
     public function processHttpRequest(
         RequestInterface $httpRequest,
-        AuthenticationProcess $authProcess): AuthentifierResponse
+        AuthenticationProcess $process): AuthentifierResponse
     {
-        $status = $authProcess->getStatus();
-        if ($status->is(new Status(Status::ONGOING))) {
-            $challengeResponse = null;
-            while (true) {
-                $challenge = $this
-                    ->container
-                    ->get($authProcess->getCurrentChallenge())
-                ;
-                $challengeResponse = $challenge->process($authProcess, $httpRequest);
+        $processHandler = $this
+            ->container
+            ->get(AuthenticationProcessHandler::class)
+        ;
 
-                $psr7Factory = new DiactorosFactory();
-                $psrHttpResponse = $psr7Factory->createResponse($challengeResponse->getHttpResponse());
-                if ($challengeResponse->isAttempt()) {
-                    if ($challengeResponse->isSuccessful()) {
-                        $challenges = $challengeResponse
-                            ->getAuthenticationProcess()
-                            ->getChallenges()
-                        ;
-                        if ($challenges->hasNextItem()) {
-                            $challenges->setToNextItem();
-                            $newAuthenticationProcess = new AuthenticationProcess($challengeResponse
-                                ->getAuthenticationProcess()
-                                ->getDataManager()
-                                ->replace(
-                                    new RequestDatum("challenges", $challenges),
-                                    RequestDatum::KEY_PROPERTY))
-                            ;
-                            return new AuthentifierResponse(
-                                $newAuthenticationProcess,
-                                $psrHttpResponse)
-                            ;
-                        } else {
-                            $callback = $authProcess->getCallback();
-                            $callback->wakeUp($this->appConfig->getContainer());
-                            // update authProcess!
-                            return new AuthentifierResponse(
-                                $authProcess,
-                                $callback->filterSuccessResponse($authProcess, $psrHttpResponse))
-                            ;
-                        }
-                    } else {
-                        // increase and check error counter
-                        return new AuthentifierResponse($challengeResponse->getAuthenticationProcess(), $psrHttpResponse);
-                    }
-                } else {
-
-                    return new AuthentifierResponse($challengeResponse->getAuthenticationProcess(), $psrHttpResponse);
-                }
-            }
-            return $challengeResponse;
-        } elseif ($status->is(new Status(Status::SUCCEEDED))) {
-            throw new UnexpectedValueException();
-        } elseif ($status->is(new Status(Status::FAILED))) {
-            throw new UnexpectedValueException();
-        } else {
-            throw new UnexpectedValueException();
+        $authentifierResponse = null;
+        $lastProcess = $process;
+        $httpResponse = null;
+        while (null === $httpResponse) {
+            $authentifierResponse = $processHandler->handleAuthenticationProcess(
+                $httpRequest,
+                $lastProcess)
+            ;
+            $lastProcess = $authentifierResponse->getProcess();
+            $httpResponse = $authentifierResponse->getHttpResponse();
         }
-    }
 
-    public function processChallengeResponse(ChallengeResponse $challengeResponse)
-    {
-        
+        return $authentifierResponse;
     }
 }

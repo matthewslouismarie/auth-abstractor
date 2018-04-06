@@ -9,6 +9,7 @@ use LM\Authentifier\Model\DataManager;
 use LM\Authentifier\Model\IAuthenticationCallback;
 use LM\Authentifier\Model\PersistOperation;
 use LM\Common\Model\ArrayObject;
+use LM\Common\Model\IntegerObject;
 use LM\Common\Model\StringObject;
 use Serializable;
 
@@ -69,6 +70,28 @@ class AuthenticationProcess implements Serializable
         return $this->dataManager;
     }
 
+    public function getMaxNFailedAttempts(): int
+    {
+        return $this
+            ->dataManager
+            ->get(RequestDatum::KEY_PROPERTY, "max_n_failed_attempts")
+            ->getOnlyValue()
+            ->get(RequestDatum::VALUE_PROPERTY, IntegerObject::class)
+            ->toInteger()
+        ;
+    }
+
+    public function getNFailedAttempts(): int
+    {
+        return new self($this
+            ->dataManager
+            ->get(RequestDatum::KEY_PROPERTY, "n_failed_attempts")
+            ->getOnlyValue()
+            ->get(RequestDatum::VALUE_PROPERTY, IntegerObject::class)
+            ->toInteger())
+        ;
+    }
+
     public function getPersistOperations(): array
     {
         return $this
@@ -96,6 +119,69 @@ class AuthenticationProcess implements Serializable
             ->getOnlyValue()
             ->get(RequestDatum::VALUE_PROPERTY, PersistOperation::class)
             ->toString()
+        ;
+    }
+
+    public function incrementNFailedAttempts(): self
+    {
+        return $this->setNFailedAttempts($this->getNFailedAttempts() + 1);
+    }
+
+    public function isFailed(): bool
+    {
+        return $this->getStatus()->is(new Status(Status::FAILED));
+    }
+
+    public function isOngoing(): bool
+    {
+        return $this->getStatus()->is(new Status(Status::ONGOING));
+    }
+
+    public function isSucceeded(): bool
+    {
+        return $this->getStatus()->is(new Status(Status::SUCCEEDED));
+    }
+
+    public function resetNFailedAttempts(): self
+    {
+        return $this->setNFailedAttempts(0);
+    }
+
+    public function setNFailedAttempts(int $nFailedAttempts): self
+    {
+        $newDm = $this
+            ->dataManager
+            ->replace(
+                new RequestDatum(
+                    "n_failed_attempts",
+                    new IntegerObject($nFailedAttempts)),
+                RequestDatum::KEY_PROPERTY)
+        ;
+        if ($nFailedAttempts < $this->getMaxNFailedAttempts()) {
+            return new self($newDm);
+        } else {
+            return new self($newDm
+                ->replace(
+                    new RequestDatum(
+                        "status",
+                        new Status(Status::FAILED)),
+                    RequestDatum::KEY_PROPERTY))
+            ;
+        }
+    }
+
+    public function setToNextChallenge(): self
+    {
+        $challenges = $this->getChallenges();
+        $challenges->setToNextItem();
+
+        return new self($this
+            ->dataManager
+            ->replace(
+                new RequestDatum(
+                    "challenges",
+                    $challenges),
+                RequestDatum::KEY_PROPERTY))
         ;
     }
 
