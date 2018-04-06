@@ -27,7 +27,7 @@ class AuthenticationProcessHandler
      * @todo Check type of $challengeResponse.
      */
     public function handleAuthenticationProcess(
-        RequestInterface $httpRequest,
+        ?RequestInterface $httpRequest,
         AuthenticationProcess $process): AuthentifierResponse
     {
         if ($process->isOngoing()) {

@@ -50,7 +50,7 @@ class ExistingUsernameChallenge implements IChallenge
      */
     public function process(
         AuthenticationProcess $process,
-        RequestInterface $httpRequest): ChallengeResponse
+        ?RequestInterface $httpRequest): ChallengeResponse
     {
         $form = $this
             ->formFactory
@@ -60,7 +60,9 @@ class ExistingUsernameChallenge implements IChallenge
             ->getForm()
         ;
 
-        $form->handleRequest($this->httpFoundationFactory->createRequest($httpRequest));
+        if (null !== $httpRequest) {
+            $form->handleRequest($this->httpFoundationFactory->createRequest($httpRequest));
+        }
         if ($form->isSubmitted() && !$this->appConfig->isExistingMember($form['username']->getData())) {
                 $form
                     ->get('username')
