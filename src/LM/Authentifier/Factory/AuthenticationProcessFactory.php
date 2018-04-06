@@ -25,6 +25,7 @@ class AuthenticationProcessFactory
             new RequestDatum("used_u2f_key_ids", new ArrayObject([], IntegerObject::class)),
             new RequestDatum("challenges", new ArrayObject($authentifiers, "string")),
             new RequestDatum("max_n_failed_attempts", new IntegerObject(3)),
+            new RequestDatum("n_failed_attempts", new IntegerObject(0)),
             new RequestDatum("callback", $callback),
             new RequestDatum("status", new Status(Status::ONGOING)),
         ]);

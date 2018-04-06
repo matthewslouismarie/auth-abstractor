@@ -83,12 +83,12 @@ class AuthenticationProcess implements Serializable
 
     public function getNFailedAttempts(): int
     {
-        return new self($this
+        return $this
             ->dataManager
             ->get(RequestDatum::KEY_PROPERTY, "n_failed_attempts")
             ->getOnlyValue()
             ->get(RequestDatum::VALUE_PROPERTY, IntegerObject::class)
-            ->toInteger())
+            ->toInteger()
         ;
     }
 
@@ -132,6 +132,11 @@ class AuthenticationProcess implements Serializable
         return $this->getStatus()->is(new Status(Status::FAILED));
     }
 
+    public function isFinished(): bool
+    {
+        return $this->isFailed() || $this->isSucceeded();
+    }
+
     public function isOngoing(): bool
     {
         return $this->getStatus()->is(new Status(Status::ONGOING));
@@ -173,16 +178,26 @@ class AuthenticationProcess implements Serializable
     public function setToNextChallenge(): self
     {
         $challenges = $this->getChallenges();
-        $challenges->setToNextItem();
+        if ($challenges->hasNextItem()) {
+            $challenges->setToNextItem();
+            return new self($this
+                ->dataManager
+                ->replace(
+                    new RequestDatum(
+                        "challenges",
+                        $challenges),
+                    RequestDatum::KEY_PROPERTY))
+            ;
+        } else {
+            return new self($this->dataManager
+                ->replace(
+                    new RequestDatum(
+                        "status",
+                        new Status(Status::SUCCEEDED)),
+                    RequestDatum::KEY_PROPERTY))
+            ;
+        }
 
-        return new self($this
-            ->dataManager
-            ->replace(
-                new RequestDatum(
-                    "challenges",
-                    $challenges),
-                RequestDatum::KEY_PROPERTY))
-        ;
     }
 
     public function serialize()

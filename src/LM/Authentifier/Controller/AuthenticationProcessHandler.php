@@ -69,7 +69,7 @@ class AuthenticationProcessHandler
                     ->getContainer())
             ;
 
-            return $callback->filterFailureResponse($process, new Response(""));
+            return $callback->handleFailedProcess($process);
         } elseif ($process->isSucceeded()) {
             $callback = $process->getCallback();
             $callback->wakeUp($this
@@ -77,8 +77,7 @@ class AuthenticationProcessHandler
                     ->getContainer())
             ;
 
-            return $callback->filterSuccessResponse($process, new Response(""));
-            
+            return $callback->handleSuccessfulProcess($process);
         }
     }
 }
