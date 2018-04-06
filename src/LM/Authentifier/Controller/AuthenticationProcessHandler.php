@@ -38,7 +38,11 @@ class AuthenticationProcessHandler
             $challengeResponse = $challenge->process($process, $httpRequest);
 
             $psr7Factory = new DiactorosFactory();
-            $psrHttpResponse = $psr7Factory->createResponse($challengeResponse->getHttpResponse());
+
+            $psrHttpResponse = null;
+            if (null !== $challengeResponse->getHttpResponse()) {
+                $psrHttpResponse = $psr7Factory->createResponse($challengeResponse->getHttpResponse());
+            }
 
             if ($challengeResponse->isFinished()) {
                 return new AuthentifierResponse(

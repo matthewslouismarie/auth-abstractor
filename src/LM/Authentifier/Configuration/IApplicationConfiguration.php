@@ -5,6 +5,7 @@ namespace LM\Authentifier\Configuration;
 use Twig_Function;
 use Psr\Container\ContainerInterface;
 use LM\Authentifier\Model\IU2fRegistrationFetcher;
+use LM\Authentifier\Model\IMember;
 use Symfony\Component\Security\Csrf\TokenStorage\TokenStorageInterface;
 
 /**
@@ -18,6 +19,8 @@ interface IApplicationConfiguration
     public function getAppId(): string;
 
     public function getContainer(): ContainerInterface;
+
+    public function getMember(string $username): IMember;
 
     public function getTokenStorage(): TokenStorageInterface;
 
