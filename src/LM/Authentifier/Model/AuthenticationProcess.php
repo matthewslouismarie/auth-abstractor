@@ -60,8 +60,7 @@ class AuthenticationProcess implements Serializable
             ->get(RequestDatum::KEY_PROPERTY, "challenges")
             ->getOnlyValue()
             ->getObject(RequestDatum::VALUE_PROPERTY, ArrayObject::class)
-            ->getCurrentItem(StringObject::class)
-            ->toString()
+            ->getCurrentItem("string")
         ;
     }
 

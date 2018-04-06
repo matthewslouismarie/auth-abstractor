@@ -6,14 +6,19 @@ use InvalidArgumentException;
 
 trait TypeCheckerTrait
 {
+    public function isClassName(string $type): bool 
+    {
+        return class_exists($type);
+    }
+
+    public function isIntegerType(string $type): bool
+    {
+        return "int" === $type;
+    }
+
     public function isStringType(string $type): bool
     {
         return "string" === $type;
-    }
-
-    public function isClassName(string $className): bool 
-    {
-        return class_exists($className);
     }
 
     /**
@@ -23,6 +28,10 @@ trait TypeCheckerTrait
     {
         if ($this->isStringType($type)) {
             if (!is_string($value)) {
+                throw new InvalidArgumentException();
+            }
+        } elseif($this->isIntegerType($type)) {
+            if (!is_int($value)) {
                 throw new InvalidArgumentException();
             }
         } elseif ($this->isClassName($type)) {

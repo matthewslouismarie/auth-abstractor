@@ -21,7 +21,9 @@ class ArrayObject implements Serializable
         foreach ($items as $item) {
             $this->checkType($item, $type);
             if ($this->isStringType($type)) {
-                $this->items[] = new StringObject($item);
+                $this->items[] = $item;
+            } elseif ($this->isIntegerType($type)) {
+                $this->items[] = $type;
             } elseif ($this->isClassName($type)) {
                 $this->items[] = $item; 
             }
@@ -36,7 +38,10 @@ class ArrayObject implements Serializable
 
     public function getCurrentItem(string $class)
     {
-        return $this->items[$this->currentItemIndex];
+        $currentItem = $this->items[$this->currentItemIndex];
+        $this->checkType($currentItem, $class);
+
+        return $currentItem;
     }
 
     /**
