@@ -2,6 +2,7 @@
 
 namespace LM\Authentifier\Challenge;
 
+use Firehed\U2F\ClientErrorException;
 use Firehed\U2F\Registration;
 use Firehed\U2F\SignRequest;
 use LM\Authentifier\Configuration\IApplicationConfiguration;
@@ -14,12 +15,15 @@ use LM\Authentifier\U2f\U2fAuthenticationManager;
 use LM\Common\Model\ArrayObject;
 use LM\Common\Model\IntegerObject;
 use LM\Common\Model\StringObject;
+use LM\Authentifier\Exception\NoRegisteredU2fTokenException;
 use Psr\Http\Message\RequestInterface;
 use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormFactoryInterface;
 use Twig_Environment;
+use UnexpectedValueException;
 
 class U2fChallenge implements IChallenge
 {
@@ -53,7 +57,7 @@ class U2fChallenge implements IChallenge
      */
     public function process(
         AuthenticationProcess $process,
-        RequestInterface $httpRequest): ChallengeResponse
+        ?RequestInterface $httpRequest): ChallengeResponse
     {
         $username = $process
             ->getDataManager()
@@ -87,47 +91,65 @@ class U2fChallenge implements IChallenge
             ->getForm()
         ;
 
-        $form->handleRequest($this->httpFoundationFactory->createRequest($httpRequest));
-        if ($form->isSubmitted() && $form->isValid()) {
-            $signRequests = $process
-                ->getDataManager()
-                ->get(RequestDatum::KEY_PROPERTY, "u2f_sign_requests")
-                ->getOnlyValue()
-                ->get(RequestDatum::VALUE_PROPERTY, ArrayObject::class)
-            ;
-            $newRegistration = $this
-                ->u2fAuthenticationManager
-                ->processResponse(
-                    $registrations,
-                    $signRequests,
-                    $form['u2fTokenResponse']->getData())
-            ;
-            $nRegistrations = $registrations->getSize();
-            $registrationsArray = $registrations->toArray(Registration::class);
-            foreach ($registrationsArray as $key => $registration) {
-                if ($registration->getPublicKey() === $newRegistration->getPublicKey()) {
-                    $registrationsArray[$key] = $newRegistration;
-                    break;
+        if (null !== $httpRequest) {
+            $form->handleRequest($this->httpFoundationFactory->createRequest($httpRequest));
+        }
+        try {
+            if ($form->isSubmitted() && $form->isValid()) {
+                $signRequests = $process
+                    ->getDataManager()
+                    ->get(RequestDatum::KEY_PROPERTY, "u2f_sign_requests")
+                    ->getOnlyValue()
+                    ->get(RequestDatum::VALUE_PROPERTY, ArrayObject::class)
+                ;
+                $newRegistration = $this
+                    ->u2fAuthenticationManager
+                    ->processResponse(
+                        $registrations,
+                        $signRequests,
+                        $form['u2fTokenResponse']->getData())
+                ;
+                $nRegistrations = $registrations->getSize();
+                $registrationsArray = $registrations->toArray(Registration::class);
+                foreach ($registrationsArray as $key => $registration) {
+                    if ($registration->getPublicKey() === $newRegistration->getPublicKey()) {
+                        $registrationsArray[$key] = $newRegistration;
+                        break;
+                    }
                 }
-            }
-            $newDm = $process
-                ->getDataManager()
-                ->replace(
-                    new RequestDatum(
-                        "u2f_registrations",
-                        new ArrayObject($registrationsArray, Registration::class)),
-                    RequestDatum::KEY_PROPERTY)
-                ->add(new RequestDatum(
-                    "persist_operations",
-                    new PersistOperation($newRegistration, new Operation(Operation::UPDATE))))
-            ;
+                $newDm = $process
+                    ->getDataManager()
+                    ->replace(
+                        new RequestDatum(
+                            "u2f_registrations",
+                            new ArrayObject($registrationsArray, Registration::class)),
+                        RequestDatum::KEY_PROPERTY)
+                    ->add(new RequestDatum(
+                        "persist_operations",
+                        new PersistOperation($newRegistration, new Operation(Operation::UPDATE))))
+                ;
 
+                return new ChallengeResponse(
+                    new AuthenticationProcess($newDm),
+                    new Response($this->twig->render("unspecified_error.html.twig")),
+                    true,
+                    true)
+                ;
+            }
+        }
+        catch (ClientErrorException $e) {
+            $form->addError(new FormError('You took too long to activate your key. Please try again.'));
+        }
+        catch (NoRegisteredU2fTokenException $e) {
             return new ChallengeResponse(
-                new AuthenticationProcess($newDm),
-                new Response('so far so good'),
+                new AuthenticationProcess($process),
+                $httpResponse,
                 true,
-                true)
+                false)
             ;
+        }
+        catch (UnexpectedValueException $e) {
+            $form->addError(new FormError('An error happened. Please try again.'));
         }
 
         $signRequests = $this
