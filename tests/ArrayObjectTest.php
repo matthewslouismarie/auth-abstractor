@@ -21,6 +21,26 @@ class ArrayObjectTest extends TestCase
         $this->assertSame(3, $arrayObject->getSize());
     }
 
+    public function testSupportForIntegers()
+    {
+        $ints = [
+            5,
+            2,
+        ];
+        $arrayObject = new ArrayObject($ints, 'int');
+        $this->assertSame(2, $arrayObject->getSize());
+    }
+
+    public function testTypeCheckingGetCurrentItem()
+    {
+        $strings = [
+            "Hello you",
+        ];
+        $arrayObject = new ArrayObject($strings, 'string');
+        $this->expectException(InvalidArgumentException::class);
+        $arrayObject->getCurrentItem('int');
+    }
+
     public function testInvalidArrayObjects()
     {
         $strings = [
