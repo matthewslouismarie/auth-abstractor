@@ -29,6 +29,10 @@ class ArrayObjectTest extends TestCase
         ];
         $arrayObject = new ArrayObject($ints, 'int');
         $this->assertSame(2, $arrayObject->getSize());
+        $this->assertSame(5, $arrayObject->get(0, 'int'));
+        $this->assertSame(2, $arrayObject->get(1, 'int'));
+        $this->expectException(InvalidArgumentException::class);
+        $arrayObject->get(1, ArrayObject::class);
     }
 
     public function testTypeCheckingGetCurrentItem()

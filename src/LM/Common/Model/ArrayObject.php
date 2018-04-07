@@ -23,7 +23,7 @@ class ArrayObject implements Serializable
             if ($this->isStringType($type)) {
                 $this->items[] = $item;
             } elseif ($this->isIntegerType($type)) {
-                $this->items[] = $type;
+                $this->items[] = $item;
             } elseif ($this->isClassName($type)) {
                 $this->items[] = $item; 
             }
@@ -43,6 +43,14 @@ class ArrayObject implements Serializable
     public function hasNextItem(): bool
     {
         return $this->currentItemIndex + 1 < count($this->items);
+    }
+
+    public function get($key, string $type)
+    {
+        $item = $this->items[$key];
+        $this->checkType($item, $type);
+
+        return $item;
     }
 
     public function getCurrentItem(string $class)
