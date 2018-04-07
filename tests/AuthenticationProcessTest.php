@@ -20,7 +20,7 @@ class AuthenticationProcessTest extends TestCase
             U2fChallenge::class,
         ];
         $dataManager = new DataManager([
-            new RequestDatum("used_u2f_key_public_keys", new StringObject([], IntegerObject::class)),
+            new RequestDatum("used_u2f_key_public_keys", new ArrayObject([], StringObject::class)),
             new RequestDatum("challenges", new ArrayObject($authentifiers, "string")),
             new RequestDatum("status", new Status(Status::ONGOING)),
         ]);
