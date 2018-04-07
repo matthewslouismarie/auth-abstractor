@@ -35,6 +35,17 @@ class ArrayObjectTest extends TestCase
         $arrayObject->get(1, ArrayObject::class);
     }
 
+    public function testSupportForKeys()
+    {
+        $arrayObject = new ArrayObject([
+            'username' => 'jcdenton',
+            'password' => 'bionicman',
+        ], 'string');
+        $this->assertSame('jcdenton', $arrayObject->get('username', 'string'));
+        $newArrayObject = $arrayObject->addWithKey('occupation', 'federal agent', 'string');
+        $this->assertSame('federal agent', $newArrayObject->get('occupation', 'string'));
+    }
+
     public function testTypeCheckingGetCurrentItem()
     {
         $strings = [

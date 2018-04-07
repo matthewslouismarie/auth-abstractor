@@ -18,24 +18,39 @@ class ArrayObject implements Serializable
     public function __construct(array $items, string $type)
     {
         $this->items = [];
-        foreach ($items as $item) {
+        foreach ($items as $key => $item) {
             $this->checkType($item, $type);
             if ($this->isStringType($type)) {
-                $this->items[] = $item;
+                $this->items[$key] = $item;
             } elseif ($this->isIntegerType($type)) {
-                $this->items[] = $item;
+                $this->items[$key] = $item;
             } elseif ($this->isClassName($type)) {
-                $this->items[] = $item; 
+                $this->items[$key] = $item; 
             }
         }
         $this->currentItemIndex = 0;
     }
 
+    /**
+     * @todo Rename to append.
+     */
     public function add($value, string $type): self
     {
         $this->checkType($value, $type);
         $items = $this->items;
         $items[] = $value;
+
+        return new self($items, $type);
+    }
+
+    /**
+     * @todo Rename to add.
+     */
+    public function addWithkey($key, $value, string $type): self
+    {
+        $this->checkType($value, $type);
+        $items = $this->items;
+        $items[$key] = $value;
 
         return new self($items, $type);
     }
