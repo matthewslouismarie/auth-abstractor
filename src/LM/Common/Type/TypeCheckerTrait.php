@@ -6,24 +6,29 @@ use InvalidArgumentException;
 
 trait TypeCheckerTrait
 {
+    public function isArrayType(string $type): bool
+    {
+        return 'array' === $type;
+    }
+
+    public function isBoolType(string $type): bool
+    {
+        return 'boolean' === $type;
+    }
+
     public function isClassName(string $type): bool 
     {
         return class_exists($type);
     }
 
-    public function isBoolType(string $type): bool
-    {
-        return "bool" === $type;
-    }
-
     public function isIntegerType(string $type): bool
     {
-        return "int" === $type;
+        return 'integer' === $type;
     }
 
     public function isStringType(string $type): bool
     {
-        return "string" === $type;
+        return 'string' === $type;
     }
 
     /**
