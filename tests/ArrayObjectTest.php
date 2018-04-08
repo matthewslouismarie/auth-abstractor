@@ -27,10 +27,10 @@ class ArrayObjectTest extends TestCase
             5,
             2,
         ];
-        $arrayObject = new ArrayObject($ints, 'int');
+        $arrayObject = new ArrayObject($ints, 'integer');
         $this->assertSame(2, $arrayObject->getSize());
-        $this->assertSame(5, $arrayObject->get(0, 'int'));
-        $this->assertSame(2, $arrayObject->get(1, 'int'));
+        $this->assertSame(5, $arrayObject->get(0, 'integer'));
+        $this->assertSame(2, $arrayObject->get(1, 'integer'));
         $this->expectException(InvalidArgumentException::class);
         $arrayObject->get(1, ArrayObject::class);
     }
@@ -53,7 +53,7 @@ class ArrayObjectTest extends TestCase
         ];
         $arrayObject = new ArrayObject($strings, 'string');
         $this->expectException(InvalidArgumentException::class);
-        $arrayObject->getCurrentItem('int');
+        $arrayObject->getCurrentItem('integer');
     }
 
     public function testInvalidArrayObjects()
