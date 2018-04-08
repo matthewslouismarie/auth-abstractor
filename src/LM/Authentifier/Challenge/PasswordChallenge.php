@@ -12,13 +12,13 @@ use LM\Authentifier\U2f\U2fAuthenticationManager;
 use LM\Common\Model\StringObject;
 use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Twig_Environment;
 
-class ExistingUsernameChallenge implements IChallenge
+class PasswordChallenge implements IChallenge
 {
     private $appConfig;
 
@@ -47,16 +47,28 @@ class ExistingUsernameChallenge implements IChallenge
     /**
      * @todo Store the registrations in the datamanager differently.
      * @todo Support for multiple key authentications.
-     * @todo Return null response.
      */
     public function process(
         AuthenticationProcess $process,
         ?RequestInterface $httpRequest): ChallengeResponse
     {
+        $username = $process
+            ->getDataManager()
+            ->get(RequestDatum::KEY_PROPERTY, "username")
+            ->getOnlyValue()
+            ->getObject(RequestDatum::VALUE_PROPERTY, StringObject::class)
+            ->toString()
+        ;
+
+        $member = $this
+            ->appConfig
+            ->getMember($username)
+        ;
+
         $form = $this
             ->formFactory
             ->createBuilder()
-            ->add('username', TextType::class)
+            ->add('password', PasswordType::class)
             ->add('submit', SubmitType::class)
             ->getForm()
         ;
@@ -64,32 +76,24 @@ class ExistingUsernameChallenge implements IChallenge
         if (null !== $httpRequest) {
             $form->handleRequest($this->httpFoundationFactory->createRequest($httpRequest));
         }
-        if ($form->isSubmitted() && !$this->appConfig->isExistingMember($form['username']->getData())) {
+
+        if ($form->isSubmitted() && !password_verify($form['password']->getData(), $member->getHashedPassword())) {
             $form
-                ->get('username')
-                ->addError(new FormError('The username is invalid.'))
+                ->get('password')
+                ->addError(new FormError('The password is invalid.'))
             ;
         }
 
         if ($form->isSubmitted() && $form->isValid()) {
-
-            $newDm = $process
-                ->getDataManager()
-                ->add(
-                    new RequestDatum(
-                        "username",
-                        new StringObject($form->get('username')->getData())))
-            ;
-
             return new ChallengeResponse(
-                new AuthenticationProcess($newDm), 
-                new Response("BUGE8497@todo"),
+                $process,
+                null,
                 false,
                 true)
             ;
         }
 
-        $response = new Response($this->twig->render("username.html.twig", [
+        $response = new Response($this->twig->render("password.html.twig", [
             "form" => $form->createView(),
         ]));
 

@@ -17,18 +17,23 @@ use LM\Common\Model\StringObject;
 
 class AuthenticationProcessFactory
 {
-    public function createAnonymousU2fProcess(
-        array $authentifiers,
-        IAuthenticationCallback $callback = null): AuthenticationProcess
+    public function createProcess(
+        array $challenges,
+        IAuthenticationCallback $callback = null,
+        ?string $username = null): AuthenticationProcess
     {
-        $dataManager = new DataManager([
+        $dataArray = [
             new RequestDatum("used_u2f_key_public_keys", new ArrayObject([], 'string')),
-            new RequestDatum("challenges", new ArrayObject($authentifiers, "string")),
+            new RequestDatum("challenges", new ArrayObject($challenges, "string")),
             new RequestDatum("max_n_failed_attempts", new IntegerObject(3)),
             new RequestDatum("n_failed_attempts", new IntegerObject(0)),
             new RequestDatum("callback", $callback),
             new RequestDatum("status", new Status(Status::ONGOING)),
-        ]);
+        ];
+        if (null !== $username) {
+            $dataArray[] = new RequestDatum('username', new StringObject($username));
+        }
+        $dataManager = new DataManager($dataArray);
 
         return new AuthenticationProcess($dataManager);
     }
