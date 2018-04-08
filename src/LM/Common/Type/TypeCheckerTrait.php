@@ -36,7 +36,11 @@ trait TypeCheckerTrait
      */
     public function checkType($value, string $type): void
     {
-        if ($this->isStringType($type)) {
+        if ($this->isArrayType($type)) {
+            if (!is_array($value)) {
+                throw new InvalidArgumentException();
+            }
+        } elseif ($this->isStringType($type)) {
             if (!is_string($value)) {
                 throw new InvalidArgumentException();
             }
