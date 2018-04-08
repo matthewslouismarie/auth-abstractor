@@ -11,6 +11,11 @@ trait TypeCheckerTrait
         return class_exists($type);
     }
 
+    public function isBoolType(string $type): bool
+    {
+        return "bool" === $type;
+    }
+
     public function isIntegerType(string $type): bool
     {
         return "int" === $type;
@@ -32,6 +37,10 @@ trait TypeCheckerTrait
             }
         } elseif($this->isIntegerType($type)) {
             if (!is_int($value)) {
+                throw new InvalidArgumentException();
+            }
+        } elseif($this->isBoolType($type)) {
+            if (!is_bool($value)) {
                 throw new InvalidArgumentException();
             }
         } elseif ($this->isClassName($type)) {
