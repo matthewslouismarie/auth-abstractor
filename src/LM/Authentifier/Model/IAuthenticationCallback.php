@@ -16,4 +16,6 @@ interface IAuthenticationCallback extends Serializable
     public function handleSuccessfulProcess(AuthenticationProcess $authProcess): AuthentifierResponse;
 
     public function handleFailedProcess(AuthenticationProcess $authProcess): AuthentifierResponse;
+
+    public function wakeUp(ContainerInterface $container): void;
 }
