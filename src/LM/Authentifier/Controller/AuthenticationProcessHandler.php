@@ -66,7 +66,7 @@ class AuthenticationProcessHandler
                     $psrHttpResponse)
                 ;
             }
-        } elseif ($process->IsFailed()) {
+        } elseif ($process->isFailed()) {
             $callback = $process->getCallback();
             $callback->wakeUp($this
                     ->appConfig
