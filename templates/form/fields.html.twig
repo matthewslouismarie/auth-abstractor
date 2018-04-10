@@ -1,0 +1,56 @@
+{% extends 'form_div_layout.html.twig' %}
+
+{%- block form_errors -%}
+  {%- if errors|length > 0 -%}
+    {%- if form is rootform -%}
+    <div class="form-row">
+    {%- endif -%}
+    <div class="form-error-list">
+        <ul class="list">
+            {%- for error in errors -%}
+                <li class="item">{{ error.message }}</li>
+            {%- endfor -%}
+        </ul>
+      </div>
+      {%- if form is rootform -%}
+    </div>
+    {%- endif -%}
+  {%- endif -%}
+{%- endblock -%}
+
+{# @todo: overwrite form_errors, form_widget and form_label #}
+{# @todo: better way to check for checkbox #}
+{%- block form_row -%}
+{% spaceless %}
+<div class="form-row">
+  {%- if errors|length > 0 -%}
+  <div class="errorscontainer">
+    {{ form_errors(form, {"attr": {"class": "errors"}}) }}
+  </div>
+  {%- endif -%}
+  <div class="labelcontainer">
+    {{ form_label(form, null, {"label_attr": {"class": "label"}}) }}
+  </div>
+  <div class="fieldcontainer">
+    {%- if checked is defined -%}
+      {{ form_widget(form, {"attr": {"class": "field -checkbox"}}) }}      
+    {%- else -%}
+      {{ form_widget(form, {"attr": {"class": "field"}}) }}
+    {%- endif -%}
+  </div>
+</div>
+{% endspaceless %}
+{%- endblock -%}
+
+{% block submit_widget %}
+<div class="form-row">
+  <div class="buttoncontainer">
+    {{ parent(form) }}
+  </div>
+</div>
+{% endblock %}
+
+{%- block button_attributes -%}
+class="button" id="{{ id }}" name="{{ full_name }}"{% if disabled %} disabled="disabled"{% endif -%}
+{{ block('attributes') }}
+{%- endblock button_attributes -%}
