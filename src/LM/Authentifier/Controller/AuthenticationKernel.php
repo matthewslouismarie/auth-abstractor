@@ -62,12 +62,16 @@ class AuthenticationKernel
     {
         $this->appConfig = $appConfig;
 
-        $loader = new Twig_Loader_Filesystem(
-            [
-                realpath(__DIR__."/../../../../../../matthewslouismarie/authentifier/templates"),
-                realpath(__DIR__."/../../../../../../symfony/twig-bridge/Resources/views/Form"),
-            ]
-        );
+        $twigPaths = [
+            $appConfig->getComposerDir().'/matthewslouismarie/authentifier/templates',
+            $appConfig->getComposerDir().'/symfony/twig-bridge/Resources/views/Form',
+        ];
+
+        if (null !== $appConfig->getCustomTwigDir()) {
+            $twigPaths[] = $appConfig->getCustomTwigDir();            
+        }
+
+        $loader = new Twig_Loader_Filesystem($twigPaths);
         $twig = new Twig_Environment($loader, [
             "cache" => false,
         ]);
