@@ -83,7 +83,7 @@ class ExistingUsernameChallenge implements IChallenge
 
             return new ChallengeResponse(
                 new AuthenticationProcess($newDm), 
-                new Response("BUGE8497@todo"),
+                null,
                 false,
                 true)
             ;
