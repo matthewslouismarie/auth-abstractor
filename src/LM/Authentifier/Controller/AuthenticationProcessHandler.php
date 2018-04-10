@@ -53,12 +53,21 @@ class AuthenticationProcessHandler
                     null)
                 ;
             } elseif ($challengeResponse->isFailedAttempt()) {
-                return new AuthentifierResponse(
-                    $challengeResponse
-                        ->getAuthenticationProcess()
-                        ->incrementNFailedAttempts(),
-                    $psrHttpResponse)
+                $updatedProcess = $challengeResponse
+                    ->getAuthenticationProcess()
+                    ->incrementNFailedAttempts()
                 ;
+                if ($updatedProcess->isFailed()) {
+                    return new AuthentifierResponse(
+                        $updatedProcess,
+                        null)
+                    ;
+                } else {
+                    return new AuthentifierResponse(
+                        $updatedProcess,
+                        $psrHttpResponse)
+                    ;
+                }
             } else {
                 return new AuthentifierResponse(
                     $challengeResponse

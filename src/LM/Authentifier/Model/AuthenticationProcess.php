@@ -197,7 +197,6 @@ class AuthenticationProcess implements Serializable
                     RequestDatum::KEY_PROPERTY))
             ;
         }
-
     }
 
     public function serialize()
