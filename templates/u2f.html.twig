@@ -17,6 +17,9 @@
 {%- endblock -%}
 
 {%- block body -%}
+{%- if nUsedU2fKeys > 0 -%}
+<p>You now need to activate an additional U2F Devices, different from the {{ nUsedU2fKeys }} you've used so far.</p>
+{%- endif -%}
 {{ form(form, {"attr": {"id": form.vars.id}}) }}
 {%- include "partials/_u2f_steps.html.twig" -%}
 {%- endblock -%}

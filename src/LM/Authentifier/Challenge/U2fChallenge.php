@@ -168,6 +168,7 @@ class U2fChallenge implements IChallenge
         $httpResponse = new Response($this->twig->render("u2f.html.twig", [
             "form" => $form->createView(),
             "sign_requests_json" => json_encode(array_values($signRequests)),
+            'nUsedU2fKeys' => count($usedU2fKeys),
         ]));
         $newDm = $process
             ->getDataManager()
