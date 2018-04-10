@@ -7,11 +7,6 @@ use LM\Authentifier\Exception\KeyAlreadyTakenException;
 use Serializable;
 use UnexpectedValueException;
 
-/**
- * @todo Either does not expose RequestDatum, or expose it and is agnostic of
- * its fields.
- * @todo Should not reference RequestDatum.
- */
 class DataManager implements Serializable
 {
     private $items;
@@ -69,7 +64,7 @@ class DataManager implements Serializable
         ));
     }
 
-    public function getOnlyValue(): RequestDatum
+    public function getOnlyValue(): IDataHolder
     {
         $items = $this->items;
         if (1 !== count($items)) {
@@ -100,7 +95,7 @@ class DataManager implements Serializable
         return 0 === count($this->items);
     }
 
-    public function replace(RequestDatum $newItem, string $property): self
+    public function replace(IDataHolder $newItem, string $property): self
     {
         return $this
             ->filterOut($newItem, $property)
