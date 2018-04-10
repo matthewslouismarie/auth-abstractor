@@ -18,7 +18,11 @@ interface IApplicationConfiguration
 
     public function getAppId(): string;
 
+    public function getComposerDir(): string;
+
     public function getContainer(): ContainerInterface;
+
+    public function getCustomTwigDir(): ?string;
 
     public function getMember(string $username): IMember;
 
