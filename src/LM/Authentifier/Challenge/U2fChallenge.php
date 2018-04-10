@@ -13,6 +13,7 @@ use LM\Authentifier\Model\DataManager;
 use LM\Authentifier\Model\PersistOperation;
 use LM\Authentifier\Model\RequestDatum;
 use LM\Authentifier\U2f\U2fAuthenticationManager;
+use LM\Common\Enum\Scalar;
 use LM\Common\Model\ArrayObject;
 use LM\Common\Model\IntegerObject;
 use LM\Common\Model\StringObject;
@@ -73,7 +74,7 @@ class U2fChallenge implements IChallenge
             ->get(RequestDatum::KEY_PROPERTY, "used_u2f_key_public_keys")
             ->getOnlyValue()
             ->getObject(RequestDatum::VALUE_PROPERTY, ArrayObject::class)
-            ->toArray('string')
+            ->toArray(Scalar::_STR)
         ;
 
         $registrations = $this
@@ -127,7 +128,7 @@ class U2fChallenge implements IChallenge
                     ->replace(
                         new RequestDatum(
                             "used_u2f_key_public_keys",
-                            (new ArrayObject($usedU2fKeys, "string"))->add($newRegistration->getPublicKey(), 'string')),
+                            (new ArrayObject($usedU2fKeys, Scalar::_STR))->add($newRegistration->getPublicKey(), Scalar::_STR)),
                         RequestDatum::KEY_PROPERTY)
                     ->add(new RequestDatum(
                         "persist_operations",

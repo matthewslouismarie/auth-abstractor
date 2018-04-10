@@ -8,6 +8,7 @@ use LM\Authentifier\Enum\AuthenticationProcess\Status;
 use LM\Authentifier\Model\DataManager;
 use LM\Authentifier\Model\IAuthenticationCallback;
 use LM\Authentifier\Model\PersistOperation;
+use LM\Common\Enum\Scalar;
 use LM\Common\Model\ArrayObject;
 use LM\Common\Model\IntegerObject;
 use LM\Common\Model\StringObject;
@@ -60,7 +61,7 @@ class AuthenticationProcess implements Serializable
             ->get(RequestDatum::KEY_PROPERTY, "challenges")
             ->getOnlyValue()
             ->getObject(RequestDatum::VALUE_PROPERTY, ArrayObject::class)
-            ->getCurrentItem("string")
+            ->getCurrentItem(Scalar::_STR)
         ;
     }
 

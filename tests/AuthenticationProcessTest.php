@@ -7,6 +7,7 @@ use LM\Authentifier\Enum\AuthenticationProcess\Status;
 use LM\Authentifier\Model\AuthenticationProcess;
 use LM\Authentifier\Model\DataManager;
 use LM\Authentifier\Model\RequestDatum;
+use LM\Common\Enum\Scalar;
 use LM\Common\Model\ArrayObject;
 use LM\Common\Model\IntegerObject;
 use LM\Common\Model\StringObject;
@@ -21,7 +22,7 @@ class AuthenticationProcessTest extends TestCase
         ];
         $dataManager = new DataManager([
             new RequestDatum("used_u2f_key_public_keys", new ArrayObject([], StringObject::class)),
-            new RequestDatum("challenges", new ArrayObject($authentifiers, "string")),
+            new RequestDatum("challenges", new ArrayObject($authentifiers, Scalar::_STR)),
             new RequestDatum("status", new Status(Status::ONGOING)),
         ]);
         $authenticationProcess = new AuthenticationProcess($dataManager);
