@@ -3,17 +3,18 @@
 namespace LM\Common\Type;
 
 use InvalidArgumentException;
+use LM\Common\Enum\Scalar;
 
 trait TypeCheckerTrait
 {
     public function isArrayType(string $type): bool
     {
-        return 'array' === $type;
+        return Scalar::_ARRAY === $type;
     }
 
     public function isBoolType(string $type): bool
     {
-        return 'boolean' === $type;
+        return Scalar::_BOOL === $type;
     }
 
     public function isClassName(string $type): bool 
@@ -23,12 +24,12 @@ trait TypeCheckerTrait
 
     public function isIntegerType(string $type): bool
     {
-        return 'integer' === $type;
+        return Scalar::_INT === $type;
     }
 
     public function isStringType(string $type): bool
     {
-        return 'string' === $type;
+        return Scalar::_STR === $type;
     }
 
     /**

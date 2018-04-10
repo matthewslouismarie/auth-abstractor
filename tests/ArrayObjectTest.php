@@ -3,9 +3,9 @@
 namespace LM\Authentifier\Tests;
 
 use PHPUnit\Framework\TestCase;
+use LM\Common\Enum\Scalar;
 use LM\Common\Model\ArrayObject;
 use LM\Common\Model\IntegerObject;
-
 use InvalidArgumentException;
 
 class ArrayObjectTest extends TestCase
@@ -17,7 +17,7 @@ class ArrayObjectTest extends TestCase
             "string2",
             "string3",
         ];
-        $arrayObject = new ArrayObject($strings, 'string');
+        $arrayObject = new ArrayObject($strings, Scalar::_STR);
         $this->assertSame(3, $arrayObject->getSize());
     }
 
@@ -27,10 +27,10 @@ class ArrayObjectTest extends TestCase
             5,
             2,
         ];
-        $arrayObject = new ArrayObject($ints, 'integer');
+        $arrayObject = new ArrayObject($ints, Scalar::_INT);
         $this->assertSame(2, $arrayObject->getSize());
-        $this->assertSame(5, $arrayObject->get(0, 'integer'));
-        $this->assertSame(2, $arrayObject->get(1, 'integer'));
+        $this->assertSame(5, $arrayObject->get(0, Scalar::_INT));
+        $this->assertSame(2, $arrayObject->get(1, SCALAR::_INT));
         $this->expectException(InvalidArgumentException::class);
         $arrayObject->get(1, ArrayObject::class);
     }
@@ -40,10 +40,10 @@ class ArrayObjectTest extends TestCase
         $arrayObject = new ArrayObject([
             'username' => 'jcdenton',
             'password' => 'bionicman',
-        ], 'string');
-        $this->assertSame('jcdenton', $arrayObject->get('username', 'string'));
-        $newArrayObject = $arrayObject->addWithKey('occupation', 'federal agent', 'string');
-        $this->assertSame('federal agent', $newArrayObject->get('occupation', 'string'));
+        ], Scalar::_STR);
+        $this->assertSame('jcdenton', $arrayObject->get('username', Scalar::_STR));
+        $newArrayObject = $arrayObject->addWithKey('occupation', 'federal agent', Scalar::_STR);
+        $this->assertSame('federal agent', $newArrayObject->get('occupation', Scalar::_STR));
     }
 
     public function testTypeCheckingGetCurrentItem()
@@ -51,9 +51,9 @@ class ArrayObjectTest extends TestCase
         $strings = [
             "Hello you",
         ];
-        $arrayObject = new ArrayObject($strings, 'string');
+        $arrayObject = new ArrayObject($strings, Scalar::_STR);
         $this->expectException(InvalidArgumentException::class);
-        $arrayObject->getCurrentItem('integer');
+        $arrayObject->getCurrentItem(Scalar::_INT);
     }
 
     public function testInvalidArrayObjects()
@@ -64,7 +64,7 @@ class ArrayObjectTest extends TestCase
             5,
         ];
         $this->expectException(InvalidArgumentException::class);
-        $arrayObject = new ArrayObject($strings, 'string');
+        $arrayObject = new ArrayObject($strings, Scalar::_STR);
     }
 
     public function testInvalidType()
