@@ -24,7 +24,7 @@ class ArrayObject implements Serializable
                 $this->items[$key] = $item;
             } elseif ($this->isIntegerType($type)) {
                 $this->items[$key] = $item;
-            } elseif ($this->isClassName($type)) {
+            } elseif ($this->isClassOrInterfaceName($type)) {
                 $this->items[$key] = $item; 
             }
         }
