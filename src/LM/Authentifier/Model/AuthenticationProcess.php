@@ -81,6 +81,16 @@ class AuthenticationProcess implements Serializable
         ;
     }
 
+    public function getMember(): IMember
+    {
+        return $this
+            ->dataManager
+            ->get(RequestDatum::KEY_PROPERTY, 'member')
+            ->getOnlyValue()
+            ->get(RequestDatum::VALUE_PROPERTY, IMember::class)
+        ;
+    }
+
     public function getNFailedAttempts(): int
     {
         return $this
