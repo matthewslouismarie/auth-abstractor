@@ -1,5 +1,5 @@
 {
-    "name": "matthewslouismarie/authentifier",
+    "name": "matthewslouismarie/auth-abstractor",
     "autoload": {
         "psr-4": {
             "LM\\": "src/LM"
