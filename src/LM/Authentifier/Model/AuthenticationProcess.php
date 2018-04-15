@@ -17,8 +17,9 @@ use LM\Common\Model\StringObject;
 use Serializable;
 
 /**
- * @todo Interface?
- * @todo Data shouldn't be stored here.
+ * @todo Interface
+ * @todo Maybe the data manager should never be manipulated directly, but only
+ * indirectly through AuthenticationProcess? Would make things simpler.
  */
 class AuthenticationProcess implements Serializable
 {
@@ -27,6 +28,7 @@ class AuthenticationProcess implements Serializable
     /**
      * @todo Check authentifier names are valid here.
      * @todo Should only take a dataManager.
+     * @todo Should validate the data manager.
      */
     public function __construct(DataManager $dataManager)
     {

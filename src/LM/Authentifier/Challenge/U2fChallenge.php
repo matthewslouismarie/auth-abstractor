@@ -15,7 +15,6 @@ use LM\Authentifier\Model\RequestDatum;
 use LM\Authentifier\U2f\U2fAuthenticationManager;
 use LM\Common\Enum\Scalar;
 use LM\Common\Model\ArrayObject;
-use LM\Common\Model\IntegerObject;
 use LM\Common\Model\StringObject;
 use LM\Authentifier\Exception\NoRegisteredU2fTokenException;
 use Psr\Http\Message\RequestInterface;
@@ -55,7 +54,8 @@ class U2fChallenge implements IChallenge
 
     /**
      * @todo Store the registrations in the datamanager differently.
-     * @todo Support for multiple key authentications.
+     * @todo Check support for multiple key authentications.
+     * @todo Store IU2fRegistration objects instead.
      */
     public function process(
         AuthenticationProcess $process,

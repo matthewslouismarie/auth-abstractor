@@ -9,12 +9,9 @@ use LM\Authentifier\Implementation\Member;
 use LM\Authentifier\Model\AuthenticationProcess;
 use LM\Authentifier\Model\DataManager;
 use LM\Authentifier\Model\RequestDatum;
-use LM\Authentifier\U2f\U2fAuthenticationManager;
-use LM\Common\Model\StringObject;
 use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -30,20 +27,16 @@ class CredentialRegistrationChallenge implements IChallenge
 
     private $twig;
 
-    private $u2fAuthenticationManager;
-
     public function __construct(
         IApplicationConfiguration $appConfig,
         FormFactoryInterface $formFactory,
         HttpFoundationFactory $httpFoundationFactory,
-        Twig_Environment $twig,
-        U2fAuthenticationManager $u2fAuthenticationManager)
+        Twig_Environment $twig)
     {
         $this->appConfig = $appConfig;
         $this->formFactory = $formFactory;
         $this->httpFoundationFactory = $httpFoundationFactory;
         $this->twig = $twig;
-        $this->u2fAuthenticationManager = $u2fAuthenticationManager;
     }
 
     /**

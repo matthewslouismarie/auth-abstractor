@@ -8,10 +8,6 @@ use LM\Authentifier\Model\IU2fRegistrationFetcher;
 use LM\Authentifier\Model\IMember;
 use Symfony\Component\Security\Csrf\TokenStorage\TokenStorageInterface;
 
-/**
- * @todo Rename to IExternalConfiguration or ExternalEnvironment or… ?
- * Or even better, UserConfiguration.
- */
 interface IApplicationConfiguration
 {
     public function getAssetUri(string $assetId): string;

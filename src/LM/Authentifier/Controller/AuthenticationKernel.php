@@ -50,11 +50,6 @@ class AuthenticationKernel
     private $container;
 
     /**
-     * @todo Current authentifier stored in request?
-     * @todo Request handling shouldn't be in construct().
-     * @todo Should check type before instantiating authentifier.
-     * @todo Add Twig Form Bridge path in initializeFormComponent and not when
-     * creating Twig.
      * @todo Ensure container keeps and reuses objects.
      * @todo Form validation doesn't work. Delete?
      */
@@ -126,6 +121,9 @@ class AuthenticationKernel
         $this->container = $containerBuilder->build();
     }
 
+    /**
+     * @todo Should check type before instantiating authentifier.
+     */
     public function processHttpRequest(
         RequestInterface $httpRequest,
         AuthenticationProcess $process): AuthentifierResponse

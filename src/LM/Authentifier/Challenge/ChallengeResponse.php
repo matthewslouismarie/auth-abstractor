@@ -3,7 +3,6 @@
 namespace LM\Authentifier\Challenge;
 
 use Symfony\Component\HttpFoundation\Response;
-use LM\Authentifier\Enum\AuthenticationProcess\Status;
 use LM\Authentifier\Model\AuthenticationProcess;
 
 class ChallengeResponse
