@@ -17,9 +17,9 @@ trait TypeCheckerTrait
         return Scalar::_BOOL === $type;
     }
 
-    public function isClassName(string $type): bool 
+    public function isClassOrInterfaceName(string $type): bool 
     {
-        return class_exists($type);
+        return class_exists($type) || interface_exists($type);
     }
 
     public function isIntegerType(string $type): bool
@@ -53,9 +53,8 @@ trait TypeCheckerTrait
             if (!is_bool($value)) {
                 throw new InvalidArgumentException();
             }
-        } elseif ($this->isClassName($type)) {
-            if (!is_object($value)
-            || get_class($value) !== $type) {
+        } elseif ($this->isClassOrInterfaceName($type)) {
+            if (!is_object($value) || !is_a($value, $type)) {
                 throw new InvalidArgumentException();
             }       
         } else {

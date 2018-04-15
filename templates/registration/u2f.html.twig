@@ -1,0 +1,21 @@
+{% extends "base.html.twig" %}
+
+{% block scripts %}
+<script src="{{ asset('jquery.min.js') }}"></script>
+<script src="{{ asset('u2f-api.js') }}"></script>
+<script>
+  const completeRegistration = function fCompleteRegistration(registerResponse)
+  { 
+    $('#{{ form.u2fDeviceResponse.vars.id }}').val(JSON.stringify(registerResponse));
+    $("#{{ form.vars.id }}").submit();
+  }
+  var request = {{ request_json | raw }};
+  var sign_requests = {{ sign_requests | raw }};
+  u2f.register([request], sign_requests, completeRegistration);
+</script>
+{% endblock %}
+
+{%- block body -%}
+{%- include "partials/_u2f_steps.html.twig" -%}
+{{ form(form, {"attr": {"id": form.vars.id}}) }}
+{%- endblock -%}
