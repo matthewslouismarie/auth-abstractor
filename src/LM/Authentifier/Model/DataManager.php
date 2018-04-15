@@ -7,6 +7,9 @@ use LM\Authentifier\Exception\KeyAlreadyTakenException;
 use Serializable;
 use UnexpectedValueException;
 
+/**
+ * @todo Simplify. (Make getOnlyValue(), getValue(), etc. unnecessary.)
+ */
 class DataManager implements Serializable
 {
     private $items;

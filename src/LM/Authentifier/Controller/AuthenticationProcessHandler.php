@@ -23,9 +23,6 @@ class AuthenticationProcessHandler
         $this->container = $container;
     }
 
-    /**
-     * @todo Check type of $challengeResponse.
-     */
     public function handleAuthenticationProcess(
         ?RequestInterface $httpRequest,
         AuthenticationProcess $process): AuthentifierResponse

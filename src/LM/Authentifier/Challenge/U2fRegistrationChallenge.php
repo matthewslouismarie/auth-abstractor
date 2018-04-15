@@ -2,38 +2,26 @@
 
 namespace LM\Authentifier\Challenge;
 
-use Firehed\U2F\ClientErrorException;
 use Firehed\U2F\Registration;
-use Firehed\U2F\SecurityException;
 use Firehed\U2F\SignRequest;
-use LM\Authentifier\Configuration\IApplicationConfiguration;
 use LM\Authentifier\Enum\Persistence\Operation;
 use LM\Authentifier\Factory\U2fRegistrationFactory;
 use LM\Authentifier\Model\AuthenticationProcess;
 use LM\Authentifier\Model\DataManager;
-use LM\Authentifier\Model\IU2fRegistration;
 use LM\Authentifier\Model\PersistOperation;
 use LM\Authentifier\Model\RequestDatum;
 use LM\Authentifier\Model\U2fRegistrationRequest;
 use LM\Authentifier\U2f\U2fRegistrationManager;
-use LM\Common\Enum\Scalar;
 use LM\Common\Model\ArrayObject;
-use LM\Common\Model\IntegerObject;
-use LM\Common\Model\StringObject;
-use LM\Authentifier\Exception\NoRegisteredU2fTokenException;
 use Psr\Http\Message\RequestInterface;
 use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormFactoryInterface;
 use Twig_Environment;
-use UnexpectedValueException;
 
 class U2fRegistrationChallenge implements IChallenge
 {
-    private $appConfig;
-
     private $formFactory;
 
     private $httpFoundationFactory;
@@ -43,14 +31,12 @@ class U2fRegistrationChallenge implements IChallenge
     private $u2fRegistrationManager;
 
     public function __construct(
-        IApplicationConfiguration $appConfig,
         FormFactoryInterface $formFactory,
         HttpFoundationFactory $httpFoundationFactory,
         U2fRegistrationFactory $u2fRegistrationFactory,
         U2fRegistrationManager $u2fRegistrationManager,
         Twig_Environment $twig)
     {
-        $this->appConfig = $appConfig;
         $this->formFactory = $formFactory;
         $this->httpFoundationFactory = $httpFoundationFactory;
         $this->twig = $twig;
@@ -61,6 +47,9 @@ class U2fRegistrationChallenge implements IChallenge
     /**
      * @todo Maybe it should convert u2fRegistrations to ArrayObject, and then
      * U2fRegistrationManager would also take an ArrayObject as parameter.
+     * @todo Handle invalid responses.
+     * @todo Make sure multiple U2F devices can be registered correctly,
+     * and that devices cannot be registered twice.
      */
     public function process(
         AuthenticationProcess $process,
