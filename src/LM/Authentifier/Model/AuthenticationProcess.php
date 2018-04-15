@@ -2,11 +2,13 @@
 
 namespace LM\Authentifier\Model;
 
+use Firehed\U2F\Registration;
 use LM\Authentifier\Challenge\U2fChallenge;
 use LM\Authentifier\Configuration\IApplicationConfiguration;
 use LM\Authentifier\Enum\AuthenticationProcess\Status;
 use LM\Authentifier\Model\DataManager;
 use LM\Authentifier\Model\IAuthenticationCallback;
+use LM\Authentifier\Model\IU2fRegistration;
 use LM\Authentifier\Model\PersistOperation;
 use LM\Common\Enum\Scalar;
 use LM\Common\Model\ArrayObject;
@@ -118,6 +120,17 @@ class AuthenticationProcess implements Serializable
             ->get(RequestDatum::KEY_PROPERTY, "status")
             ->getOnlyValue()
             ->get(RequestDatum::VALUE_PROPERTY, Status::class)
+        ;
+    }
+
+    public function getU2fRegistrations(): array
+    {
+        return $this
+            ->getDataManager()
+            ->get(RequestDatum::KEY_PROPERTY, 'u2f_registrations')
+            ->getOnlyValue()
+            ->getObject(RequestDatum::VALUE_PROPERTY, ArrayObject::class)
+            ->toArray(IU2fRegistration::class)
         ;
     }
 

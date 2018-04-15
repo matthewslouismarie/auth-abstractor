@@ -30,6 +30,7 @@ class AuthenticationProcessFactory
             new RequestDatum("n_failed_attempts", new IntegerObject(0)),
             new RequestDatum("callback", $callback),
             new RequestDatum("status", new Status(Status::ONGOING)),
+            new RequestDatum('u2f_registrations', new ArrayObject([], Registration::class)),
         ];
         if (null !== $username) {
             $dataArray[] = new RequestDatum('username', new StringObject($username));

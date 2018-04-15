@@ -6,7 +6,7 @@ use LM\Common\Enum\AbstractEnum;
 
 class Operation extends AbstractEnum
 {
-    const ADD = "ADD";
+    const CREATE = "CREATE";
 
     const DELETE = "DELETE";
 
