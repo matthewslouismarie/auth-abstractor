@@ -2,11 +2,13 @@
 
 namespace LM\Authentifier\Tests;
 
-use PHPUnit\Framework\TestCase;
+use InvalidArgumentException;
+use LM\Authentifier\Implementation\U2fRegistration;
+use LM\Authentifier\Model\IU2fRegistration;
 use LM\Common\Enum\Scalar;
 use LM\Common\Model\ArrayObject;
 use LM\Common\Model\IntegerObject;
-use InvalidArgumentException;
+use PHPUnit\Framework\TestCase;
 
 class ArrayObjectTest extends TestCase
 {
@@ -103,6 +105,18 @@ class ArrayObjectTest extends TestCase
         $this->assertSame(
             25,
             $arrayObject->getCurrentItem(IntegerObject::class)->toInteger())
+        ;
+    }
+
+    public function testInterfaces()
+    {
+        $array = [
+            new U2fRegistration('', 0, '', ''),
+        ];
+        $list = new ArrayObject($array, IU2fRegistration::class);
+        $this->assertSame(
+            1,
+            $list->getSize())
         ;
     }
 }
