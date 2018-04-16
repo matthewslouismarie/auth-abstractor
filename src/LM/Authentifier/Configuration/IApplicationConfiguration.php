@@ -2,9 +2,7 @@
 
 namespace LM\Authentifier\Configuration;
 
-use Twig_Function;
 use Psr\Container\ContainerInterface;
-use LM\Authentifier\Model\IU2fRegistrationFetcher;
 use LM\Authentifier\Model\IMember;
 use Symfony\Component\Security\Csrf\TokenStorage\TokenStorageInterface;
 

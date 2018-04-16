@@ -4,26 +4,17 @@ namespace LM\Authentifier\Controller;
 
 use DI\Container;
 use DI\ContainerBuilder;
-use LM\Authentifier\Challenge\IChallenge;
 use LM\Authentifier\Configuration\IApplicationConfiguration;
 use LM\Authentifier\Model\AuthenticationProcess;
-use LM\Authentifier\Model\DataManager;
-use LM\Authentifier\Model\RequestDatum;
 use LM\Authentifier\Model\AuthentifierResponse;
-use LM\Authentifier\Enum\AuthenticationProcess\Status;
 use LM\Authentifier\Exception\FinishedProcessException;
-use LM\Common\Model\StringObject;
 use Psr\Http\Message\RequestInterface;
-use Psr\Http\Message\ResponseInterface;
-use Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory;
 use Symfony\Bridge\Twig\Extension\FormExtension;
 use Symfony\Bridge\Twig\Extension\TranslationExtension;
 use Symfony\Bridge\Twig\Form\TwigRendererEngine;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\Forms;
-use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Form\Extension\Csrf\CsrfExtension;
-use Symfony\Component\Security\Csrf\TokenStorage\NativeSessionTokenStorage;
 use Symfony\Component\Security\Csrf\TokenGenerator\UriSafeTokenGenerator;
 use Symfony\Component\Security\Csrf\CsrfTokenManager;
 use Symfony\Component\Form\FormRenderer;
@@ -35,7 +26,6 @@ use Twig_Environment;
 use Twig_FactoryRuntimeLoader;
 use Twig_Function;
 use Twig_Loader_Filesystem;
-use UnexpectedValueException;
 use Symfony\Component\Validator\Validation;
 
 /**

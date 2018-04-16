@@ -3,11 +3,9 @@
 namespace LM\Authentifier\Challenge;
 
 use Firehed\U2F\Registration;
-use Firehed\U2F\SignRequest;
 use LM\Authentifier\Enum\Persistence\Operation;
 use LM\Authentifier\Factory\U2fRegistrationFactory;
 use LM\Authentifier\Model\AuthenticationProcess;
-use LM\Authentifier\Model\DataManager;
 use LM\Authentifier\Model\PersistOperation;
 use LM\Authentifier\Model\RequestDatum;
 use LM\Authentifier\Model\U2fRegistrationRequest;

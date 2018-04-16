@@ -9,7 +9,6 @@ use LM\Authentifier\Model\DataManager;
 use LM\Authentifier\Model\RequestDatum;
 use LM\Common\Enum\Scalar;
 use LM\Common\Model\ArrayObject;
-use LM\Common\Model\IntegerObject;
 use LM\Common\Model\StringObject;
 
 class AuthenticationProcessTest extends TestCase

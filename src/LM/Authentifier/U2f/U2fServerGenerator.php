@@ -4,7 +4,6 @@ namespace LM\Authentifier\U2f;
 
 use LM\Authentifier\Configuration\IApplicationConfiguration;
 use Firehed\U2F\Server;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class U2fServerGenerator
 {

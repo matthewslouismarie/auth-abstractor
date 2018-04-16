@@ -2,10 +2,8 @@
 
 namespace LM\Common\Model;
 
-use InvalidArgumentException;
 use LM\Common\Type\TypeCheckerTrait;
 use Serializable;
-use UnexpectedValueException;
 
 class ArrayObject implements Serializable
 {

@@ -2,9 +2,6 @@
 
 namespace LM\Authentifier\Model;
 
-use LM\Authentifier\Model\AuthenticationProcess;
-use LM\Authentifier\Model\AuthentifierResponse;
-use Psr\Http\Message\ResponseInterface;
 use Psr\Container\ContainerInterface;
 use Serializable;
 

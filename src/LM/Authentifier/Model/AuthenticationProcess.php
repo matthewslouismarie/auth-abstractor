@@ -2,18 +2,10 @@
 
 namespace LM\Authentifier\Model;
 
-use Firehed\U2F\Registration;
-use LM\Authentifier\Challenge\U2fChallenge;
-use LM\Authentifier\Configuration\IApplicationConfiguration;
 use LM\Authentifier\Enum\AuthenticationProcess\Status;
-use LM\Authentifier\Model\DataManager;
-use LM\Authentifier\Model\IAuthenticationCallback;
-use LM\Authentifier\Model\IU2fRegistration;
-use LM\Authentifier\Model\PersistOperation;
 use LM\Common\Enum\Scalar;
 use LM\Common\Model\ArrayObject;
 use LM\Common\Model\IntegerObject;
-use LM\Common\Model\StringObject;
 use Serializable;
 
 /**
