@@ -9,10 +9,10 @@ use Firehed\U2F\SignRequest;
 use LM\Authentifier\Configuration\IApplicationConfiguration;
 use LM\Authentifier\Enum\Persistence\Operation;
 use LM\Authentifier\Model\AuthenticationProcess;
-use LM\Authentifier\Model\DataManager;
 use LM\Authentifier\Model\PersistOperation;
 use LM\Authentifier\Model\RequestDatum;
 use LM\Authentifier\U2f\U2fAuthenticationManager;
+use LM\Common\DataStructure\TypedMap;
 use LM\Common\Enum\Scalar;
 use LM\Common\Model\ArrayObject;
 use LM\Common\Model\StringObject;
@@ -63,17 +63,13 @@ class U2fChallenge implements IChallenge
     {
         $username = $process
             ->getDataManager()
-            ->get(RequestDatum::KEY_PROPERTY, "username")
-            ->getOnlyValue()
-            ->getObject(RequestDatum::VALUE_PROPERTY, StringObject::class)
+            ->get('username', StringObject::class)
             ->toString()
         ;
 
         $usedU2fKeys = $process
             ->getDataManager()
-            ->get(RequestDatum::KEY_PROPERTY, "used_u2f_key_public_keys")
-            ->getOnlyValue()
-            ->getObject(RequestDatum::VALUE_PROPERTY, ArrayObject::class)
+            ->get('used_u2f_key_public_keys', ArrayObject::class)
             ->toArray(Scalar::_STR)
         ;
 
@@ -101,9 +97,7 @@ class U2fChallenge implements IChallenge
             if ($form->isSubmitted() && $form->isValid()) {
                 $signRequests = $process
                     ->getDataManager()
-                    ->get(RequestDatum::KEY_PROPERTY, "u2f_sign_requests")
-                    ->getOnlyValue()
-                    ->get(RequestDatum::VALUE_PROPERTY, ArrayObject::class)
+                    ->get('u2f_sign_requests', ArrayObject::class)
                 ;
                 $newRegistration = $this
                     ->u2fAuthenticationManager
@@ -120,19 +114,18 @@ class U2fChallenge implements IChallenge
                 }
                 $newDm = $process
                     ->getDataManager()
-                    ->replace(
-                        new RequestDatum(
-                            "u2f_registrations",
-                            new ArrayObject($registrations, Registration::class)),
-                        RequestDatum::KEY_PROPERTY)
-                    ->replace(
-                        new RequestDatum(
-                            "used_u2f_key_public_keys",
-                            (new ArrayObject($usedU2fKeys, Scalar::_STR))->add($newRegistration->getPublicKey(), Scalar::_STR)),
-                        RequestDatum::KEY_PROPERTY)
-                    ->add(new RequestDatum(
-                        "persist_operations",
-                        new PersistOperation($newRegistration, new Operation(Operation::UPDATE))))
+                    ->set(
+                        'u2f_registrations',
+                        new ArrayObject($registrations, Registration::class),
+                        ArrayObject::class)
+                    ->set(
+                        'used_u2f_key_public_keys',
+                        (new ArrayObject($usedU2fKeys, Scalar::_STR))->add($newRegistration->getPublicKey(), Scalar::_STR),
+                        ArrayObject::class)
+                    ->add(
+                        'persist_operations',
+                        new PersistOperation($newRegistration, new Operation(Operation::UPDATE)),
+                        PersistOperation::class)
                 ;
 
                 return new ChallengeResponse(
@@ -172,11 +165,10 @@ class U2fChallenge implements IChallenge
         ]));
         $newDm = $process
             ->getDataManager()
-            ->replace(
-                new RequestDatum(
-                    "u2f_sign_requests",
-                    new ArrayObject($signRequests, SignRequest::class)),
-                RequestDatum::KEY_PROPERTY)
+            ->set(
+                'u2f_sign_requests',
+                new ArrayObject($signRequests, SignRequest::class),
+                ArrayObject::class)
         ;
 
         return new ChallengeResponse(

@@ -4,8 +4,8 @@ namespace LM\Authentifier\Challenge;
 
 use LM\Authentifier\Configuration\IApplicationConfiguration;
 use LM\Authentifier\Model\AuthenticationProcess;
-use LM\Authentifier\Model\DataManager;
 use LM\Authentifier\Model\RequestDatum;
+use LM\Common\DataStructure\TypedMap;
 use LM\Common\Model\StringObject;
 use Psr\Http\Message\RequestInterface;
 use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
@@ -70,15 +70,16 @@ class CredentialChallenge implements IChallenge
             }
         }
         if ($form->isSubmitted() && $form->isValid()) {
-            $newDm = $process
+            $authProcess = new AuthenticationProcess($process
                 ->getDataManager()
-                ->add(new RequestDatum(
-                    "username",
-                    new StringObject($form['username']->getData())))
+                ->add(
+                    'username',
+                    new StringObject($form['username']->getData()),
+                    StringObject::class))
             ;
 
             return new ChallengeResponse(
-                new AuthenticationProcess($newDm),
+                $authProcess,
                 null,
                 true,
                 true)

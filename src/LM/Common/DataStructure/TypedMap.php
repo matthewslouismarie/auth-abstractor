@@ -49,6 +49,7 @@ class TypedMap
     }
 
     /**
+     * @todo Add unit-test.
      * @todo Should throw an exception if key already set.
      */
     public function add(string $key, $value, string $type): self

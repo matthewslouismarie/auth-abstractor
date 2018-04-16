@@ -70,11 +70,11 @@ class CredentialRegistrationChallenge implements IChallenge
             $newDm = $process
                 ->getDataManager()
                 ->add(
-                    new RequestDatum(
-                        'member',
-                        new Member(
-                            password_hash($form->get('password')->getData(), PASSWORD_DEFAULT),
-                            $form->get('username')->getData())))
+                    'member',
+                    new Member(
+                        password_hash($form->get('password')->getData(), PASSWORD_DEFAULT),
+                        $form->get('username')->getData()),
+                    Member::class)
             ;
 
             return new ChallengeResponse(

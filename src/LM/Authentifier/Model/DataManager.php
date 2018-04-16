@@ -3,6 +3,7 @@
 namespace LM\Authentifier\Model;
 
 use InvalidArgumentException;
+use LM\Common\DataStructure\TypedMap;
 use Serializable;
 use UnexpectedValueException;
 
