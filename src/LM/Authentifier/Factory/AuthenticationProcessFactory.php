@@ -6,6 +6,7 @@ use Firehed\U2F\Registration;
 use LM\Authentifier\Enum\AuthenticationProcess\Status;
 use LM\Authentifier\Model\AuthenticationProcess;
 use LM\Authentifier\Model\IAuthenticationCallback;
+use LM\Authentifier\Model\PersistOperation;
 use LM\Common\DataStructure\TypedMap;
 use LM\Common\Enum\Scalar;
 use LM\Common\Model\IntegerObject;
@@ -25,6 +26,7 @@ class AuthenticationProcessFactory
             'max_n_failed_attempts' => new IntegerObject(3),
             'n_failed_attempts' => new IntegerObject(0),
             'callback' => $callback,
+            'persist_operations' => new ArrayObject([], PersistOperation::class),
             'status' => new Status(Status::ONGOING),
             'u2f_registrations' => new ArrayObject([], Registration::class),
         ];

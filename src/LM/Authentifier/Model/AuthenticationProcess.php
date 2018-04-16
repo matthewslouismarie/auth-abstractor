@@ -85,7 +85,8 @@ class AuthenticationProcess implements Serializable
     {
         return $this
             ->typedMap
-            ->get('persist_operations', PersistOperation::class)
+            ->get('persist_operations', ArrayObject::class)
+            ->toArray(PersistOperation::class)
         ;
     }
 
