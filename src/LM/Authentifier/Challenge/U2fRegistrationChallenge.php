@@ -7,7 +7,6 @@ use LM\Authentifier\Enum\Persistence\Operation;
 use LM\Authentifier\Factory\U2fRegistrationFactory;
 use LM\Authentifier\Model\AuthenticationProcess;
 use LM\Authentifier\Model\PersistOperation;
-use LM\Authentifier\Model\RequestDatum;
 use LM\Authentifier\Model\U2fRegistrationRequest;
 use LM\Authentifier\U2f\U2fRegistrationManager;
 use LM\Common\Model\ArrayObject;
@@ -69,7 +68,7 @@ class U2fRegistrationChallenge implements IChallenge
         if ($form->isSubmitted() && $form->isValid()) {
             // try {
                 $currentU2fRegistrationRequest = $process
-                    ->getDataManager()
+                    ->getTypedMap()
                     ->get('current_u2f_registration_request', U2fRegistrationRequest::class)
                 ;
                 $u2fRegistration = $this
@@ -82,7 +81,7 @@ class U2fRegistrationChallenge implements IChallenge
                 ;
 
                 $newDm = $process
-                    ->getDataManager()
+                    ->getTypedMap()
                     ->add(
                         'persist_operations',
                         new PersistOperation($u2fRegistration, new Operation(Operation::CREATE)),
@@ -114,7 +113,7 @@ class U2fRegistrationChallenge implements IChallenge
 
         return new ChallengeResponse(
             new AuthenticationProcess($process
-                ->getDataManager()
+                ->getTypedMap()
                 ->add(
                     'current_u2f_registration_request',
                     $u2fRegistrationRequest,

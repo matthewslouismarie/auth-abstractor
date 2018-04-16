@@ -12,8 +12,6 @@ use Serializable;
 
 /**
  * @todo Interface
- * @todo Maybe the data manager should never be manipulated directly, but only
- * indirectly through AuthenticationProcess? Would make things simpler.
  */
 class AuthenticationProcess implements Serializable
 {
@@ -52,7 +50,7 @@ class AuthenticationProcess implements Serializable
         ;
     }
 
-    public function getDataManager(): TypedMap
+    public function getTypedMap(): TypedMap
     {
         return $this->typedMap;
     }
@@ -87,8 +85,7 @@ class AuthenticationProcess implements Serializable
     {
         return $this
             ->typedMap
-            ->get(RequestDatum::KEY_PROPERTY, "persist_operations")
-            ->toArrayOfObjects(RequestDatum::VALUE_PROPERTY, PersistOperation::class)
+            ->get('persist_operations', PersistOperation::class)
         ;
     }
 

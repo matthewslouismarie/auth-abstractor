@@ -6,7 +6,6 @@ use Firehed\U2F\Registration;
 use LM\Authentifier\Enum\AuthenticationProcess\Status;
 use LM\Authentifier\Model\AuthenticationProcess;
 use LM\Authentifier\Model\IAuthenticationCallback;
-use LM\Authentifier\Model\RequestDatum;
 use LM\Common\DataStructure\TypedMap;
 use LM\Common\Enum\Scalar;
 use LM\Common\Model\IntegerObject;

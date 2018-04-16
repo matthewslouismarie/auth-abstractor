@@ -4,7 +4,6 @@ namespace LM\Authentifier\Challenge;
 
 use LM\Authentifier\Configuration\IApplicationConfiguration;
 use LM\Authentifier\Model\AuthenticationProcess;
-use LM\Authentifier\Model\RequestDatum;
 use LM\Common\DataStructure\TypedMap;
 use LM\Common\Model\StringObject;
 use Psr\Http\Message\RequestInterface;
@@ -39,7 +38,7 @@ class CredentialChallenge implements IChallenge
     }
 
     /**
-     * @todo Store the registrations in the datamanager differently.
+     * @todo Store the registrations in the typed amp differently.
      * @todo Support for multiple key authentications.
      * @todo Remove break statements.
      */
@@ -71,7 +70,7 @@ class CredentialChallenge implements IChallenge
         }
         if ($form->isSubmitted() && $form->isValid()) {
             $authProcess = new AuthenticationProcess($process
-                ->getDataManager()
+                ->getTypedMap()
                 ->add(
                     'username',
                     new StringObject($form['username']->getData()),
