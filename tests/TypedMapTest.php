@@ -22,7 +22,8 @@ class TypedMapTest extends TestCase
         $this->assertSame(5, $map->getSize());
         $this->assertSame(
             'Value 0',
-            $map->get('key0', Scalar::_STR))
+            $map->get('key0', Scalar::_STR)
+        )
         ;
         $this->expectException(InvalidArgumentException::class);
         $map->get('key0', Scalar::_INT);
@@ -45,7 +46,8 @@ class TypedMapTest extends TestCase
         ]);
         $this->assertSame(
             $map->toArray(),
-            unserialize(serialize($map))->toArray())
+            unserialize(serialize($map))->toArray()
+        )
         ;
     }
 }

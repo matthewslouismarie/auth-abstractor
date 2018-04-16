@@ -17,8 +17,8 @@ class AuthenticationProcessFactory
     public function createProcess(
         array $challenges,
         IAuthenticationCallback $callback = null,
-        ?string $username = null): AuthenticationProcess
-    {
+        ?string $username = null
+    ): AuthenticationProcess {
         $dataArray = [
             'used_u2f_key_public_keys' => new ArrayObject([], Scalar::_STR),
             'challenges' => new ArrayObject($challenges, Scalar::_STR),

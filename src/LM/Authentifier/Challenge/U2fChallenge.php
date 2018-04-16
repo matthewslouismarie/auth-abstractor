@@ -11,7 +11,6 @@ use LM\Authentifier\Enum\Persistence\Operation;
 use LM\Authentifier\Model\AuthenticationProcess;
 use LM\Authentifier\Model\PersistOperation;
 use LM\Authentifier\U2f\U2fAuthenticationManager;
-use LM\Common\DataStructure\TypedMap;
 use LM\Common\Enum\Scalar;
 use LM\Common\Model\ArrayObject;
 use LM\Common\Model\StringObject;
@@ -42,8 +41,8 @@ class U2fChallenge implements IChallenge
         FormFactoryInterface $formFactory,
         HttpFoundationFactory $httpFoundationFactory,
         Twig_Environment $twig,
-        U2fAuthenticationManager $u2fAuthenticationManager)
-    {
+        U2fAuthenticationManager $u2fAuthenticationManager
+    ) {
         $this->appConfig = $appConfig;
         $this->formFactory = $formFactory;
         $this->httpFoundationFactory = $httpFoundationFactory;
@@ -56,8 +55,8 @@ class U2fChallenge implements IChallenge
      */
     public function process(
         AuthenticationProcess $process,
-        ?RequestInterface $httpRequest): ChallengeResponse
-    {
+        ?RequestInterface $httpRequest
+    ): ChallengeResponse {
         $username = $process
             ->getTypedMap()
             ->get('username', StringObject::class)
@@ -101,7 +100,8 @@ class U2fChallenge implements IChallenge
                     ->processResponse(
                         new ArrayObject($registrations, Registration::class),
                         $signRequests,
-                        $form['u2fTokenResponse']->getData())
+                        $form['u2fTokenResponse']->getData()
+                    )
                 ;
                 foreach ($registrations as $key => $registration) {
                     if ($registration->getPublicKey() === $newRegistration->getPublicKey()) {
@@ -114,39 +114,41 @@ class U2fChallenge implements IChallenge
                     ->set(
                         'u2f_registrations',
                         new ArrayObject($registrations, Registration::class),
-                        ArrayObject::class)
+                        ArrayObject::class
+                    )
                     ->set(
                         'used_u2f_key_public_keys',
                         (new ArrayObject($usedU2fKeys, Scalar::_STR))->add($newRegistration->getPublicKey(), Scalar::_STR),
-                        ArrayObject::class)
+                        ArrayObject::class
+                    )
                     ->add(
                         'persist_operations',
                         new PersistOperation($newRegistration, new Operation(Operation::UPDATE)),
-                        PersistOperation::class)
+                        PersistOperation::class
+                    )
                 ;
 
                 return new ChallengeResponse(
                     new AuthenticationProcess($newDm),
                     null,
                     true,
-                    true)
+                    true
+                )
                 ;
             }
-        }
-        catch (ClientErrorException $e) {
+        } catch (ClientErrorException $e) {
             $form->addError(new FormError('You took too long to activate your key. Please try again.'));
-        }
-        catch (SecurityException $e) {
+        } catch (SecurityException $e) {
             $form->addError(new FormError('The U2F key is not recognised.'));
-        }  catch (NoRegisteredU2fTokenException $e) {
+        } catch (NoRegisteredU2fTokenException $e) {
             return new ChallengeResponse(
                 new AuthenticationProcess($process),
                 $httpResponse,
                 true,
-                false)
+                false
+            )
             ;
-        }
-        catch (UnexpectedValueException $e) {
+        } catch (UnexpectedValueException $e) {
             $form->addError(new FormError('An error happened. Please try again.'));
         }
 
@@ -165,14 +167,16 @@ class U2fChallenge implements IChallenge
             ->set(
                 'u2f_sign_requests',
                 new ArrayObject($signRequests, SignRequest::class),
-                ArrayObject::class)
+                ArrayObject::class
+            )
         ;
 
         return new ChallengeResponse(
             new AuthenticationProcess($newDm),
             $httpResponse,
             $form->isSubmitted(),
-            false)
+            false
+        )
         ;
     }
 }

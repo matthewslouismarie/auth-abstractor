@@ -12,8 +12,8 @@ class U2fRegistrationManager
     private $u2fServerGenerator;
 
     public function __construct(
-        U2fServerGenerator $u2fServerGenerator)
-    {
+        U2fServerGenerator $u2fServerGenerator
+    ) {
         $this->u2fServerGenerator = $u2fServerGenerator;
     }
 
@@ -31,8 +31,8 @@ class U2fRegistrationManager
 
     public function getU2fTokenFromResponse(
         string $u2fKeyResponse,
-        RegisterRequest $request): Registration
-    {
+        RegisterRequest $request
+    ): Registration {
         $server = $this
             ->u2fServerGenerator
             ->getServer()

@@ -5,7 +5,6 @@ namespace LM\Authentifier\Challenge;
 use Psr\Http\Message\RequestInterface;
 use LM\Authentifier\Configuration\IApplicationConfiguration;
 use LM\Authentifier\Model\AuthenticationProcess;
-use LM\Common\DataStructure\TypedMap;
 use LM\Common\Model\StringObject;
 use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -29,8 +28,8 @@ class PasswordChallenge implements IChallenge
         IApplicationConfiguration $appConfig,
         FormFactoryInterface $formFactory,
         HttpFoundationFactory $httpFoundationFactory,
-        Twig_Environment $twig)
-    {
+        Twig_Environment $twig
+    ) {
         $this->appConfig = $appConfig;
         $this->formFactory = $formFactory;
         $this->httpFoundationFactory = $httpFoundationFactory;
@@ -39,8 +38,8 @@ class PasswordChallenge implements IChallenge
 
     public function process(
         AuthenticationProcess $process,
-        ?RequestInterface $httpRequest): ChallengeResponse
-    {
+        ?RequestInterface $httpRequest
+    ): ChallengeResponse {
         $username = $process
             ->getTypedMap()
             ->get('username', StringObject::class)
@@ -76,7 +75,8 @@ class PasswordChallenge implements IChallenge
                 $process,
                 null,
                 false,
-                true)
+                true
+            )
             ;
         }
 
@@ -85,10 +85,11 @@ class PasswordChallenge implements IChallenge
         ]));
 
         return new ChallengeResponse(
-            $process, 
+            $process,
             $response,
             $form->isSubmitted(),
-            false)
+            false
+        )
         ;
     }
 }

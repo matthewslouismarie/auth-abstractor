@@ -2,7 +2,6 @@
 
 namespace LM\Authentifier\Form\Csrf;
 
-use LM\Common\DataStructure\TypedMap;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class TokenStorage implements TokenStorageInterface

@@ -48,7 +48,7 @@ class AuthenticationKernel
         ];
 
         if (null !== $appConfig->getCustomTwigDir()) {
-            $twigPaths[] = $appConfig->getCustomTwigDir();            
+            $twigPaths[] = $appConfig->getCustomTwigDir();
         }
 
         $loader = new Twig_Loader_Filesystem($twigPaths);
@@ -111,8 +111,8 @@ class AuthenticationKernel
      */
     public function processHttpRequest(
         RequestInterface $httpRequest,
-        AuthenticationProcess $process): AuthentifierResponse
-    {
+        AuthenticationProcess $process
+    ): AuthentifierResponse {
         if ($process->isFinished()) {
             throw new FinishedProcessException();
         }
@@ -128,7 +128,8 @@ class AuthenticationKernel
         while (null === $httpResponse) {
             $authentifierResponse = $processHandler->handleAuthenticationProcess(
                 $httpRequest,
-                $lastProcess)
+                $lastProcess
+            )
             ;
             $lastProcess = $authentifierResponse->getProcess();
             $httpRequest = null;

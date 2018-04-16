@@ -19,8 +19,8 @@ class ChallengeResponse
         AuthenticationProcess $authenticationProcess,
         ?Response $httpResponse,
         bool $isFailedAttempt,
-        bool $isFinished)
-    {
+        bool $isFinished
+    ) {
         $this->authenticationProcess = $authenticationProcess;
         $this->httpResponse = $httpResponse;
         $this->isFailedAttempt = $isFailedAttempt;

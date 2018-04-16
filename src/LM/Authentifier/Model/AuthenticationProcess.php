@@ -152,7 +152,8 @@ class AuthenticationProcess implements Serializable
             ->set(
                 'n_failed_attempts',
                 new IntegerObject($nFailedAttempts),
-                IntegerObject::class)
+                IntegerObject::class
+            )
         ;
         if ($nFailedAttempts < $this->getMaxNFailedAttempts()) {
             return new self($newDm);
@@ -161,7 +162,8 @@ class AuthenticationProcess implements Serializable
                 ->set(
                     'status',
                     new Status(Status::FAILED),
-                    Status::class))
+                    Status::class
+                ))
             ;
         }
     }
@@ -176,7 +178,8 @@ class AuthenticationProcess implements Serializable
                 ->set(
                     'challenges',
                     $challenges,
-                    ArrayObject::class))
+                    ArrayObject::class
+                ))
             ;
         } else {
             return new self($this
@@ -184,7 +187,8 @@ class AuthenticationProcess implements Serializable
                 ->set(
                     'status',
                     new Status(Status::SUCCEEDED),
-                    Status::class))
+                    Status::class
+                ))
             ;
         }
     }

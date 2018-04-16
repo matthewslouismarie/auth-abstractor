@@ -33,6 +33,7 @@ class AuthenticationProcessTest extends TestCase
         $unserializedProcess = unserialize($serializedProcess);
         $this->assertSame(
             U2fChallenge::class,
-            $unserializedProcess->getCurrentChallenge());
+            $unserializedProcess->getCurrentChallenge()
+        );
     }
 }

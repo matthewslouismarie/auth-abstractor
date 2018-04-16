@@ -14,7 +14,7 @@ abstract class AbstractEnum implements IEnum
      */
     public static function getConstants()
     {
-        $reflectionClass = new ReflectionClass(static::class); 
+        $reflectionClass = new ReflectionClass(static::class);
 
         return $reflectionClass->getConstants();
     }

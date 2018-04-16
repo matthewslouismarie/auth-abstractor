@@ -14,7 +14,8 @@ class U2fRegistrationFactory
             $registration->getAttestationCertificateBinary(),
             $registration->getCounter(),
             $registration->getKeyHandleBinary(),
-            $registration->getPublicKey())
+            $registration->getPublicKey()
+        )
         ;
     }
 

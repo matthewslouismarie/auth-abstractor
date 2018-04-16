@@ -12,6 +12,7 @@ interface IChallenge
 {
     public function process(
         AuthenticationProcess $authenticationProcess,
-        ?RequestInterface $httpRequest): ChallengeResponse
+        ?RequestInterface $httpRequest
+    ): ChallengeResponse
     ;
 }

@@ -13,8 +13,8 @@ class U2fAuthenticationManager
     private $u2fServerGenerator;
 
     public function __construct(
-        U2fServerGenerator $u2fServerGenerator)
-    {
+        U2fServerGenerator $u2fServerGenerator
+    ) {
         $this->u2fServerGenerator = $u2fServerGenerator;
     }
 
@@ -24,8 +24,8 @@ class U2fAuthenticationManager
      */
     public function generate(
         string $username,
-        ArrayObject $registrations)
-    {
+        ArrayObject $registrations
+    ) {
         $signRequests = $this
             ->u2fServerGenerator
             ->getServer()
@@ -42,8 +42,8 @@ class U2fAuthenticationManager
     public function processResponse(
         ArrayObject $registrations,
         ArrayObject $signRequests,
-        string $u2fTokenResponse): Registration
-    {
+        string $u2fTokenResponse
+    ): Registration {
         $server = $this
             ->u2fServerGenerator
             ->getServer()

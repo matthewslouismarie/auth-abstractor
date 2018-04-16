@@ -4,7 +4,6 @@ namespace LM\Authentifier\Challenge;
 
 use LM\Authentifier\Configuration\IApplicationConfiguration;
 use LM\Authentifier\Model\AuthenticationProcess;
-use LM\Common\DataStructure\TypedMap;
 use LM\Common\Model\StringObject;
 use Psr\Http\Message\RequestInterface;
 use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
@@ -29,8 +28,8 @@ class CredentialChallenge implements IChallenge
         IApplicationConfiguration $appConfig,
         FormFactoryInterface $formFactory,
         HttpFoundationFactory $httpFoundationFactory,
-        Twig_Environment $twig)
-    {
+        Twig_Environment $twig
+    ) {
         $this->appConfig = $appConfig;
         $this->formFactory = $formFactory;
         $this->httpFoundationFactory = $httpFoundationFactory;
@@ -44,8 +43,8 @@ class CredentialChallenge implements IChallenge
      */
     public function process(
         AuthenticationProcess $process,
-        ?RequestInterface $httpRequest): ChallengeResponse
-    {
+        ?RequestInterface $httpRequest
+    ): ChallengeResponse {
         $form = $this
             ->formFactory
             ->createBuilder()
@@ -64,7 +63,7 @@ class CredentialChallenge implements IChallenge
             } else {
                 $member = $this->appConfig->getMember($form['username']->getData());
                 if (!password_verify($form['password']->getData(), $member->getHashedPassword())) {
-                    $form->addError(new FormError('Invalid credentials'));                
+                    $form->addError(new FormError('Invalid credentials'));
                 }
             }
         }
@@ -74,14 +73,16 @@ class CredentialChallenge implements IChallenge
                 ->add(
                     'username',
                     new StringObject($form['username']->getData()),
-                    StringObject::class))
+                    StringObject::class
+                ))
             ;
 
             return new ChallengeResponse(
                 $authProcess,
                 null,
                 true,
-                true)
+                true
+            )
             ;
         }
         $httpResponse = new Response($this->twig->render("credentials.html.twig", [
@@ -92,7 +93,8 @@ class CredentialChallenge implements IChallenge
             $process,
             $httpResponse,
             $form->isSubmitted(),
-            false)
+            false
+        )
         ;
     }
 }
