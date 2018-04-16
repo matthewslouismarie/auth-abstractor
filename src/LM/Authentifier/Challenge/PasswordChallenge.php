@@ -5,8 +5,8 @@ namespace LM\Authentifier\Challenge;
 use Psr\Http\Message\RequestInterface;
 use LM\Authentifier\Configuration\IApplicationConfiguration;
 use LM\Authentifier\Model\AuthenticationProcess;
-use LM\Authentifier\Model\DataManager;
 use LM\Authentifier\Model\RequestDatum;
+use LM\Common\DataStructure\TypedMap;
 use LM\Common\Model\StringObject;
 use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -48,9 +48,7 @@ class PasswordChallenge implements IChallenge
     {
         $username = $process
             ->getDataManager()
-            ->get(RequestDatum::KEY_PROPERTY, "username")
-            ->getOnlyValue()
-            ->getObject(RequestDatum::VALUE_PROPERTY, StringObject::class)
+            ->get('username', StringObject::class)
             ->toString()
         ;
 

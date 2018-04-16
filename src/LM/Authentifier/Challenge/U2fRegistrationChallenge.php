@@ -70,9 +70,7 @@ class U2fRegistrationChallenge implements IChallenge
             // try {
                 $currentU2fRegistrationRequest = $process
                     ->getDataManager()
-                    ->get(RequestDatum::KEY_PROPERTY, 'current_u2f_registration_request')
-                    ->getOnlyValue()
-                    ->get(RequestDatum::VALUE_PROPERTY, U2fRegistrationRequest::class)
+                    ->get('current_u2f_registration_request', U2fRegistrationRequest::class)
                 ;
                 $u2fRegistration = $this
                     ->u2fRegistrationFactory
@@ -85,9 +83,10 @@ class U2fRegistrationChallenge implements IChallenge
 
                 $newDm = $process
                     ->getDataManager()
-                    ->add(new RequestDatum(
-                        "persist_operations",
-                        new PersistOperation($u2fRegistration, new Operation(Operation::CREATE))))
+                    ->add(
+                        'persist_operations',
+                        new PersistOperation($u2fRegistration, new Operation(Operation::CREATE)),
+                        PersistOperation::class)
                 ;
 
                 return new ChallengeResponse(
@@ -116,10 +115,11 @@ class U2fRegistrationChallenge implements IChallenge
         return new ChallengeResponse(
             new AuthenticationProcess($process
                 ->getDataManager()
-                ->add(new RequestDatum(
+                ->add(
                     'current_u2f_registration_request',
-                    $u2fRegistrationRequest
-                ))),
+                    $u2fRegistrationRequest,
+                    U2fRegistrationRequest::class
+            )),
             $httpResponse,
             $form->isSubmitted(),
             false)

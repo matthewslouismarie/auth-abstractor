@@ -2,6 +2,7 @@
 
 namespace LM\Authentifier\Form\Csrf;
 
+use LM\Common\DataStructure\TypedMap;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class TokenStorage implements TokenStorageInterface
@@ -14,7 +15,7 @@ class TokenStorage implements TokenStorageInterface
     }
 
     /**
-     * @todo Forces DataManager to be mutable, great…
+     * @todo Forces TypedData to be mutable, great…
     */
     public function setToken(TokenInterface $token = null)
     {

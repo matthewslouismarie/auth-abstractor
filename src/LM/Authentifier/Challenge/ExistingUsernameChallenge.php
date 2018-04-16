@@ -5,8 +5,8 @@ namespace LM\Authentifier\Challenge;
 use Psr\Http\Message\RequestInterface;
 use LM\Authentifier\Configuration\IApplicationConfiguration;
 use LM\Authentifier\Model\AuthenticationProcess;
-use LM\Authentifier\Model\DataManager;
 use LM\Authentifier\Model\RequestDatum;
+use LM\Common\DataStructure\TypedMap;
 use LM\Common\Model\StringObject;
 use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -70,9 +70,9 @@ class ExistingUsernameChallenge implements IChallenge
             $newDm = $process
                 ->getDataManager()
                 ->add(
-                    new RequestDatum(
-                        "username",
-                        new StringObject($form->get('username')->getData())))
+                    'username',
+                    new StringObject($form->get('username')->getData()),
+                    StringObject::class)
             ;
 
             return new ChallengeResponse(
