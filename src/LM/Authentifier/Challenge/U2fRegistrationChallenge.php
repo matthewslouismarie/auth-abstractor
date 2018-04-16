@@ -32,8 +32,8 @@ class U2fRegistrationChallenge implements IChallenge
         HttpFoundationFactory $httpFoundationFactory,
         U2fRegistrationFactory $u2fRegistrationFactory,
         U2fRegistrationManager $u2fRegistrationManager,
-        Twig_Environment $twig)
-    {
+        Twig_Environment $twig
+    ) {
         $this->formFactory = $formFactory;
         $this->httpFoundationFactory = $httpFoundationFactory;
         $this->twig = $twig;
@@ -50,8 +50,8 @@ class U2fRegistrationChallenge implements IChallenge
      */
     public function process(
         AuthenticationProcess $process,
-        ?RequestInterface $httpRequest): ChallengeResponse
-    {
+        ?RequestInterface $httpRequest
+    ): ChallengeResponse {
         $u2fRegistrations = $process->getU2fRegistrations();
 
         $form = $this
@@ -67,32 +67,35 @@ class U2fRegistrationChallenge implements IChallenge
 
         if ($form->isSubmitted() && $form->isValid()) {
             // try {
-                $currentU2fRegistrationRequest = $process
+            $currentU2fRegistrationRequest = $process
                     ->getTypedMap()
                     ->get('current_u2f_registration_request', U2fRegistrationRequest::class)
                 ;
-                $u2fRegistration = $this
+            $u2fRegistration = $this
                     ->u2fRegistrationFactory
                     ->fromFirehed($this
                         ->u2fRegistrationManager
                         ->getU2fTokenFromResponse(
                             $form['u2fDeviceResponse']->getData(),
-                            $currentU2fRegistrationRequest->getRequest()))
+                            $currentU2fRegistrationRequest->getRequest()
+                        ))
                 ;
 
-                $newDm = $process
+            $newDm = $process
                     ->getTypedMap()
                     ->add(
                         'persist_operations',
                         new PersistOperation($u2fRegistration, new Operation(Operation::CREATE)),
-                        PersistOperation::class)
+                        PersistOperation::class
+                    )
                 ;
 
-                return new ChallengeResponse(
-                    new AuthenticationProcess($newDm), 
+            return new ChallengeResponse(
+                    new AuthenticationProcess($newDm),
                     null,
                     false,
-                    true)
+                    true
+                )
                 ;
             // }
         }
@@ -121,7 +124,8 @@ class U2fRegistrationChallenge implements IChallenge
             )),
             $httpResponse,
             $form->isSubmitted(),
-            false)
+            false
+        )
         ;
     }
 }

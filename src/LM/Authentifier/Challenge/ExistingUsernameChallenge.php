@@ -5,7 +5,6 @@ namespace LM\Authentifier\Challenge;
 use Psr\Http\Message\RequestInterface;
 use LM\Authentifier\Configuration\IApplicationConfiguration;
 use LM\Authentifier\Model\AuthenticationProcess;
-use LM\Common\DataStructure\TypedMap;
 use LM\Common\Model\StringObject;
 use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -29,8 +28,8 @@ class ExistingUsernameChallenge implements IChallenge
         IApplicationConfiguration $appConfig,
         FormFactoryInterface $formFactory,
         HttpFoundationFactory $httpFoundationFactory,
-        Twig_Environment $twig)
-    {
+        Twig_Environment $twig
+    ) {
         $this->appConfig = $appConfig;
         $this->formFactory = $formFactory;
         $this->httpFoundationFactory = $httpFoundationFactory;
@@ -39,8 +38,8 @@ class ExistingUsernameChallenge implements IChallenge
 
     public function process(
         AuthenticationProcess $process,
-        ?RequestInterface $httpRequest): ChallengeResponse
-    {
+        ?RequestInterface $httpRequest
+    ): ChallengeResponse {
         $form = $this
             ->formFactory
             ->createBuilder()
@@ -60,20 +59,21 @@ class ExistingUsernameChallenge implements IChallenge
         }
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             $newDm = $process
                 ->getTypedMap()
                 ->add(
                     'username',
                     new StringObject($form->get('username')->getData()),
-                    StringObject::class)
+                    StringObject::class
+                )
             ;
 
             return new ChallengeResponse(
-                new AuthenticationProcess($newDm), 
+                new AuthenticationProcess($newDm),
                 null,
                 false,
-                true)
+                true
+            )
             ;
         }
 
@@ -82,10 +82,11 @@ class ExistingUsernameChallenge implements IChallenge
         ]));
 
         return new ChallengeResponse(
-            $process, 
+            $process,
             $response,
             $form->isSubmitted(),
-            false)
+            false
+        )
         ;
     }
 }

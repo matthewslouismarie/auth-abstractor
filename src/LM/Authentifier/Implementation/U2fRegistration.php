@@ -18,8 +18,8 @@ class U2fRegistration implements IU2fRegistration
         string $attestationCertificateBinary,
         int $counter,
         string $keyHandleBinary,
-        string $publicKeyBinary)
-    {
+        string $publicKeyBinary
+    ) {
         $this->attestationCertificateBinary = $attestationCertificateBinary;
         $this->counter = $counter;
         $this->keyHandleBinary = $keyHandleBinary;

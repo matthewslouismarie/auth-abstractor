@@ -29,8 +29,8 @@ class CredentialRegistrationChallenge implements IChallenge
         IApplicationConfiguration $appConfig,
         FormFactoryInterface $formFactory,
         HttpFoundationFactory $httpFoundationFactory,
-        Twig_Environment $twig)
-    {
+        Twig_Environment $twig
+    ) {
         $this->appConfig = $appConfig;
         $this->formFactory = $formFactory;
         $this->httpFoundationFactory = $httpFoundationFactory;
@@ -42,8 +42,8 @@ class CredentialRegistrationChallenge implements IChallenge
      */
     public function process(
         AuthenticationProcess $process,
-        ?RequestInterface $httpRequest): ChallengeResponse
-    {
+        ?RequestInterface $httpRequest
+    ): ChallengeResponse {
         $form = $this
             ->formFactory
             ->createBuilder()
@@ -65,22 +65,24 @@ class CredentialRegistrationChallenge implements IChallenge
         }
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             $newDm = $process
                 ->getTypedMap()
                 ->add(
                     'member',
                     new Member(
                         password_hash($form->get('password')->getData(), PASSWORD_DEFAULT),
-                        $form->get('username')->getData()),
-                    Member::class)
+                        $form->get('username')->getData()
+                    ),
+                    Member::class
+                )
             ;
 
             return new ChallengeResponse(
-                new AuthenticationProcess($newDm), 
+                new AuthenticationProcess($newDm),
                 null,
                 false,
-                true)
+                true
+            )
             ;
         }
 
@@ -89,10 +91,11 @@ class CredentialRegistrationChallenge implements IChallenge
         ]));
 
         return new ChallengeResponse(
-            $process, 
+            $process,
             $response,
             $form->isSubmitted(),
-            false)
+            false
+        )
         ;
     }
 }

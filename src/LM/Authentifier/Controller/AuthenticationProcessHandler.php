@@ -17,16 +17,16 @@ class AuthenticationProcessHandler
 
     public function __construct(
         IApplicationConfiguration $appConfig,
-        ContainerInterface $container)
-    {
+        ContainerInterface $container
+    ) {
         $this->appConfig = $appConfig;
         $this->container = $container;
     }
 
     public function handleAuthenticationProcess(
         ?RequestInterface $httpRequest,
-        AuthenticationProcess $process): AuthentifierResponse
-    {
+        AuthenticationProcess $process
+    ): AuthentifierResponse {
         if ($process->isOngoing()) {
             $challenge = $this
                 ->container
@@ -47,7 +47,8 @@ class AuthenticationProcessHandler
                         ->getAuthenticationProcess()
                         ->resetNFailedAttempts()
                         ->setToNextChallenge(),
-                    null)
+                    null
+                )
                 ;
             } elseif ($challengeResponse->isFailedAttempt()) {
                 $updatedProcess = $challengeResponse
@@ -57,19 +58,22 @@ class AuthenticationProcessHandler
                 if ($updatedProcess->isFailed()) {
                     return new AuthentifierResponse(
                         $updatedProcess,
-                        null)
+                        null
+                    )
                     ;
                 } else {
                     return new AuthentifierResponse(
                         $updatedProcess,
-                        $psrHttpResponse)
+                        $psrHttpResponse
+                    )
                     ;
                 }
             } else {
                 return new AuthentifierResponse(
                     $challengeResponse
                         ->getAuthenticationProcess(),
-                    $psrHttpResponse)
+                    $psrHttpResponse
+                )
                 ;
             }
         } elseif ($process->isFailed()) {

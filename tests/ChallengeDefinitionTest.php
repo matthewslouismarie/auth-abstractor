@@ -13,28 +13,34 @@ class ChallengeDefinitionTest extends TestCase
     {
         $challengeDefinition = new ChallengeDefinition(
             U2fChallenge::class,
-            2)
+            2
+        )
         ;
         $this->assertSame(
             U2fChallenge::class,
-            $challengeDefinition->getClassname())
+            $challengeDefinition->getClassname()
+        )
         ;
         $this->assertSame(
             2,
-            $challengeDefinition->getNumber())
+            $challengeDefinition->getNumber()
+        )
         ;
 
         $unserialized = unserialize(serialize($challengeDefinition));
         $this->assertSame(
             $challengeDefinition->getClassname(),
-            $unserialized->getClassname());
+            $unserialized->getClassname()
+        );
         $this->assertSame(
             $challengeDefinition->getNumber(),
-            $unserialized->getNumber());
+            $unserialized->getNumber()
+        );
 
         $this->expectException(InvalidArgumentException::class);
         new ChallengeDefinition(
-            TestCase::class)
+            TestCase::class
+        )
         ;
     }
 }

@@ -89,22 +89,26 @@ class ArrayObjectTest extends TestCase
         ], IntegerObject::class);
         $this->assertSame(
             5,
-            $arrayObject->getCurrentItem(IntegerObject::class)->toInteger())
+            $arrayObject->getCurrentItem(IntegerObject::class)->toInteger()
+        )
         ;
         $this->assertNotSame(
             25,
-            $arrayObject->getCurrentItem(IntegerObject::class)->toInteger())
+            $arrayObject->getCurrentItem(IntegerObject::class)->toInteger()
+        )
         ;
         $arrayObject->setToNextItem();
         $this->assertSame(
             25,
-            $arrayObject->getCurrentItem(IntegerObject::class)->toInteger())
+            $arrayObject->getCurrentItem(IntegerObject::class)->toInteger()
+        )
         ;
         $unserialized = unserialize(serialize($arrayObject));
 
         $this->assertSame(
             25,
-            $arrayObject->getCurrentItem(IntegerObject::class)->toInteger())
+            $arrayObject->getCurrentItem(IntegerObject::class)->toInteger()
+        )
         ;
     }
 
@@ -116,7 +120,8 @@ class ArrayObjectTest extends TestCase
         $list = new ArrayObject($array, IU2fRegistration::class);
         $this->assertSame(
             1,
-            $list->getSize())
+            $list->getSize()
+        )
         ;
     }
 }
