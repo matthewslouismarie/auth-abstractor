@@ -7,6 +7,7 @@ use LM\Common\Type\TypeCheckerTrait;
 
 /**
  * @todo Should implement a standardised interface.
+ * @todo Force items it contains to be serializable?
  */
 class TypedMap
 {
@@ -33,6 +34,26 @@ class TypedMap
     public function getSize(): int
     {
         return count($this->items);
+    }
+
+    /**
+     * @todo Add unit-test for it.
+     */
+    public function set(string $key, $value, string $type): self
+    {
+        $this->checkType($value, $type);
+        $items = $this->items;
+        $items[$key] = $value;
+
+        return new self($items);
+    }
+
+    /**
+     * @todo Should throw an exception if key already set.
+     */
+    public function add(string $key, $value, string $type): self
+    {
+        return $this->set($key, $value, $type);
     }
 
     public function toArray(): array
