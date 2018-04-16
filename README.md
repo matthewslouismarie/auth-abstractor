@@ -14,7 +14,7 @@ features of _auth-abstractor_, you first need to initialise
 [AuthenticationKernel](https://github.com/matthewslouismarie/auth-abstractor/blob/master/src/LM/Authentifier/Controller/AuthenticationKernel.php) with an implementation of
 [IApplicationConfiguration](https://github.com/matthewslouismarie/auth-abstractor/blob/master/src/LM/Authentifier/Configuration/IApplicationConfiguration.php). AuthenticationKernel is an object that can be
 common to your entire web applications, so you can register it as a service if
-your web application has dependency injection (e.g. Symfony).
+your web application supports dependency injection (e.g. Symfony).
 
 ## Handling the Authentication Process
 
