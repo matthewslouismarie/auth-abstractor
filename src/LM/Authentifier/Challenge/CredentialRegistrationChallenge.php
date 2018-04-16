@@ -9,6 +9,7 @@ use LM\Authentifier\Implementation\Member;
 use LM\Authentifier\Model\AuthenticationProcess;
 use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -48,7 +49,13 @@ class CredentialRegistrationChallenge implements IChallenge
             ->formFactory
             ->createBuilder()
             ->add('username')
-            ->add('password', PasswordType::class)
+            ->add('password', RepeatedType::class, [
+                'type' => PasswordType::class,
+                'invalid_message' => 'The password fields must match.',
+                'required' => true,
+                'first_options'  => array('label' => 'Password'),
+                'second_options' => array('label' => 'Repeat Password'),
+            ])
             ->add('submit', SubmitType::class)
             ->getForm()
         ;
