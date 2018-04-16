@@ -81,22 +81,28 @@ class U2fRegistrationChallenge implements IChallenge
                         ))
                 ;
 
-            $newDm = $process
-                    ->getTypedMap()
-                    ->add(
-                        'persist_operations',
-                        new PersistOperation($u2fRegistration, new Operation(Operation::CREATE)),
-                        PersistOperation::class
-                    )
-                ;
+            $typedMap = $process
+                ->getTypedMap()
+                ->set(
+                    'persist_operations',
+                    $process
+                        ->getTypedMap()
+                        ->get('persist_operations', ArrayObject::class)
+                        ->add(
+                            new PersistOperation($u2fRegistration, new Operation(Operation::CREATE)),
+                            PersistOperation::class
+                        ),
+                    ArrayObject::class
+                )
+            ;
 
             return new ChallengeResponse(
-                    new AuthenticationProcess($newDm),
-                    null,
-                    false,
-                    true
-                )
-                ;
+                new AuthenticationProcess($typedMap),
+                null,
+                false,
+                true
+            )
+            ;
             // }
         }
 

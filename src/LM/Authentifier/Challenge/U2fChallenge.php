@@ -121,10 +121,16 @@ class U2fChallenge implements IChallenge
                         (new ArrayObject($usedU2fKeys, Scalar::_STR))->add($newRegistration->getPublicKey(), Scalar::_STR),
                         ArrayObject::class
                     )
-                    ->add(
+                    ->set(
                         'persist_operations',
-                        new PersistOperation($newRegistration, new Operation(Operation::UPDATE)),
-                        PersistOperation::class
+                        $process
+                            ->getTypedMap()
+                            ->get('persist_operations', ArrayObject::class)
+                            ->add(
+                                new PersistOperation($newRegistration, new Operation(Operation::UPDATE)),
+                                PersistOperation::class
+                            ),
+                        ArrayObject::class
                     )
                 ;
 
