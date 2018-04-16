@@ -5,7 +5,6 @@ namespace LM\Authentifier\Challenge;
 use Psr\Http\Message\RequestInterface;
 use LM\Authentifier\Configuration\IApplicationConfiguration;
 use LM\Authentifier\Model\AuthenticationProcess;
-use LM\Authentifier\Model\RequestDatum;
 use LM\Common\DataStructure\TypedMap;
 use LM\Common\Model\StringObject;
 use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
@@ -38,16 +37,12 @@ class PasswordChallenge implements IChallenge
         $this->twig = $twig;
     }
 
-    /**
-     * @todo Store the registrations in the datamanager differently.
-     * @todo Support for multiple key authentications.
-     */
     public function process(
         AuthenticationProcess $process,
         ?RequestInterface $httpRequest): ChallengeResponse
     {
         $username = $process
-            ->getDataManager()
+            ->getTypedMap()
             ->get('username', StringObject::class)
             ->toString()
         ;

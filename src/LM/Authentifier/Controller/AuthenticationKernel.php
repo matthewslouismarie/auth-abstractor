@@ -28,11 +28,6 @@ use Twig_Function;
 use Twig_Loader_Filesystem;
 use Symfony\Component\Validator\Validation;
 
-/**
- * @todo Is it better to delegatehttpRequest to the library used the responsability of
- * storing and retrieving correctly the TransitingDataManager object or the
- * implementation of the storage mechanism?
- */
 class AuthenticationKernel
 {
     private $appConfig;

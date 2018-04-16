@@ -10,7 +10,6 @@ use LM\Authentifier\Configuration\IApplicationConfiguration;
 use LM\Authentifier\Enum\Persistence\Operation;
 use LM\Authentifier\Model\AuthenticationProcess;
 use LM\Authentifier\Model\PersistOperation;
-use LM\Authentifier\Model\RequestDatum;
 use LM\Authentifier\U2f\U2fAuthenticationManager;
 use LM\Common\DataStructure\TypedMap;
 use LM\Common\Enum\Scalar;
@@ -53,8 +52,6 @@ class U2fChallenge implements IChallenge
     }
 
     /**
-     * @todo Store the registrations in the datamanager differently.
-     * @todo Check support for multiple key authentications.
      * @todo Store IU2fRegistration objects instead.
      */
     public function process(
@@ -62,13 +59,13 @@ class U2fChallenge implements IChallenge
         ?RequestInterface $httpRequest): ChallengeResponse
     {
         $username = $process
-            ->getDataManager()
+            ->getTypedMap()
             ->get('username', StringObject::class)
             ->toString()
         ;
 
         $usedU2fKeys = $process
-            ->getDataManager()
+            ->getTypedMap()
             ->get('used_u2f_key_public_keys', ArrayObject::class)
             ->toArray(Scalar::_STR)
         ;
@@ -96,7 +93,7 @@ class U2fChallenge implements IChallenge
         try {
             if ($form->isSubmitted() && $form->isValid()) {
                 $signRequests = $process
-                    ->getDataManager()
+                    ->getTypedMap()
                     ->get('u2f_sign_requests', ArrayObject::class)
                 ;
                 $newRegistration = $this
@@ -113,7 +110,7 @@ class U2fChallenge implements IChallenge
                     }
                 }
                 $newDm = $process
-                    ->getDataManager()
+                    ->getTypedMap()
                     ->set(
                         'u2f_registrations',
                         new ArrayObject($registrations, Registration::class),
@@ -164,7 +161,7 @@ class U2fChallenge implements IChallenge
             'nUsedU2fKeys' => count($usedU2fKeys),
         ]));
         $newDm = $process
-            ->getDataManager()
+            ->getTypedMap()
             ->set(
                 'u2f_sign_requests',
                 new ArrayObject($signRequests, SignRequest::class),

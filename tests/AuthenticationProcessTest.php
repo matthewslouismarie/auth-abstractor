@@ -5,7 +5,6 @@ namespace LM\Authentifier\Tests;
 use PHPUnit\Framework\TestCase;
 use LM\Authentifier\Enum\AuthenticationProcess\Status;
 use LM\Authentifier\Model\AuthenticationProcess;
-use LM\Authentifier\Model\RequestDatum;
 use LM\Common\DataStructure\TypedMap;
 use LM\Common\Enum\Scalar;
 use LM\Common\Model\ArrayObject;
@@ -28,7 +27,7 @@ class AuthenticationProcessTest extends TestCase
         $challenges = $authenticationProcess->getChallenges();
         $challenges->setToNextItem();
         $serializedProcess = serialize(new AuthenticationProcess($authenticationProcess
-            ->getDataManager()
+            ->getTypedMap()
             ->set('challenges', $challenges, ArrayObject::class)))
         ;
         $unserializedProcess = unserialize($serializedProcess);
