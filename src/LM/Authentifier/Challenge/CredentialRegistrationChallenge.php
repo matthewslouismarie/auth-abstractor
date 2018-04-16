@@ -7,7 +7,6 @@ use Psr\Http\Message\RequestInterface;
 use LM\Authentifier\Configuration\IApplicationConfiguration;
 use LM\Authentifier\Implementation\Member;
 use LM\Authentifier\Model\AuthenticationProcess;
-use LM\Authentifier\Model\DataManager;
 use LM\Authentifier\Model\RequestDatum;
 use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;

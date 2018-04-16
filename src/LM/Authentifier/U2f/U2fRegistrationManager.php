@@ -2,9 +2,7 @@
 
 namespace LM\Authentifier\U2f;
 
-use LM\Authentifier\Model\IU2fRegistration;
 use LM\Authentifier\Model\U2fRegistrationRequest;
-use DateTimeImmutable;
 use Firehed\U2F\RegisterRequest;
 use Firehed\U2F\RegisterResponse;
 use Firehed\U2F\Registration;

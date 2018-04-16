@@ -3,7 +3,6 @@
 namespace LM\Authentifier\Challenge;
 
 use LM\Authentifier\Model\AuthenticationProcess;
-use LM\Authentifier\Model\AuthentifierResponse;
 use Psr\Http\Message\RequestInterface;
 
 /**

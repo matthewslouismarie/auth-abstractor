@@ -2,7 +2,6 @@
 
 namespace LM\Authentifier\Model;
 
-use InvalidArgumentException;
 use UnexpectedValueException;
 use Serializable;
 

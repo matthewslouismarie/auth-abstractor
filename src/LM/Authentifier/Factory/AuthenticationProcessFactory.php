@@ -3,9 +3,6 @@
 namespace LM\Authentifier\Factory;
 
 use Firehed\U2F\Registration;
-use LM\Authentifier\Challenge\ExistingUsernameChallenge;
-use LM\Authentifier\Challenge\U2fChallenge;
-use LM\Authentifier\Configuration\IApplicationConfiguration;
 use LM\Authentifier\Enum\AuthenticationProcess\Status;
 use LM\Authentifier\Model\AuthenticationProcess;
 use LM\Authentifier\Model\DataManager;

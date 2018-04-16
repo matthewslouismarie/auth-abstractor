@@ -3,7 +3,6 @@
 namespace LM\Authentifier\Model;
 
 use InvalidArgumentException;
-use LM\Authentifier\Exception\KeyAlreadyTakenException;
 use Serializable;
 use UnexpectedValueException;
 
