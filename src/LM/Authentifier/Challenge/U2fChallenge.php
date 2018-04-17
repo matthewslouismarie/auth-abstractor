@@ -13,6 +13,7 @@ use LM\Authentifier\Model\PersistOperation;
 use LM\Authentifier\U2f\U2fAuthenticationManager;
 use LM\Common\Enum\Scalar;
 use LM\Common\Model\ArrayObject;
+use LM\Authentifier\Model\IU2fRegistration;
 use LM\Common\Model\StringObject;
 use LM\Authentifier\Exception\NoRegisteredU2fTokenException;
 use Psr\Http\Message\RequestInterface;
@@ -73,8 +74,9 @@ class U2fChallenge implements IChallenge
                 ->appConfig
                 ->getU2fRegistrations($username)
         ;
+
         foreach ($registrations as $key => $registration) {
-            if (in_array($registration->getPublicKey(), $usedU2fKeys, true)) {
+            if (in_array($registration->getPublicKeyBinary(), $usedU2fKeys, true)) {
                 unset($registrations[$key]);
             }
         }
@@ -98,13 +100,13 @@ class U2fChallenge implements IChallenge
                 $newRegistration = $this
                     ->u2fAuthenticationManager
                     ->processResponse(
-                        new ArrayObject($registrations, Registration::class),
+                        new ArrayObject($registrations, IU2fRegistration::class),
                         $signRequests,
                         $form['u2fTokenResponse']->getData()
                     )
                 ;
                 foreach ($registrations as $key => $registration) {
-                    if ($registration->getPublicKey() === $newRegistration->getPublicKey()) {
+                    if ($registration->getPublicKeyBinary() === $newRegistration->getPublicKeyBinary()) {
                         $registrations[$key] = $newRegistration;
                         break;
                     }
@@ -113,12 +115,12 @@ class U2fChallenge implements IChallenge
                     ->getTypedMap()
                     ->set(
                         'u2f_registrations',
-                        new ArrayObject($registrations, Registration::class),
+                        new ArrayObject($registrations, IU2fRegistration::class),
                         ArrayObject::class
                     )
                     ->set(
                         'used_u2f_key_public_keys',
-                        (new ArrayObject($usedU2fKeys, Scalar::_STR))->add($newRegistration->getPublicKey(), Scalar::_STR),
+                        (new ArrayObject($usedU2fKeys, Scalar::_STR))->add($newRegistration->getPublicKeyBinary(), Scalar::_STR),
                         ArrayObject::class
                     )
                     ->set(
@@ -160,7 +162,7 @@ class U2fChallenge implements IChallenge
 
         $signRequests = $this
                     ->u2fAuthenticationManager
-                    ->generate($username, new ArrayObject($registrations, Registration::class))
+                    ->generate($username, new ArrayObject($registrations, IU2fRegistration::class))
         ;
 
         $httpResponse = new Response($this->twig->render("u2f.html.twig", [

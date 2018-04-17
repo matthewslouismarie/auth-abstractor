@@ -2,10 +2,13 @@
 
 namespace LM\Authentifier\Factory;
 
-use Firehed\U2f\Registration;
+use Firehed\U2F\Registration;
 use LM\Authentifier\Implementation\U2fRegistration;
 use LM\Authentifier\Model\IU2fRegistration;
 
+/**
+ * @todo Unit tests
+ */
 class U2fRegistrationFactory
 {
     public function fromFirehed(Registration $registration): IU2fRegistration
@@ -19,7 +22,13 @@ class U2fRegistrationFactory
         ;
     }
 
-    public function toFirehed()
+    public function toFirehed(IU2fRegistration $registration): Registration
     {
+        return (new Registration())
+            ->setAttestationCertificate($registration->getAttestationCertificateBinary())
+            ->setCounter($registration->getCounter())
+            ->setKeyHandle($registration->getKeyHandleBinary())
+            ->setPublicKey($registration->getPublicKeyBinary())
+        ;
     }
 }
