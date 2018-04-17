@@ -54,7 +54,7 @@ class U2fRegistrationChallenge implements IChallenge
     ): ChallengeResponse {
         $u2fRegistrations = $process
             ->getTypedMap()
-            ->get('u2f_registrations', ArrayObject::class)
+            ->get('new_u2f_registrations', ArrayObject::class)
         ;
 
         $form = $this
@@ -117,7 +117,7 @@ class U2fRegistrationChallenge implements IChallenge
             ->render('registration/u2f.html.twig', [
                 'form' => $form->createView(),
                 'request_json' => $u2fRegistrationRequest->getRequestAsJson(),
-                'sign_requests' => $u2fRegistrationRequest->getSignRequests(),
+                'sign_requests' => $u2fRegistrationRequest->getSignRequestsAsJson(),
             ]))
         ;
 
