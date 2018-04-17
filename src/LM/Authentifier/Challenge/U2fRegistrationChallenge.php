@@ -72,14 +72,12 @@ class U2fRegistrationChallenge implements IChallenge
                     ->get('current_u2f_registration_request', U2fRegistrationRequest::class)
                 ;
             $u2fRegistration = $this
-                    ->u2fRegistrationFactory
-                    ->fromFirehed($this
-                        ->u2fRegistrationManager
-                        ->getU2fTokenFromResponse(
-                            $form['u2fDeviceResponse']->getData(),
-                            $currentU2fRegistrationRequest->getRequest()
-                        ))
-                ;
+                ->u2fRegistrationManager
+                ->getU2fRegistrationFromResponse(
+                    $form['u2fDeviceResponse']->getData(),
+                    $currentU2fRegistrationRequest->getRequest()
+                )
+            ;
 
             $typedMap = $process
                 ->getTypedMap()

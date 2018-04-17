@@ -2,6 +2,8 @@
 
 namespace LM\Authentifier\U2f;
 
+use LM\Authentifier\Factory\U2fRegistrationFactory;
+use LM\Authentifier\Model\IU2fRegistration;
 use LM\Authentifier\Model\U2fRegistrationRequest;
 use Firehed\U2F\RegisterRequest;
 use Firehed\U2F\RegisterResponse;
@@ -9,11 +11,15 @@ use Firehed\U2F\Registration;
 
 class U2fRegistrationManager
 {
+    private $u2fRegistrationFactory;
+
     private $u2fServerGenerator;
 
     public function __construct(
+        U2fRegistrationFactory $u2fRegistrationFactory,
         U2fServerGenerator $u2fServerGenerator
     ) {
+        $this->u2fRegistrationFactory = $u2fRegistrationFactory;
         $this->u2fServerGenerator = $u2fServerGenerator;
     }
 
@@ -29,10 +35,10 @@ class U2fRegistrationManager
         return new U2fRegistrationRequest($request, $signRequests);
     }
 
-    public function getU2fTokenFromResponse(
+    public function getU2fRegistrationFromResponse(
         string $u2fKeyResponse,
         RegisterRequest $request
-    ): Registration {
+    ): IU2fRegistration {
         $server = $this
             ->u2fServerGenerator
             ->getServer()
@@ -43,6 +49,9 @@ class U2fRegistrationManager
         $response = RegisterResponse::fromJson($u2fKeyResponse);
         $registration = $server->register($response);
 
-        return $registration;
+        return $this
+            ->u2fRegistrationFactory
+            ->fromFirehed($registration)
+        ;
     }
 }
