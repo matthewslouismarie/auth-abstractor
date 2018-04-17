@@ -41,7 +41,7 @@ class U2fRegistration implements IU2fRegistration
         return $this->keyHandleBinary;
     }
 
-    public function getpublicKeyBinary(): string
+    public function getPublicKeyBinary(): string
     {
         return $this->publicKeyBinary;
     }
