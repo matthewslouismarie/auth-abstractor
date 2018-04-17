@@ -5,6 +5,7 @@ namespace LM\Authentifier\U2f;
 use LM\Authentifier\Factory\U2fRegistrationFactory;
 use LM\Authentifier\Model\IU2fRegistration;
 use LM\Authentifier\Model\U2fRegistrationRequest;
+use LM\Common\Model\ArrayObject;
 use Firehed\U2F\RegisterRequest;
 use Firehed\U2F\RegisterResponse;
 use Firehed\U2F\Registration;
@@ -23,14 +24,14 @@ class U2fRegistrationManager
         $this->u2fServerGenerator = $u2fServerGenerator;
     }
 
-    public function generate($registrations = []): U2fRegistrationRequest
+    public function generate(ArrayObject $registrations): U2fRegistrationRequest
     {
         $server = $this
             ->u2fServerGenerator
             ->getServer()
         ;
         $request = $server->generateRegisterRequest();
-        $signRequests = json_encode($server->generateSignRequests($registrations));
+        $signRequests = json_encode($server->generateSignRequests($registrations->toArray(Registration::class)));
 
         return new U2fRegistrationRequest($request, $signRequests);
     }

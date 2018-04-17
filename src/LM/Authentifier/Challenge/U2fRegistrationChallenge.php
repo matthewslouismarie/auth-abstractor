@@ -52,7 +52,10 @@ class U2fRegistrationChallenge implements IChallenge
         AuthenticationProcess $process,
         ?RequestInterface $httpRequest
     ): ChallengeResponse {
-        $u2fRegistrations = $process->getU2fRegistrations();
+        $u2fRegistrations = $process
+            ->getTypedMap()
+            ->get('u2f_registrations', ArrayObject::class)
+        ;
 
         $form = $this
             ->formFactory
