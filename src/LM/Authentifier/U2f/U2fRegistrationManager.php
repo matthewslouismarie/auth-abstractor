@@ -9,6 +9,7 @@ use LM\Common\Model\ArrayObject;
 use Firehed\U2F\RegisterRequest;
 use Firehed\U2F\RegisterResponse;
 use Firehed\U2F\Registration;
+use Firehed\U2F\SignRequest;
 
 class U2fRegistrationManager
 {
@@ -24,14 +25,25 @@ class U2fRegistrationManager
         $this->u2fServerGenerator = $u2fServerGenerator;
     }
 
-    public function generate(ArrayObject $registrations): U2fRegistrationRequest
+    public function generate(?ArrayObject $registrations = null): U2fRegistrationRequest
     {
         $server = $this
             ->u2fServerGenerator
             ->getServer()
         ;
         $request = $server->generateRegisterRequest();
-        $signRequests = json_encode($server->generateSignRequests($registrations->toArray(Registration::class)));
+
+        $signRequests = null;
+        if (null !== $registrations) {
+            $firehedRegs = array_map(
+                [$this->u2fRegistrationFactory, 'toFirehed'],
+                $registrations->toArray(IU2fRegistration::class)
+            );
+            $signRequests = new ArrayObject(
+                $server->generateSignRequests($firehedRegs),
+                SignRequest::class
+            );
+        }
 
         return new U2fRegistrationRequest($request, $signRequests);
     }

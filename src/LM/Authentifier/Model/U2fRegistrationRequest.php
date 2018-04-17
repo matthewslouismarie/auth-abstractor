@@ -3,6 +3,8 @@
 namespace LM\Authentifier\Model;
 
 use Firehed\U2F\RegisterRequest;
+use Firehed\U2F\SignRequest;
+use LM\Common\Model\ArrayObject;
 use Serializable;
 
 class U2fRegistrationRequest implements Serializable
@@ -11,10 +13,12 @@ class U2fRegistrationRequest implements Serializable
 
     private $signRequests;
 
-    public function __construct(RegisterRequest $request, string $signRequests)
+    public function __construct(RegisterRequest $request, ?ArrayObject $signRequests = null)
     {
         $this->request = $request;
-        $this->signRequests = $signRequests;
+        if (null !== $signRequests) {
+            $this->signRequests = $signRequests->toArray(SignRequest::class);
+        }
     }
 
     public function getRequest(): RegisterRequest
@@ -27,9 +31,14 @@ class U2fRegistrationRequest implements Serializable
         return json_encode($this->request);
     }
 
-    public function getSignRequests(): string
+    public function getSignRequests(): ArrayObject
     {
-        return $this->signRequests;
+        return new ArrayObject($this->signRequests, SignRequest::class);
+    }
+
+    public function getSignRequestsAsJson(): ?string
+    {
+        return json_encode($this->signRequests);
     }
 
     public function serialize()
