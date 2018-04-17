@@ -2,10 +2,12 @@
 
 namespace LM\Authentifier\Challenge;
 
+use Firehed\U2f\ClientErrorException;
 use Firehed\U2F\Registration;
 use LM\Authentifier\Enum\Persistence\Operation;
 use LM\Authentifier\Factory\U2fRegistrationFactory;
 use LM\Authentifier\Model\AuthenticationProcess;
+use LM\Authentifier\Model\IU2fRegistration;
 use LM\Authentifier\Model\PersistOperation;
 use LM\Authentifier\Model\U2fRegistrationRequest;
 use LM\Authentifier\U2f\U2fRegistrationManager;
@@ -14,6 +16,7 @@ use Psr\Http\Message\RequestInterface;
 use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormFactoryInterface;
 use Twig_Environment;
 
@@ -41,18 +44,15 @@ class U2fRegistrationChallenge implements IChallenge
         $this->u2fRegistrationManager = $u2fRegistrationManager;
     }
 
-    /**
-     * @todo Maybe it should convert u2fRegistrations to ArrayObject, and then
-     * U2fRegistrationManager would also take an ArrayObject as parameter.
-     * @todo Handle invalid responses.
-     * @todo Make sure multiple U2F devices can be registered correctly,
-     * and that devices cannot be registered twice.
-     */
     public function process(
         AuthenticationProcess $process,
         ?RequestInterface $httpRequest
     ): ChallengeResponse {
-        $u2fRegistrations = $process->getU2fRegistrations();
+        $u2fRegistrations = $process
+            ->getTypedMap()
+            ->get('u2f_registrations', ArrayObject::class)
+        ;
+        $u2fRegistrations->toArray(IU2fRegistration::class);
 
         $form = $this
             ->formFactory
@@ -66,42 +66,57 @@ class U2fRegistrationChallenge implements IChallenge
         }
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // try {
-            $currentU2fRegistrationRequest = $process
+            try {
+                $currentU2fRegistrationRequest = $process
                     ->getTypedMap()
                     ->get('current_u2f_registration_request', U2fRegistrationRequest::class)
                 ;
-            $u2fRegistration = $this
-                ->u2fRegistrationManager
-                ->getU2fRegistrationFromResponse(
-                    $form['u2fDeviceResponse']->getData(),
-                    $currentU2fRegistrationRequest->getRequest()
-                )
-            ;
+                $u2fRegistration = $this
+                    ->u2fRegistrationManager
+                    ->getU2fRegistrationFromResponse(
+                        $form['u2fDeviceResponse']->getData(),
+                        $currentU2fRegistrationRequest->getRequest()
+                    )
+                ;
 
-            $typedMap = $process
-                ->getTypedMap()
-                ->set(
-                    'persist_operations',
-                    $process
-                        ->getTypedMap()
-                        ->get('persist_operations', ArrayObject::class)
-                        ->add(
-                            new PersistOperation($u2fRegistration, new Operation(Operation::CREATE)),
-                            PersistOperation::class
-                        ),
-                    ArrayObject::class
-                )
-            ;
+                $newU2fRegistrations = $u2fRegistrations
+                    ->add($u2fRegistration, IU2fRegistration::class)
+                ;
 
-            return new ChallengeResponse(
-                new AuthenticationProcess($typedMap),
-                null,
-                false,
-                true
-            )
-            ;
-            // }
+                $typedMap = $process
+                    ->getTypedMap()
+                    ->set(
+                        'persist_operations',
+                        $process
+                            ->getTypedMap()
+                            ->get('persist_operations', ArrayObject::class)
+                            ->add(
+                                new PersistOperation($u2fRegistration, new Operation(Operation::CREATE)),
+                                PersistOperation::class
+                            ),
+                        ArrayObject::class
+                    )
+                    ->set(
+                        'u2f_registrations',
+                        $newU2fRegistrations,
+                        ArrayObject::class
+                    )
+                ;
+
+                (new AuthenticationProcess($typedMap))->getU2fRegistrations();
+
+                return new ChallengeResponse(
+                    new AuthenticationProcess($typedMap),
+                    null,
+                    false,
+                    true
+                )
+                ;
+            } catch (ClientErrorException $e) {
+                $form
+                    ->addError(new FormError('You already used this U2F device. You must use a different one.'))
+                ;
+            }
         }
 
         $u2fRegistrationRequest = $this

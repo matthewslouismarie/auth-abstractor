@@ -2,8 +2,8 @@
 
 namespace LM\Authentifier\Factory;
 
-use Firehed\U2F\Registration;
 use LM\Authentifier\Enum\AuthenticationProcess\Status;
+use LM\Authentifier\Implementation\U2fRegistration;
 use LM\Authentifier\Model\AuthenticationProcess;
 use LM\Authentifier\Model\IAuthenticationCallback;
 use LM\Authentifier\Model\PersistOperation;
@@ -28,7 +28,7 @@ class AuthenticationProcessFactory
             'callback' => $callback,
             'persist_operations' => new ArrayObject([], PersistOperation::class),
             'status' => new Status(Status::ONGOING),
-            'u2f_registrations' => new ArrayObject([], Registration::class),
+            'u2f_registrations' => new ArrayObject([], U2fRegistration::class),
         ];
         if (null !== $username) {
             $dataArray['username'] = new StringObject($username);

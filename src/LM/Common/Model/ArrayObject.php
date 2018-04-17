@@ -100,8 +100,8 @@ class ArrayObject implements Serializable
     {
         return serialize([
             $this->currentItemIndex,
-            $this->items])
-        ;
+            $this->items,
+        ]);
     }
 
     public function unserialize($serialized): void

@@ -4,12 +4,13 @@ namespace LM\Common\DataStructure;
 
 use LM\Common\Enum\Scalar;
 use LM\Common\Type\TypeCheckerTrait;
+use Serializable;
 
 /**
  * @todo Should implement a standardised interface.
  * @todo Force items it contains to be serializable?
  */
-class TypedMap
+class TypedMap implements Serializable
 {
     use TypeCheckerTrait;
 
@@ -60,5 +61,18 @@ class TypedMap
     public function toArray(): array
     {
         return $this->items;
+    }
+
+    public function serialize(): string
+    {
+        return serialize([
+            $this->items,
+        ]);
+    }
+
+    public function unserialize($serialized): void
+    {
+        list(
+            $this->items) = unserialize($serialized);
     }
 }
