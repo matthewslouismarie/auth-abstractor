@@ -18,12 +18,12 @@ class AuthenticationProcessFactory
     public function createProcess(
         array $challenges,
         IAuthenticationCallback $callback = null,
-        ?string $username = null
+        array $options
     ): AuthenticationProcess {
         $dataArray = [
             'used_u2f_key_public_keys' => new ArrayObject([], Scalar::_STR),
             'challenges' => new ArrayObject($challenges, Scalar::_STR),
-            'max_n_failed_attempts' => new IntegerObject(3),
+            'max_n_failed_attempts' => new IntegerObject($options['max_n_failed_attempts']),
             'n_failed_attempts' => new IntegerObject(0),
             'callback' => $callback,
             'persist_operations' => new ArrayObject([], PersistOperation::class),
@@ -31,8 +31,8 @@ class AuthenticationProcessFactory
             'u2f_registrations' => new ArrayObject([], IU2fRegistration::class),
             'new_u2f_registrations' => new ArrayObject([], IU2fRegistration::class),
         ];
-        if (null !== $username) {
-            $dataArray['username'] = new StringObject($username);
+        if (isset($options['username']) && null !== $options['username']) {
+            $dataArray['username'] = new StringObject($options['username']);
         }
         $typedMap = new TypedMap($dataArray);
 
