@@ -2,10 +2,12 @@
 
 namespace LM\Authentifier\Challenge;
 
+use Firehed\U2F\ClientErrorException;
 use Firehed\U2F\Registration;
 use LM\Authentifier\Enum\Persistence\Operation;
 use LM\Authentifier\Factory\U2fRegistrationFactory;
 use LM\Authentifier\Model\AuthenticationProcess;
+use LM\Authentifier\Model\IU2fRegistration;
 use LM\Authentifier\Model\PersistOperation;
 use LM\Authentifier\Model\U2fRegistrationRequest;
 use LM\Authentifier\U2f\U2fRegistrationManager;
@@ -14,6 +16,7 @@ use Psr\Http\Message\RequestInterface;
 use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormFactoryInterface;
 use Twig_Environment;
 
@@ -54,7 +57,7 @@ class U2fRegistrationChallenge implements IChallenge
     ): ChallengeResponse {
         $u2fRegistrations = $process
             ->getTypedMap()
-            ->get('new_u2f_registrations', ArrayObject::class)
+            ->get('u2f_registrations', ArrayObject::class)
         ;
 
         $form = $this
@@ -68,6 +71,7 @@ class U2fRegistrationChallenge implements IChallenge
             $form->handleRequest($this->httpFoundationFactory->createRequest($httpRequest));
         }
 
+        $typedMap = null;
         if ($form->isSubmitted() && $form->isValid()) {
             // try {
             $currentU2fRegistrationRequest = $process
@@ -95,16 +99,21 @@ class U2fRegistrationChallenge implements IChallenge
                         ),
                     ArrayObject::class
                 )
+                ->set(
+                    'u2f_registrations',
+                    $u2fRegistrations->add($u2fRegistration, IU2fRegistration::class),
+                    ArrayObject::class
+                )
             ;
-
-            return new ChallengeResponse(
-                new AuthenticationProcess($typedMap),
-                null,
-                false,
-                true
-            )
-            ;
+            // } catch (ClientErrorException $e) {
+            //     $form->addError(new FormError('You already used this U2F device'));
             // }
+                return new ChallengeResponse(
+                    new AuthenticationProcess($typedMap),
+                    null,
+                    false,
+                    true
+                );
         }
 
         $u2fRegistrationRequest = $this
