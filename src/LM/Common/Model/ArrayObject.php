@@ -2,6 +2,7 @@
 
 namespace LM\Common\Model;
 
+use LM\Authentifier\Model\IU2fRegistration;
 use LM\Common\Type\TypeCheckerTrait;
 use Serializable;
 use UnexpectedValueException;
@@ -10,9 +11,11 @@ class ArrayObject implements Serializable
 {
     use TypeCheckerTrait;
 
+    private $currentItemIndex;
+
     private $items;
 
-    private $currentItemIndex;
+    private $type;
 
     public function __construct(array $items, string $type)
     {
@@ -30,24 +33,29 @@ class ArrayObject implements Serializable
             }
         }
         $this->currentItemIndex = 0;
+        $this->type = $type;
     }
 
     /**
      * @todo Rename to append.
+     * @todo Remove $type parameter.
      */
     public function add($value, string $type): self
     {
-        $this->checkType($value, $type);
+        $this->checkType($value, $this->type);
         $items = $this->items;
         $items[] = $value;
 
-        return new self($items, $type);
+        return new self($items, $this->type);
     }
 
-    public function checkItemsType(string $type): self
+    /**
+     * @todo Remove type parameter.
+     */
+    public function checkItemsType(string $type = null): self
     {
         foreach ($this->items as $item) {
-            $this->checkType($item, $type);
+            $this->checkType($item, $this->type);
         }
 
         return $this;
@@ -55,14 +63,15 @@ class ArrayObject implements Serializable
 
     /**
      * @todo Rename to add.
+     * @todo Remove type parameter.
      */
     public function addWithkey($key, $value, string $type): self
     {
-        $this->checkType($value, $type);
+        $this->checkType($value, $this->type);
         $items = $this->items;
         $items[$key] = $value;
 
-        return new self($items, $type);
+        return new self($items, $this->type);
     }
 
     public function hasNextItem(): bool
@@ -73,7 +82,7 @@ class ArrayObject implements Serializable
     public function get($key, string $type)
     {
         $item = $this->items[$key];
-        $this->checkType($item, $type);
+        $this->checkType($item, $this->type);
 
         return $item;
     }
@@ -102,7 +111,7 @@ class ArrayObject implements Serializable
     public function toArray(string $type): array
     {
         foreach ($this->items as $item) {
-            $this->checkType($item, $type);
+            $this->checkType($item, $this->type);
         }
 
         return $this->items;
@@ -112,14 +121,16 @@ class ArrayObject implements Serializable
     {
         return serialize([
             $this->currentItemIndex,
-            $this->items])
-        ;
+            $this->items,
+            $this->type
+        ]);
     }
 
     public function unserialize($serialized): void
     {
         list(
             $this->currentItemIndex,
-            $this->items) = unserialize($serialized);
+            $this->items,
+            $this->type) = unserialize($serialized);
     }
 }
