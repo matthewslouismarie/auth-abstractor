@@ -1,5 +1,17 @@
 {
     "name": "matthewslouismarie/auth-abstractor",
+    "type": "library",
+    "description": "Complete abstracton of credential and U2F authentication",
+    "keywords": ["authentication", "U2F", "middleware", "password"],
+    "homepage": "https://github.com/matthewslouismarie/auth-abstractor",
+    "authors": [
+        {
+            "name": "Louis-Marie Matthews",
+            "email": "matthewslouismarie@gmail.com",
+            "homepage": "https://matthewslouismarie.fr",
+            "role": "Developer"
+        }
+    ],
     "autoload": {
         "psr-4": {
             "LM\\": "src/LM"
@@ -9,6 +21,7 @@
         "phpunit/phpunit": "^7"
     },
     "require": {
+        "php": ">=7.1.0",
         "psr/http-message": "^1.0",
         "twig/twig": "^2.0",
         "symfony/asset": "^4.0",
