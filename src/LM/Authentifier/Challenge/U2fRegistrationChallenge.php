@@ -99,21 +99,21 @@ class U2fRegistrationChallenge implements IChallenge
                         ),
                     ArrayObject::class
                 )
-                ->set(
-                    'u2f_registrations',
-                    $u2fRegistrations->add($u2fRegistration, IU2fRegistration::class),
-                    ArrayObject::class
-                )
+                // ->set(
+                //     'u2f_registrations',
+                //     $u2fRegistrations->add($u2fRegistration, IU2fRegistration::class),
+                //     ArrayObject::class
+                // )
             ;
             // } catch (ClientErrorException $e) {
             //     $form->addError(new FormError('You already used this U2F device'));
             // }
-                return new ChallengeResponse(
-                    new AuthenticationProcess($typedMap),
-                    null,
-                    false,
-                    true
-                );
+            return new ChallengeResponse(
+                new AuthenticationProcess($typedMap),
+                null,
+                false,
+                true
+            );
         }
 
         $u2fRegistrationRequest = $this
@@ -129,6 +129,7 @@ class U2fRegistrationChallenge implements IChallenge
                 'sign_requests' => $u2fRegistrationRequest->getSignRequestsAsJson(),
             ]))
         ;
+        $u2fRegistrations->checkItemsType(IU2fRegistration::class);
 
         return new ChallengeResponse(
             new AuthenticationProcess($process
@@ -137,7 +138,8 @@ class U2fRegistrationChallenge implements IChallenge
                     'current_u2f_registration_request',
                     $u2fRegistrationRequest,
                     U2fRegistrationRequest::class
-            )),
+                )
+            ),
             $httpResponse,
             $form->isSubmitted(),
             false
