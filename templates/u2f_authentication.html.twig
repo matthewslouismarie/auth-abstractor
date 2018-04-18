@@ -16,6 +16,8 @@
 </script>
 {%- endblock -%}
 
+{%- block title -%}U2F authentication{%- endblock -%}
+
 {%- block body -%}
 {%- if nUsedU2fKeys > 0 -%}
 <p>Please now activate an additional U2F device. (It has to be different from the {{ nUsedU2fKeys }} you've used so far.)</p>

@@ -30,6 +30,7 @@ class AuthenticationProcessFactory
             'status' => new Status(Status::ONGOING),
             'u2f_registrations' => new ArrayObject([], IU2fRegistration::class),
             'new_u2f_registrations' => new ArrayObject([], IU2fRegistration::class),
+            'n_u2f_registrations' => new IntegerObject(0),
         ];
         if (isset($options['username']) && null !== $options['username']) {
             $dataArray['username'] = new StringObject($options['username']);

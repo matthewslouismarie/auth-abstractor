@@ -15,7 +15,12 @@
 </script>
 {% endblock %}
 
+{%- block title -%}U2F device registration{%- endblock -%}
+
 {%- block body -%}
+{%- if nU2fRegistrations > 0 -%}
+<p>Please register a new U2F device in addition to the {{ nU2fRegistrations }} you've registered so far.</p>
+{%- endif -%}
 {%- include "partials/_u2f_steps.html.twig" -%}
 {{ form(form, {"attr": {"id": form.vars.id}}) }}
 {%- endblock -%}
