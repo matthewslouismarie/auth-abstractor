@@ -92,7 +92,7 @@ class PasswordUpdateChallenge implements IChallenge
             ;
         }
 
-        $response = new Response($this->twig->render('registration/credential.html.twig', [
+        $response = new Response($this->twig->render('password_update.html.twig', [
             'form' => $form->createView(),
         ]));
 

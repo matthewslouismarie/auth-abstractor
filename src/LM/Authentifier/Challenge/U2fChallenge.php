@@ -165,7 +165,7 @@ class U2fChallenge implements IChallenge
                     ->generate($username, new ArrayObject($registrations, IU2fRegistration::class))
         ;
 
-        $httpResponse = new Response($this->twig->render("u2f.html.twig", [
+        $httpResponse = new Response($this->twig->render("u2f_authentication.html.twig", [
             "form" => $form->createView(),
             "sign_requests_json" => json_encode(array_values($signRequests)),
             'nUsedU2fKeys' => count($usedU2fKeys),

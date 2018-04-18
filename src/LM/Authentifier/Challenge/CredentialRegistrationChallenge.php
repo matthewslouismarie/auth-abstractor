@@ -93,7 +93,7 @@ class CredentialRegistrationChallenge implements IChallenge
             ;
         }
 
-        $response = new Response($this->twig->render('registration/credential.html.twig', [
+        $response = new Response($this->twig->render('credential_registration.html.twig', [
             'form' => $form->createView(),
         ]));
 

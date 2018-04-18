@@ -85,7 +85,7 @@ class CredentialChallenge implements IChallenge
             )
             ;
         }
-        $httpResponse = new Response($this->twig->render("credentials.html.twig", [
+        $httpResponse = new Response($this->twig->render("credential_authentication.html.twig", [
             "form" => $form->createView(),
         ]));
 
