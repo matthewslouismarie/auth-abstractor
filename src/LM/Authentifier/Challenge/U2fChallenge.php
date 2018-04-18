@@ -145,7 +145,7 @@ class U2fChallenge implements IChallenge
                 ;
             }
         } catch (ClientErrorException $e) {
-            $form->addError(new FormError('You took too long to activate your key. Please try again.'));
+            $form->addError(new FormError('You took too long to activate your U2F device, or the U2F device you plugged in is invalid. Please try again.'));
         } catch (SecurityException $e) {
             $form->addError(new FormError('The U2F key is not recognised.'));
         } catch (NoRegisteredU2fTokenException $e) {
