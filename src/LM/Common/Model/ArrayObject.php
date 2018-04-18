@@ -4,6 +4,7 @@ namespace LM\Common\Model;
 
 use LM\Common\Type\TypeCheckerTrait;
 use Serializable;
+use UnexpectedValueException;
 
 class ArrayObject implements Serializable
 {
@@ -24,6 +25,8 @@ class ArrayObject implements Serializable
                 $this->items[$key] = $item;
             } elseif ($this->isClassOrInterfaceName($type)) {
                 $this->items[$key] = $item;
+            } else {
+                throw new UnexpectedValueException();
             }
         }
         $this->currentItemIndex = 0;
@@ -39,6 +42,15 @@ class ArrayObject implements Serializable
         $items[] = $value;
 
         return new self($items, $type);
+    }
+
+    public function checkItemsType(string $type): self
+    {
+        foreach ($this->items as $item) {
+            $this->checkType($item, $type);
+        }
+
+        return $this;
     }
 
     /**

@@ -38,7 +38,7 @@ class U2fRegistrationManager
             $firehedRegs = array_map(
                 [$this->u2fRegistrationFactory, 'toFirehed'],
                 $registrations->toArray(IU2fRegistration::class)
-            );
+            );             
             $signRequests = new ArrayObject(
                 $server->generateSignRequests($firehedRegs),
                 SignRequest::class

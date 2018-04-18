@@ -9,11 +9,11 @@ use Serializable;
  */
 interface IU2fRegistration extends Serializable
 {
-    public function getAttestationCertificateBinary(): string;
+    public function getAttestationCertificate(): string;
 
     public function getCounter(): int;
 
-    public function getKeyHandleBinary(): string;
+    public function getKeyHandle(): string;
 
-    public function getPublicKeyBinary(): string;
+    public function getPublicKey(): string;
 }

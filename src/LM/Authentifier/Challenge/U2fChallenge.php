@@ -76,7 +76,7 @@ class U2fChallenge implements IChallenge
         ;
 
         foreach ($registrations as $key => $registration) {
-            if (in_array($registration->getPublicKeyBinary(), $usedU2fKeys, true)) {
+            if (in_array($registration->getPublicKey(), $usedU2fKeys, true)) {
                 unset($registrations[$key]);
             }
         }
@@ -106,7 +106,7 @@ class U2fChallenge implements IChallenge
                     )
                 ;
                 foreach ($registrations as $key => $registration) {
-                    if ($registration->getPublicKeyBinary() === $newRegistration->getPublicKeyBinary()) {
+                    if ($registration->getPublicKey() === $newRegistration->getPublicKey()) {
                         $registrations[$key] = $newRegistration;
                         break;
                     }
@@ -120,7 +120,7 @@ class U2fChallenge implements IChallenge
                     )
                     ->set(
                         'used_u2f_key_public_keys',
-                        (new ArrayObject($usedU2fKeys, Scalar::_STR))->add($newRegistration->getPublicKeyBinary(), Scalar::_STR),
+                        (new ArrayObject($usedU2fKeys, Scalar::_STR))->add($newRegistration->getPublicKey(), Scalar::_STR),
                         ArrayObject::class
                     )
                     ->set(

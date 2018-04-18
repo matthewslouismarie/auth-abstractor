@@ -6,29 +6,29 @@ use LM\Authentifier\Model\IU2fRegistration;
 
 class U2fRegistration implements IU2fRegistration
 {
-    private $attestationCertificateBinary;
+    private $attestationCertificate;
 
     private $counter;
 
-    private $keyHandleBinary;
+    private $keyHandle;
 
-    private $publicKeyBinary;
+    private $publicKey;
 
     public function __construct(
-        string $attestationCertificateBinary,
+        string $attestationCertificate,
         int $counter,
-        string $keyHandleBinary,
-        string $publicKeyBinary
+        string $keyHandle,
+        string $publicKey
     ) {
-        $this->attestationCertificateBinary = $attestationCertificateBinary;
+        $this->attestationCertificate = $attestationCertificate;
         $this->counter = $counter;
-        $this->keyHandleBinary = $keyHandleBinary;
-        $this->publicKeyBinary = $publicKeyBinary;
+        $this->keyHandle = $keyHandle;
+        $this->publicKey = $publicKey;
     }
 
-    public function getAttestationCertificateBinary(): string
+    public function getAttestationCertificate(): string
     {
-        return $this->attestationCertificateBinary;
+        return $this->attestationCertificate;
     }
 
     public function getCounter(): int
@@ -36,32 +36,32 @@ class U2fRegistration implements IU2fRegistration
         return $this->counter;
     }
 
-    public function getKeyHandleBinary(): string
+    public function getKeyHandle(): string
     {
-        return $this->keyHandleBinary;
+        return $this->keyHandle;
     }
 
-    public function getPublicKeyBinary(): string
+    public function getPublicKey(): string
     {
-        return $this->publicKeyBinary;
+        return $this->publicKey;
     }
 
     public function serialize()
     {
         return serialize([
-            $this->attestationCertificateBinary,
+            $this->attestationCertificate,
             $this->counter,
-            $this->keyHandleBinary,
-            $this->publicKeyBinary,
+            $this->keyHandle,
+            $this->publicKey,
         ]);
     }
 
     public function unserialize($serialized)
     {
         list(
-            $this->attestationCertificateBinary,
+            $this->attestationCertificate,
             $this->counter,
-            $this->keyHandleBinary,
-            $this->publicKeyBinary) = unserialize($serialized);
+            $this->keyHandle,
+            $this->publicKey) = unserialize($serialized);
     }
 }
