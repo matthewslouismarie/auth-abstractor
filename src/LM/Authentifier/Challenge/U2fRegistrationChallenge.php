@@ -123,7 +123,7 @@ class U2fRegistrationChallenge implements IChallenge
 
         $httpResponse = new Response($this
             ->twig
-            ->render('registration/u2f.html.twig', [
+            ->render('u2f_registration.html.twig', [
                 'form' => $form->createView(),
                 'request_json' => $u2fRegistrationRequest->getRequestAsJson(),
                 'sign_requests' => $u2fRegistrationRequest->getSignRequestsAsJson(),

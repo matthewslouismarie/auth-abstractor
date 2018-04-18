@@ -80,7 +80,7 @@ class PasswordChallenge implements IChallenge
             ;
         }
 
-        $response = new Response($this->twig->render("password.html.twig", [
+        $response = new Response($this->twig->render("password_authentication.html.twig", [
             "form" => $form->createView(),
         ]));
 

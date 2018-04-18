@@ -77,7 +77,7 @@ class ExistingUsernameChallenge implements IChallenge
             ;
         }
 
-        $response = new Response($this->twig->render("username.html.twig", [
+        $response = new Response($this->twig->render('existing_username.html.twig', [
             "form" => $form->createView(),
         ]));
 
