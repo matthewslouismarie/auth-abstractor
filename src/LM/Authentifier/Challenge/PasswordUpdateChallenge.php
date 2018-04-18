@@ -5,6 +5,7 @@ namespace LM\Authentifier\Challenge;
 use Firehed\U2F\Registration;
 use Psr\Http\Message\RequestInterface;
 use LM\Authentifier\Configuration\IApplicationConfiguration;
+use LM\Authentifier\Form\Constraint\ValidNewPassword;
 use LM\Authentifier\Implementation\Member;
 use LM\Authentifier\Model\AuthenticationProcess;
 use LM\Common\Enum\Scalar;
@@ -15,11 +16,14 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Validator\Constraints\EqualTo;
 use Twig_Environment;
 
 class PasswordUpdateChallenge implements IChallenge
 {
     private $appConfig;
+
+    private $constraint;
 
     private $formFactory;
 
@@ -29,11 +33,13 @@ class PasswordUpdateChallenge implements IChallenge
 
     public function __construct(
         IApplicationConfiguration $appConfig,
+        ValidNewPassword $constraint,
         FormFactoryInterface $formFactory,
         HttpFoundationFactory $httpFoundationFactory,
         Twig_Environment $twig
     ) {
         $this->appConfig = $appConfig;
+        $this->constraint = $constraint;
         $this->formFactory = $formFactory;
         $this->httpFoundationFactory = $httpFoundationFactory;
         $this->twig = $twig;
@@ -50,6 +56,9 @@ class PasswordUpdateChallenge implements IChallenge
             ->formFactory
             ->createBuilder()
             ->add('password', RepeatedType::class, [
+                'constraints' => [
+                    $this->constraint,
+                ],
                 'type' => PasswordType::class,
                 'invalid_message' => 'The password fields must match.',
                 'required' => true,
