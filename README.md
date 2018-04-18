@@ -7,6 +7,18 @@ It does so by acting as a middleware. Simply pass it the HTTP request and you
 will get back an HTTP response along with an object of the class
 AuthenticationProcess.
 
+## Installation
+
+### Assets
+
+In order for U2F registration and authentication to work, you will need
+[google-u2f-api.js](https://www.npmjs.com/package/google-u2f-api.js) and
+[jquery](https://www.npmjs.com/package/jquery). These files need to be in the
+folder which path is given by [getAssetUri()](https://github.com/matthewslouismarie/auth-abstractor/blob/a97f0a64d5f0f8760d133f34afcf2a44ab1aa082/src/LM/Authentifier/Configuration/IApplicationConfiguration.php#L11).
+
+Of course, you can override the U2F views with your very own views which can
+use different JavaScript libraries.
+
 ## Configuration
 
 AuthenticationKernel is the entry point of _auth-abstractor_. To use any of the
