@@ -12,6 +12,7 @@ use LM\Authentifier\Model\PersistOperation;
 use LM\Authentifier\Model\U2fRegistrationRequest;
 use LM\Authentifier\U2f\U2fRegistrationManager;
 use LM\Common\Model\ArrayObject;
+use LM\Common\Model\IntegerObject;
 use Psr\Http\Message\RequestInterface;
 use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
 use Symfony\Component\HttpFoundation\Response;
@@ -59,6 +60,11 @@ class U2fRegistrationChallenge implements IChallenge
             ->getTypedMap()
             ->get('u2f_registrations', ArrayObject::class)
         ;
+        $nU2fRegistrations = $process
+            ->getTypedMap()
+            ->get('n_u2f_registrations', IntegerObject::class)
+            ->toInteger()
+        ;
 
         $form = $this
             ->formFactory
@@ -99,6 +105,11 @@ class U2fRegistrationChallenge implements IChallenge
                         ),
                     ArrayObject::class
                 )
+                ->set(
+                    'n_u2f_registrations',
+                    new IntegerObject($nU2fRegistrations + 1),
+                    IntegerObject::class
+                )
                 // ->set(
                 //     'u2f_registrations',
                 //     $u2fRegistrations->add($u2fRegistration, IU2fRegistration::class),
@@ -125,6 +136,7 @@ class U2fRegistrationChallenge implements IChallenge
             ->twig
             ->render('u2f_registration.html.twig', [
                 'form' => $form->createView(),
+                'nU2fRegistrations' => $nU2fRegistrations,
                 'request_json' => $u2fRegistrationRequest->getRequestAsJson(),
                 'sign_requests' => $u2fRegistrationRequest->getSignRequestsAsJson(),
             ]))
