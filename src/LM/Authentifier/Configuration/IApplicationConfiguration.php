@@ -20,6 +20,11 @@ interface IApplicationConfiguration
 
     public function getMember(string $username): IMember;
 
+    /**
+     * @todo 
+     */
+    public function getPwdSettings(): array;
+
     public function getTokenStorage(): TokenStorageInterface;
 
     public function getU2fRegistrations(string $username): array;
