@@ -14,10 +14,10 @@ class U2fRegistrationFactory
     public function fromFirehed(Registration $registration): IU2fRegistration
     {
         return new U2fRegistration(
-            $registration->getAttestationCertificateBinary(),
+            base64_encode($registration->getAttestationCertificateBinary()),
             $registration->getCounter(),
-            $registration->getKeyHandleBinary(),
-            $registration->getPublicKey()
+            base64_encode($registration->getKeyHandleBinary()),
+            base64_encode($registration->getPublicKey())
         )
         ;
     }
@@ -25,10 +25,10 @@ class U2fRegistrationFactory
     public function toFirehed(IU2fRegistration $registration): Registration
     {
         return (new Registration())
-            ->setAttestationCertificate($registration->getAttestationCertificateBinary())
+            ->setAttestationCertificate(base64_decode($registration->getAttestationCertificate()))
             ->setCounter($registration->getCounter())
-            ->setKeyHandle($registration->getKeyHandleBinary())
-            ->setPublicKey($registration->getPublicKeyBinary())
+            ->setKeyHandle(base64_decode($registration->getKeyHandle()))
+            ->setPublicKey(base64_decode($registration->getPublicKey()))
         ;
     }
 }
