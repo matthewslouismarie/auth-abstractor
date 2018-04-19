@@ -3,3 +3,4 @@ vendor
 .composer
 cache
 .ssh
+tmp
