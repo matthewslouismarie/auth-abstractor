@@ -4,3 +4,4 @@ php:
 install: composer install
 script:
   - $TRAVIS_BUILD_DIR/vendor/bin/phpunit
+  - $TRAVIS_BUILD_DIR/vendor/bin/php-cs-fixer fix --dry-run --allow-risky=yes

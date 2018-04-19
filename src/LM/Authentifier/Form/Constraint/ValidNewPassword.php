@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LM\Authentifier\Form\Constraint;
 
 use LM\Authentifier\Configuration\IApplicationConfiguration;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\LM;
 
 use LM\Authentifier\Enum\AuthenticationProcess\Status;
@@ -55,7 +57,8 @@ class AuthenticationProcessTest extends LibTestCase
             )
         ;
         for ($i = 0; $i < 2; $i++) {
-            $serialized = serialize(new AuthenticationProcess($process
+            $serialized = serialize(new AuthenticationProcess(
+                $process
                 ->getTypedMap()
                 ->set(
                     'u2f_registrations',

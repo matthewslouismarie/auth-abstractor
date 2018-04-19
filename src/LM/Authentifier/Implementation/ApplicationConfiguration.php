@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LM\Authentifier\Implementation;
 
-use InvalidArgumentException;
 use LM\Authentifier\Configuration\IApplicationConfiguration;
 use LM\Authentifier\Model\IMember;
 use Psr\Container\ContainerInterface;
@@ -66,7 +67,6 @@ class ApplicationConfiguration implements IApplicationConfiguration
     {
         return $this->appId;
     }
-
 
     public function getAssetUri(string $assetId): string
     {

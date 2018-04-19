@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LM\Authentifier\Implementation;
 
 use LM\Authentifier\Model\IU2fRegistration;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LM\Authentifier\Enum\AuthenticationProcess;
 
 use LM\Common\Enum\AbstractEnum;

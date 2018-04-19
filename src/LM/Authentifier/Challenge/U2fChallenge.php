@@ -1,10 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LM\Authentifier\Challenge;
 
 use Firehed\U2F\ClientErrorException;
 use Firehed\U2F\InvalidDataException;
-use Firehed\U2F\Registration;
 use Firehed\U2F\SecurityException;
 use Firehed\U2F\SignRequest;
 use LM\Authentifier\Configuration\IApplicationConfiguration;

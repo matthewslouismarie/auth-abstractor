@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LM\Authentifier\Challenge;
 
-use Firehed\U2F\Registration;
 use Psr\Http\Message\RequestInterface;
 use LM\Authentifier\Configuration\IApplicationConfiguration;
 use LM\Authentifier\Implementation\Member;
