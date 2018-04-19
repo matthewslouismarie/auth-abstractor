@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace LM\Authentifier\Challenge;
 
-use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use LM\Authentifier\Configuration\IApplicationConfiguration;
 use LM\Authentifier\Form\Constraint\ValidNewPassword;
 use LM\Authentifier\Model\AuthenticationProcess;
@@ -48,7 +48,7 @@ class PasswordUpdateChallenge implements IChallenge
      */
     public function process(
         AuthenticationProcess $process,
-        ?RequestInterface $httpRequest
+        ?ServerRequestInterface $httpRequest
     ): ChallengeResponse {
         $form = $this
             ->formFactory

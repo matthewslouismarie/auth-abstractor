@@ -7,7 +7,7 @@ namespace LM\Authentifier\Challenge;
 use LM\Authentifier\Configuration\IApplicationConfiguration;
 use LM\Authentifier\Model\AuthenticationProcess;
 use LM\Common\Model\StringObject;
-use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -45,7 +45,7 @@ class CredentialChallenge implements IChallenge
      */
     public function process(
         AuthenticationProcess $process,
-        ?RequestInterface $httpRequest
+        ?ServerRequestInterface $httpRequest
     ): ChallengeResponse {
         $form = $this
             ->formFactory
