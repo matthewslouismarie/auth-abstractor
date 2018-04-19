@@ -1,22 +1,20 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LM\Authentifier\Challenge;
 
-use Firehed\U2F\Registration;
 use Psr\Http\Message\RequestInterface;
 use LM\Authentifier\Configuration\IApplicationConfiguration;
 use LM\Authentifier\Form\Constraint\ValidNewPassword;
-use LM\Authentifier\Implementation\Member;
 use LM\Authentifier\Model\AuthenticationProcess;
 use LM\Common\Enum\Scalar;
 use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Validator\Constraints\EqualTo;
 use Twig_Environment;
 
 class PasswordUpdateChallenge implements IChallenge

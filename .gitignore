@@ -4,3 +4,4 @@ vendor
 cache
 .ssh
 tmp
+.php_cs.cache

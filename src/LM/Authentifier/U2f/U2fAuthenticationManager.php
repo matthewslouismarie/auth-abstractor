@@ -1,13 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LM\Authentifier\U2f;
 
-use Firehed\U2F\Registration;
 use Firehed\U2F\SignRequest;
 use Firehed\U2F\SignResponse;
 use LM\Authentifier\Exception\NoRegisteredU2fTokenException;
 use LM\Authentifier\Factory\U2fRegistrationFactory;
-use LM\Authentifier\Implementation\U2fRegistration;
 use LM\Common\Model\ArrayObject;
 use LM\Authentifier\Model\IU2fRegistration;
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LM\Authentifier\Implementation;
 
 use Symfony\Component\Security\Csrf\Exception\TokenNotFoundException;
@@ -55,7 +57,7 @@ class TestingTokenStorage implements TokenStorageInterface
         if (file_exists($this->dataDir.'/'.$tokenId)) {
             return unlink($this->dataDir.'/'.$tokenId);
         } else {
-            return null;
+            return;
         }
     }
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LM\Authentifier\Configuration;
 
 use Psr\Container\ContainerInterface;
@@ -23,7 +25,7 @@ interface IApplicationConfiguration
     public function getMember(string $username): IMember;
 
     /**
-     * @todo 
+     * @todo
      */
     public function getPwdSettings(): array;
 

@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LM\Common\Model;
 
-use LM\Authentifier\Model\IU2fRegistration;
 use LM\Common\Type\TypeCheckerTrait;
 use Serializable;
 use UnexpectedValueException;
@@ -125,7 +126,7 @@ class ArrayObject implements Serializable
         return serialize([
             $this->currentItemIndex,
             $this->items,
-            $this->type
+            $this->type,
         ]);
     }
 

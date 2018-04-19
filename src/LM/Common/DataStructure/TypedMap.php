@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LM\Common\DataStructure;
 
 use LM\Common\Enum\Scalar;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LM\Authentifier\Model;
 
 use LM\Authentifier\Enum\AuthenticationProcess\Status;

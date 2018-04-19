@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LM\Authentifier\Factory;
 
 use Firehed\U2F\Registration;
@@ -25,10 +27,10 @@ class U2fRegistrationFactory
     public function toFirehed(IU2fRegistration $registration): Registration
     {
         return (new Registration())
-            ->setAttestationCertificate(base64_decode($registration->getAttestationCertificate()))
+            ->setAttestationCertificate(base64_decode($registration->getAttestationCertificate(), true))
             ->setCounter($registration->getCounter())
-            ->setKeyHandle(base64_decode($registration->getKeyHandle()))
-            ->setPublicKey(base64_decode($registration->getPublicKey()))
+            ->setKeyHandle(base64_decode($registration->getKeyHandle(), true))
+            ->setPublicKey(base64_decode($registration->getPublicKey(), true))
         ;
     }
 }

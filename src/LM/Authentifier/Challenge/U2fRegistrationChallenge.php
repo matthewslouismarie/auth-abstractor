@@ -1,9 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LM\Authentifier\Challenge;
 
 use Firehed\U2F\ClientErrorException;
-use Firehed\U2F\Registration;
 use LM\Authentifier\Enum\Persistence\Operation;
 use LM\Authentifier\Factory\U2fRegistrationFactory;
 use LM\Authentifier\Model\AuthenticationProcess;
@@ -144,7 +145,8 @@ class U2fRegistrationChallenge implements IChallenge
         $u2fRegistrations->checkItemsType(IU2fRegistration::class);
 
         return new ChallengeResponse(
-            new AuthenticationProcess($process
+            new AuthenticationProcess(
+                $process
                 ->getTypedMap()
                 ->add(
                     'current_u2f_registration_request',
