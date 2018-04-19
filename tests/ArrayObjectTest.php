@@ -33,8 +33,7 @@ class ArrayObjectTest extends TestCase
         $this->assertSame(2, $arrayObject->getSize());
         $this->assertSame(5, $arrayObject->get(0, Scalar::_INT));
         $this->assertSame(2, $arrayObject->get(1, SCALAR::_INT));
-        $this->expectException(InvalidArgumentException::class);
-        $arrayObject->get(1, ArrayObject::class);
+        $arrayObject->get(1);
     }
 
     public function testSupportForKeys()
