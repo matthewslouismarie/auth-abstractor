@@ -43,7 +43,7 @@ class AuthenticationKernel
         $this->appConfig = $appConfig;
 
         $twigPaths = [
-            $appConfig->getComposerDir().'/matthewslouismarie/auth-abstractor/templates',
+            $appConfig->getLibdir().'/templates',
             $appConfig->getComposerDir().'/symfony/twig-bridge/Resources/views/Form',
         ];
 

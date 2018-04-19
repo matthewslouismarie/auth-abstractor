@@ -1,6 +1,6 @@
 <?php
 
-namespace LM\Authentifier\Tests;
+namespace Tests\LM;
 
 use PHPUnit\Framework\TestCase;
 use LM\Authentifier\Enum\AuthenticationProcess\Status;

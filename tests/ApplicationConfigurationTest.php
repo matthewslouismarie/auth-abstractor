@@ -1,5 +1,7 @@
 <?php
 
+namespace Tests\LM;
+
 use LM\Authentifier\Implementation\ApplicationConfiguration;
 use LM\Authentifier\Implementation\Member;
 use LM\Authentifier\Implementation\TestingTokenStorage;
@@ -28,6 +30,7 @@ class ApplicationConfigurationTest extends TestCase
             function (string $username): bool {
                 return 'user0' === $username ? true : false;
             },
+            realpath(__DIR__.'/../'),
             function (string $username): Member {
                 return new Member(password_hash('pwd', PASSWORD_DEFAULT), $username);
             },

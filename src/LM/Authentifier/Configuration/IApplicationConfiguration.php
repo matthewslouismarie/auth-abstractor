@@ -18,6 +18,8 @@ interface IApplicationConfiguration
 
     public function getCustomTwigDir(): ?string;
 
+    public function getLibDir(): string;
+
     public function getMember(string $username): IMember;
 
     /**
