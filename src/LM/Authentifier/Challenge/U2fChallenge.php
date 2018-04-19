@@ -18,7 +18,7 @@ use LM\Common\Model\ArrayObject;
 use LM\Authentifier\Model\IU2fRegistration;
 use LM\Common\Model\StringObject;
 use LM\Authentifier\Exception\NoRegisteredU2fTokenException;
-use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -58,7 +58,7 @@ class U2fChallenge implements IChallenge
      */
     public function process(
         AuthenticationProcess $process,
-        ?RequestInterface $httpRequest
+        ?ServerRequestInterface $httpRequest
     ): ChallengeResponse {
         $username = $process
             ->getTypedMap()

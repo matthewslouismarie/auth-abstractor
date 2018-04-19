@@ -14,7 +14,7 @@ use LM\Authentifier\Model\U2fRegistrationRequest;
 use LM\Authentifier\U2f\U2fRegistrationManager;
 use LM\Common\Model\ArrayObject;
 use LM\Common\Model\IntegerObject;
-use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -55,7 +55,7 @@ class U2fRegistrationChallenge implements IChallenge
      */
     public function process(
         AuthenticationProcess $process,
-        ?RequestInterface $httpRequest
+        ?ServerRequestInterface $httpRequest
     ): ChallengeResponse {
         $u2fRegistrations = $process
             ->getTypedMap()

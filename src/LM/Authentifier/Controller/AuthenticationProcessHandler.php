@@ -8,7 +8,7 @@ use LM\Authentifier\Configuration\IApplicationConfiguration;
 use LM\Authentifier\Model\AuthenticationProcess;
 use LM\Authentifier\Model\AuthentifierResponse;
 use Psr\Container\ContainerInterface;
-use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory;
 
 class AuthenticationProcessHandler
@@ -26,7 +26,7 @@ class AuthenticationProcessHandler
     }
 
     public function handleAuthenticationProcess(
-        ?RequestInterface $httpRequest,
+        ?ServerRequestInterface $httpRequest,
         AuthenticationProcess $process
     ): AuthentifierResponse {
         if ($process->isOngoing()) {

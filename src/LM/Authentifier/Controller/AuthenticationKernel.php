@@ -11,7 +11,7 @@ use LM\Authentifier\Model\AuthenticationProcess;
 use LM\Authentifier\Model\AuthentifierResponse;
 use LM\Authentifier\Exception\FinishedProcessException;
 use Psr\Container\ContainerInterface;
-use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Bridge\Twig\Extension\FormExtension;
 use Symfony\Bridge\Twig\Extension\TranslationExtension;
 use Symfony\Bridge\Twig\Form\TwigRendererEngine;
@@ -118,7 +118,7 @@ class AuthenticationKernel
      * @todo Should check type before instantiating authentifier.
      */
     public function processHttpRequest(
-        RequestInterface $httpRequest,
+        ServerRequestInterface $httpRequest,
         AuthenticationProcess $process
     ): AuthentifierResponse {
         if ($process->isFinished()) {
