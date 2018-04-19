@@ -14,7 +14,7 @@ interface IApplicationConfiguration
 
     public function getComposerDir(): string;
 
-    public function getContainer(): ContainerInterface;
+    public function getContainer(): ?ContainerInterface;
 
     public function getCustomTwigDir(): ?string;
 
