@@ -79,7 +79,10 @@ class ArrayObject implements Serializable
         return $this->currentItemIndex + 1 < count($this->items);
     }
 
-    public function get($key, string $type)
+    /**
+     * @todo Remove type parameter.
+     */
+    public function get($key, string $type = null)
     {
         $item = $this->items[$key];
         $this->checkType($item, $this->type);
