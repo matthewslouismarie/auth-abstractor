@@ -24,6 +24,8 @@ class ApplicationConfiguration implements IApplicationConfiguration
 
     private $isExistingMemberCallback;
 
+    private $libDir;
+
     private $memberFinder;
 
     private $pwdSettings;
@@ -41,6 +43,7 @@ class ApplicationConfiguration implements IApplicationConfiguration
         ?ContainerInterface $container,
         ?string $customTwigDir,
         Closure $isExistingMemberCallback,
+        string $libDir,
         Closure $memberFinder,
         array $pwdSettings,
         TokenStorageInterface $tokenStorage,
@@ -52,6 +55,7 @@ class ApplicationConfiguration implements IApplicationConfiguration
         $this->container = $container;
         $this->customTwigDir = $customTwigDir;
         $this->isExistingMemberCallback = $isExistingMemberCallback;
+        $this->libDir = $libDir;
         $this->memberFinder = $memberFinder;
         $this->pwdSettings = $pwdSettings;
         $this->tokenStorage = $tokenStorage;
@@ -82,6 +86,11 @@ class ApplicationConfiguration implements IApplicationConfiguration
     public function getCustomTwigDir(): ?string
     {
         return $this->customTwigDir;
+    }
+
+    public function getLibdir(): string
+    {
+        return $this->libDir;
     }
 
     public function getMember(string $username): IMember

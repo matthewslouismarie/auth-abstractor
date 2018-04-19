@@ -1,6 +1,6 @@
 <?php
 
-namespace LM\Authentifier\Tests;
+namespace Tests\LM;
 
 use InvalidArgumentException;
 use LM\Authentifier\Implementation\U2fRegistration;

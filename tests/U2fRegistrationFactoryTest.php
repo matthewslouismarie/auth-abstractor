@@ -1,6 +1,6 @@
 <?php
 
-namespace LM\Authentifier\Tests;
+namespace Tests\LM;
 
 use Firehed\U2F\Registration;
 use InvalidArgumentException;
