@@ -40,7 +40,7 @@ class ArrayObject implements Serializable
      * @todo Rename to append.
      * @todo Remove $type parameter.
      */
-    public function add($value, string $type): self
+    public function add($value, string $type = null): self
     {
         $this->checkType($value, $this->type);
         $items = $this->items;

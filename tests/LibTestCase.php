@@ -7,6 +7,7 @@ use LM\Authentifier\Controller\AuthenticationKernel;
 use LM\Authentifier\Implementation\ApplicationConfiguration;
 use LM\Authentifier\Implementation\TestingTokenStorage;
 use PHPUnit\Framework\TestCase;
+use Psr\Container\ContainerInterface;
 
 /**
  * @todo Find a better name?
@@ -43,6 +44,15 @@ abstract class LibTestCase extends TestCase
                 throw new Exception('Unsupported yet');
             }
         ));
+    }
+
+    public function get(string $serviceId)
+    {
+        return $this
+            ->kernel
+            ->getContainer()
+            ->get($serviceId)
+        ;
     }
 
     public function getKernel(): AuthenticationKernel

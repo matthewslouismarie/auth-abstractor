@@ -2,15 +2,16 @@
 
 namespace Tests\LM;
 
-use PHPUnit\Framework\TestCase;
 use LM\Authentifier\Enum\AuthenticationProcess\Status;
+use LM\Authentifier\Mocker\U2fMocker;
 use LM\Authentifier\Model\AuthenticationProcess;
+use LM\Authentifier\Factory\AuthenticationProcessFactory;
 use LM\Common\DataStructure\TypedMap;
 use LM\Common\Enum\Scalar;
 use LM\Common\Model\ArrayObject;
 use LM\Common\Model\StringObject;
 
-class AuthenticationProcessTest extends TestCase
+class AuthenticationProcessTest extends LibTestCase
 {
     public function testSerialization()
     {
@@ -35,5 +36,42 @@ class AuthenticationProcessTest extends TestCase
             U2fChallenge::class,
             $unserializedProcess->getCurrentChallenge()
         );
+    }
+
+    public function testU2fRegistrations()
+    {
+        $this->assertNotNull($this->getKernel());
+        $mocker = $this->get(U2fMocker::class);
+        $process = $this
+            ->get(AuthenticationProcessFactory::class)
+            ->createProcess(
+                [
+                    U2fRegistrationChallenge::class,
+                ],
+                null,
+                [
+                    'max_n_failed_attempts' => 3,
+                ]
+            )
+        ;
+        for ($i = 0; $i < 2; $i++) {
+            $serialized = serialize(new AuthenticationProcess($process
+                ->getTypedMap()
+                ->set(
+                    'u2f_registrations',
+                    $process
+                        ->getTypedMap()
+                        ->get('u2f_registrations', ArrayObject::class)
+                        ->add($mocker->get($i), IU2fRegistration::class),
+                    ArrayObject::class
+                )
+            ));
+            $process = unserialize($serialized);
+            $process
+                ->getTypedMap()
+                ->get('u2f_registrations', ArrayObject::class)
+                ->toArray(IU2fRegistration::class)
+            ;
+        }
     }
 }
