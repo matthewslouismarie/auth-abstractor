@@ -31,7 +31,8 @@ class AuthenticationProcessHandler
      */
     public function handleAuthenticationProcess(
         ?ServerRequestInterface $httpRequest,
-        AuthenticationProcess $process
+        AuthenticationProcess $process,
+        IAuthenticationCallback $callback
     ): AuthentifierResponse {
         if ($process->isOngoing()) {
             $challenge = $this
@@ -54,8 +55,7 @@ class AuthenticationProcessHandler
                         ->resetNFailedAttempts()
                         ->setToNextChallenge(),
                     null
-                )
-                ;
+                );
             } elseif ($challengeResponse->isFailedAttempt()) {
                 $updatedProcess = $challengeResponse
                     ->getAuthenticationProcess()
@@ -65,22 +65,19 @@ class AuthenticationProcessHandler
                     return new AuthentifierResponse(
                         $updatedProcess,
                         null
-                    )
-                    ;
+                    );
                 } else {
                     return new AuthentifierResponse(
                         $updatedProcess,
                         $psrHttpResponse
-                    )
-                    ;
+                    );
                 }
             } else {
                 return new AuthentifierResponse(
                     $challengeResponse
                         ->getAuthenticationProcess(),
                     $psrHttpResponse
-                )
-                ;
+                );
             }
         } elseif ($process->isFailed()) {
             return $callback->handleFailedProcess($process);

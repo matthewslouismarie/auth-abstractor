@@ -18,14 +18,14 @@ use LM\Common\Model\StringObject;
 class AuthenticationProcessFactory
 {
     /**
-     * @todo Remove callback.
+     * @todo Put $additionalData in a separate scope.
      */
     public function createProcess(
         array $challenges,
-        IAuthenticationCallback $callback = null,
-        array $options
+        array $options,
+        array $additionalData = []
     ): AuthenticationProcess {
-        $dataArray = [
+        $dataArray = array_merge($additionalData, [
             'used_u2f_key_public_keys' => new ArrayObject([], Scalar::_STR),
             'challenges' => new ArrayObject($challenges, Scalar::_STR),
             'max_n_failed_attempts' => new IntegerObject($options['max_n_failed_attempts']),
@@ -35,7 +35,7 @@ class AuthenticationProcessFactory
             'u2f_registrations' => new ArrayObject([], IU2fRegistration::class),
             'new_u2f_registrations' => new ArrayObject([], IU2fRegistration::class),
             'n_u2f_registrations' => new IntegerObject(0),
-        ];
+        ]);
         if (isset($options['username']) && null !== $options['username']) {
             $dataArray['username'] = new StringObject($options['username']);
         }

@@ -32,23 +32,5 @@ class Callback implements IAuthenticationCallback
     public function handleSuccessfulProcess(AuthenticationProcess $authProcess): AuthentifierResponse
     {
         return ($this->successClosure)($authProcess);
-    }
-
-    /**
-     * @todo Delete.
-     */
-    public function wakeUp(ContainerInterface $container): void
-    {
-        throw new Exception();
-    }
-
-    public function serialize()
-    {
-        throw new Exception();
-    }
-
-    public function unserialize($serialized)
-    {
-        throw new Exception();
-    }        
+    }     
 }

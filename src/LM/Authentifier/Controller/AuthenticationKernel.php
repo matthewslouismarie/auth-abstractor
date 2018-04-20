@@ -140,8 +140,7 @@ class AuthenticationKernel
                 $httpRequest,
                 $lastProcess,
                 $callback
-            )
-            ;
+            );
             $lastProcess = $authentifierResponse->getProcess();
             $httpRequest = null;
             $httpResponse = $authentifierResponse->getHttpResponse();
