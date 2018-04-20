@@ -11,6 +11,7 @@ use LM\Common\Model\ArrayObject;
 use LM\Common\Model\IntegerObject;
 use LM\Common\Model\StringObject;
 use Serializable;
+use UnexpectedValueException;
 
 /**
  * @todo Interface
@@ -29,14 +30,6 @@ class AuthenticationProcess implements Serializable
         return $this
             ->typedMap
             ->get('challenges', ArrayObject::class)
-        ;
-    }
-
-    public function getCallback(): IAuthenticationCallback
-    {
-        return $this
-            ->typedMap
-            ->get('callback', IAuthenticationCallback::class)
         ;
     }
 

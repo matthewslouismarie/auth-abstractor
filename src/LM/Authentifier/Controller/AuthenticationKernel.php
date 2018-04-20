@@ -9,6 +9,7 @@ use DI\ContainerBuilder;
 use LM\Authentifier\Configuration\IApplicationConfiguration;
 use LM\Authentifier\Model\AuthenticationProcess;
 use LM\Authentifier\Model\AuthentifierResponse;
+use LM\Authentifier\Model\IAuthenticationCallback;
 use LM\Authentifier\Exception\FinishedProcessException;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -119,7 +120,8 @@ class AuthenticationKernel
      */
     public function processHttpRequest(
         ServerRequestInterface $httpRequest,
-        AuthenticationProcess $process
+        AuthenticationProcess $process,
+        IAuthenticationCallback $callback
     ): AuthentifierResponse {
         if ($process->isFinished()) {
             throw new FinishedProcessException();
@@ -136,7 +138,8 @@ class AuthenticationKernel
         while (null === $httpResponse) {
             $authentifierResponse = $processHandler->handleAuthenticationProcess(
                 $httpRequest,
-                $lastProcess
+                $lastProcess,
+                $callback
             )
             ;
             $lastProcess = $authentifierResponse->getProcess();

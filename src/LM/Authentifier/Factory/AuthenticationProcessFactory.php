@@ -17,6 +17,9 @@ use LM\Common\Model\StringObject;
 
 class AuthenticationProcessFactory
 {
+    /**
+     * @todo Remove callback.
+     */
     public function createProcess(
         array $challenges,
         IAuthenticationCallback $callback = null,
@@ -27,7 +30,6 @@ class AuthenticationProcessFactory
             'challenges' => new ArrayObject($challenges, Scalar::_STR),
             'max_n_failed_attempts' => new IntegerObject($options['max_n_failed_attempts']),
             'n_failed_attempts' => new IntegerObject(0),
-            'callback' => $callback,
             'persist_operations' => new ArrayObject([], PersistOperation::class),
             'status' => new Status(Status::ONGOING),
             'u2f_registrations' => new ArrayObject([], IU2fRegistration::class),
