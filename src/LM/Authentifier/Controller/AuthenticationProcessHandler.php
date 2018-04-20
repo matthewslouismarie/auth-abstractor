@@ -10,6 +10,7 @@ use LM\Authentifier\Model\AuthentifierResponse;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory;
+use LM\Authentifier\Model\IAuthenticationCallback;
 
 class AuthenticationProcessHandler
 {
@@ -25,6 +26,9 @@ class AuthenticationProcessHandler
         $this->container = $container;
     }
 
+    /**
+     * @todo Remove callback from authentication process object.
+     */
     public function handleAuthenticationProcess(
         ?ServerRequestInterface $httpRequest,
         AuthenticationProcess $process
@@ -79,20 +83,8 @@ class AuthenticationProcessHandler
                 ;
             }
         } elseif ($process->isFailed()) {
-            $callback = $process->getCallback();
-            $callback->wakeUp($this
-                    ->appConfig
-                    ->getContainer())
-            ;
-
             return $callback->handleFailedProcess($process);
         } elseif ($process->isSucceeded()) {
-            $callback = $process->getCallback();
-            $callback->wakeUp($this
-                    ->appConfig
-                    ->getContainer())
-            ;
-
             return $callback->handleSuccessfulProcess($process);
         }
     }

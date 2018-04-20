@@ -9,6 +9,8 @@ use Serializable;
 
 /**
  * @todo Should distinguish between the first time and the subsequent times.
+ * @todo Remove Serializable.
+ * @todo Remove wakeUp().
  */
 interface IAuthenticationCallback extends Serializable
 {
