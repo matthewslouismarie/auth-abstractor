@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\LM;
 
 use Firehed\U2F\Registration;
-use LM\Authentifier\Factory\U2fRegistrationFactory;
+use LM\AuthAbstractor\Factory\U2fRegistrationFactory;
 use PHPUnit\Framework\TestCase;
 
 class U2fRegistrationFactoryTest extends TestCase

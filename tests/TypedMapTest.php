@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\LM;
 
 use InvalidArgumentException;
-use LM\Authentifier\Implementation\Member;
+use LM\AuthAbstractor\Implementation\Member;
 use LM\Common\DataStructure\TypedMap;
 use LM\Common\Enum\Scalar;
 use PHPUnit\Framework\TestCase;

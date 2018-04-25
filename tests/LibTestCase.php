@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Tests\LM;
 
 use Exception;
-use LM\Authentifier\Controller\AuthenticationKernel;
-use LM\Authentifier\Implementation\ApplicationConfiguration;
-use LM\Authentifier\Implementation\TestingTokenStorage;
+use LM\AuthAbstractor\Controller\AuthenticationKernel;
+use LM\AuthAbstractor\Implementation\ApplicationConfiguration;
+use LM\AuthAbstractor\Implementation\TestingTokenStorage;
 use PHPUnit\Framework\TestCase;
 
 /**

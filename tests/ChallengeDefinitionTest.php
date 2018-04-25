@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Tests\LM;
 
 use InvalidArgumentException;
-use LM\Authentifier\Challenge\U2fChallenge;
-use LM\Authentifier\Model\ChallengeDefinition;
+use LM\AuthAbstractor\Challenge\U2fChallenge;
+use LM\AuthAbstractor\Model\ChallengeDefinition;
 use PHPUnit\Framework\TestCase;
 
 class ChallengeDefinitionTest extends TestCase

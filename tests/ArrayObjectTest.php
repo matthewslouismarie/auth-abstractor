@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Tests\LM;
 
 use InvalidArgumentException;
-use LM\Authentifier\Implementation\U2fRegistration;
-use LM\Authentifier\Model\IU2fRegistration;
+use LM\AuthAbstractor\Implementation\U2fRegistration;
+use LM\AuthAbstractor\Model\IU2fRegistration;
 use LM\Common\Enum\Scalar;
 use LM\Common\Model\ArrayObject;
 use LM\Common\Model\IntegerObject;
