@@ -54,7 +54,6 @@ class ApplicationConfigurationTest extends TestCase
             '/var/www/html/example/vendor',
             $configuration->getComposerDir()
         );
-        $this->assertNull($configuration->getContainer());
         $this->assertNull($configuration->getCustomTwigDir());
         $this->assertSame(
             'user0',

@@ -47,15 +47,6 @@ abstract class LibTestCase extends TestCase
         ));
     }
 
-    public function get(string $serviceId)
-    {
-        return $this
-            ->kernel
-            ->getContainer()
-            ->get($serviceId)
-        ;
-    }
-
     public function getKernel(): AuthenticationKernel
     {
         return $this->kernel;
