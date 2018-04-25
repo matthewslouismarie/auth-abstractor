@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace LM\AuthAbstractor\Implementation;
 
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use LM\AuthAbstractor\Configuration\IApplicationConfiguration;
 use LM\AuthAbstractor\Model\IMember;
 use Symfony\Component\Security\Csrf\TokenStorage\TokenStorageInterface;

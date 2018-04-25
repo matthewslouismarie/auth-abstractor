@@ -1,13 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LM\AuthAbstractor\Implementation;
 
 use Closure;
-use Exception;
 use LM\AuthAbstractor\Model\AuthenticationProcess;
 use Psr\Http\Message\ResponseInterface;
 use LM\AuthAbstractor\Model\IAuthenticationCallback;
-use Psr\Container\ContainerInterface;
 
 /**
  * @todo Check closure signature?
@@ -32,5 +32,5 @@ class Callback implements IAuthenticationCallback
     public function handleSuccessfulProcess(AuthenticationProcess $authProcess): ResponseInterface
     {
         return ($this->successClosure)($authProcess);
-    }     
+    }
 }
