@@ -9,7 +9,6 @@ use LM\AuthAbstractor\Model\AuthenticationProcess;
 use LM\AuthAbstractor\Model\AuthentifierResponse;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Message\ResponseInterface;
 use Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory;
 use LM\AuthAbstractor\Model\IAuthenticationCallback;
 

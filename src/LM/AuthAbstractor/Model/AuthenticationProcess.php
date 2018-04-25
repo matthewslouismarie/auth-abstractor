@@ -10,13 +10,8 @@ use LM\Common\Enum\Scalar;
 use LM\Common\Model\ArrayObject;
 use LM\Common\Model\IntegerObject;
 use LM\Common\Model\StringObject;
-use Serializable;
-use UnexpectedValueException;
 
-/**
- * @todo Interface
- */
-class AuthenticationProcess implements Serializable
+class AuthenticationProcess implements IAuthenticationProcess
 {
     private $typedMap;
 
@@ -102,7 +97,7 @@ class AuthenticationProcess implements Serializable
         ;
     }
 
-    public function incrementNFailedAttempts(): self
+    public function incrementNFailedAttempts(): IAuthenticationProcess
     {
         return $this->setNFailedAttempts($this->getNFailedAttempts() + 1);
     }
@@ -127,12 +122,12 @@ class AuthenticationProcess implements Serializable
         return $this->getStatus()->is(new Status(Status::SUCCEEDED));
     }
 
-    public function resetNFailedAttempts(): self
+    public function resetNFailedAttempts(): IAuthenticationProcess
     {
         return $this->setNFailedAttempts(0);
     }
 
-    public function setNFailedAttempts(int $nFailedAttempts): self
+    public function setNFailedAttempts(int $nFailedAttempts): IAuthenticationProcess
     {
         $newDm = $this
             ->typedMap
@@ -155,7 +150,7 @@ class AuthenticationProcess implements Serializable
         }
     }
 
-    public function setToNextChallenge(): self
+    public function setToNextChallenge(): IAuthenticationProcess
     {
         $challenges = $this->getChallenges();
         if ($challenges->hasNextItem()) {

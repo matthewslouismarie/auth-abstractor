@@ -6,7 +6,6 @@ namespace LM\AuthAbstractor\Factory;
 
 use LM\AuthAbstractor\Enum\AuthenticationProcess\Status;
 use LM\AuthAbstractor\Model\AuthenticationProcess;
-use LM\AuthAbstractor\Model\IAuthenticationCallback;
 use LM\AuthAbstractor\Model\IU2fRegistration;
 use LM\AuthAbstractor\Model\PersistOperation;
 use LM\Common\DataStructure\TypedMap;
