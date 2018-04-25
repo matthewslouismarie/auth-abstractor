@@ -11,7 +11,6 @@ use LM\Authentifier\Model\AuthenticationProcess;
 use LM\Authentifier\Model\AuthentifierResponse;
 use LM\Authentifier\Model\IAuthenticationCallback;
 use LM\Authentifier\Exception\FinishedProcessException;
-use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Bridge\Twig\Extension\FormExtension;
 use Symfony\Bridge\Twig\Extension\TranslationExtension;
@@ -108,11 +107,6 @@ class AuthenticationKernel
             },
         ]);
         $this->container = $containerBuilder->build();
-    }
-
-    public function getContainer(): ContainerInterface
-    {
-        return $this->container;
     }
 
     /**
