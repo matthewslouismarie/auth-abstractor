@@ -50,10 +50,7 @@ class AuthenticationProcessTest extends LibTestCase
                 [
                     U2fRegistrationChallenge::class,
                 ],
-                null,
-                [
-                    'max_n_failed_attempts' => 3,
-                ]
+                3
             )
         ;
         for ($i = 0; $i < 2; $i++) {
