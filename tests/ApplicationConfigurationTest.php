@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\LM;
 
-use LM\Authentifier\Implementation\ApplicationConfiguration;
-use LM\Authentifier\Implementation\Member;
-use LM\Authentifier\Implementation\TestingTokenStorage;
+use LM\AuthAbstractor\Implementation\ApplicationConfiguration;
+use LM\AuthAbstractor\Implementation\Member;
+use LM\AuthAbstractor\Implementation\TestingTokenStorage;
 use PHPUnit\Framework\TestCase;
 
 class ApplicationConfigurationTest extends TestCase
@@ -70,10 +70,6 @@ class ApplicationConfigurationTest extends TestCase
         $this->assertSame(
             'blabla',
             $configuration->getTokenStorage()->getToken('csrf')
-        );
-        $this->assertSame(
-            [],
-            $configuration->getU2fRegistrations('user0')
         );
         $this->assertSame(
             $configuration->isExistingMember('user0'),
