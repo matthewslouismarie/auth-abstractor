@@ -22,13 +22,14 @@ class AuthenticationProcessFactory
      */
     public function createProcess(
         array $challenges,
-        array $options,
+        int $maxNFailedAttempts = 3,
+        ?string $username = null,
         array $additionalData = []
     ): AuthenticationProcess {
         $dataArray = array_merge($additionalData, [
             'used_u2f_key_public_keys' => new ArrayObject([], Scalar::_STR),
             'challenges' => new ArrayObject($challenges, Scalar::_STR),
-            'max_n_failed_attempts' => new IntegerObject($options['max_n_failed_attempts']),
+            'max_n_failed_attempts' => new IntegerObject($maxNFailedAttempts),
             'n_failed_attempts' => new IntegerObject(0),
             'persist_operations' => new ArrayObject([], PersistOperation::class),
             'status' => new Status(Status::ONGOING),
@@ -36,8 +37,8 @@ class AuthenticationProcessFactory
             'new_u2f_registrations' => new ArrayObject([], IU2fRegistration::class),
             'n_u2f_registrations' => new IntegerObject(0),
         ]);
-        if (isset($options['username']) && null !== $options['username']) {
-            $dataArray['username'] = new StringObject($options['username']);
+        if (null !== $username) {
+            $dataArray['username'] = new StringObject($username);
         }
         $typedMap = new TypedMap($dataArray);
 
