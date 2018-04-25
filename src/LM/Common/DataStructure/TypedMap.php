@@ -11,7 +11,7 @@ use LM\Common\Type\TypeCheckerTrait;
  * @todo Should implement a standardised interface.
  * @todo Force items it contains to be serializable?
  */
-class TypedMap
+class TypedMap implements ITypedMap
 {
     use TypeCheckerTrait;
 
@@ -41,7 +41,7 @@ class TypedMap
     /**
      * @todo Add unit-test for it.
      */
-    public function set(string $key, $value, string $type): self
+    public function set(string $key, $value, string $type): ITypedMap
     {
         $this->checkType($value, $type);
         $items = $this->items;
@@ -54,7 +54,7 @@ class TypedMap
      * @todo Add unit-test.
      * @todo Should throw an exception if key already set.
      */
-    public function add(string $key, $value, string $type): self
+    public function add(string $key, $value, string $type): ITypedMap
     {
         return $this->set($key, $value, $type);
     }

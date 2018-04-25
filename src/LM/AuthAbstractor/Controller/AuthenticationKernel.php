@@ -7,6 +7,7 @@ namespace LM\AuthAbstractor\Controller;
 use DI\Container;
 use DI\ContainerBuilder;
 use LM\AuthAbstractor\Configuration\IApplicationConfiguration;
+use LM\AuthAbstractor\Model\IAuthenticationKernel;
 use LM\AuthAbstractor\Model\AuthenticationProcess;
 use LM\AuthAbstractor\Model\AuthentifierResponse;
 use LM\AuthAbstractor\Model\IAuthenticationCallback;
@@ -31,7 +32,7 @@ use Twig_Function;
 use Twig_Loader_Filesystem;
 use Symfony\Component\Validator\Validation;
 
-class AuthenticationKernel
+class AuthenticationKernel implements IAuthenticationKernel
 {
     private $appConfig;
 
