@@ -1,3 +1,5 @@
 #!/bin/sh
 
-ln -s pre-commit.sh .git/hooks/pre-commit
+# @todo use ln instead
+
+cp check-code-quality.sh .git/hooks/pre-commit

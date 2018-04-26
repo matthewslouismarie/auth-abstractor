@@ -3,9 +3,7 @@ php:
   - '7.2'
 install: composer install
 script:
-  - mkdir -p $TRAVIS_BUILD_DIR/build/logs
-  - $TRAVIS_BUILD_DIR/vendor/bin/phpunit
-  - $TRAVIS_BUILD_DIR/vendor/bin/php-cs-fixer fix --dry-run --allow-risky=yes
+  - $TRAVIS_BUILD_DIR/check-code-quality.sh
 
 after_success:
   - travis_retry php vendor/bin/php-coveralls
