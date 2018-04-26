@@ -19,8 +19,10 @@ use LM\AuthAbstractor\Model\IU2fRegistration;
  */
 class U2fAuthenticationManager
 {
+    /** @var U2fRegistrationFactory */
     private $u2fRegistrationFactory;
 
+    /** @var U2fServerGenerator */
     private $u2fServerGenerator;
 
     public function __construct(

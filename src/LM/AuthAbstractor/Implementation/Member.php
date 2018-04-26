@@ -13,11 +13,14 @@ use Serializable;
  */
 class Member implements IMember, Serializable
 {
+    /** @var string */
     private $hashedPassword;
 
+    /** @var string */
     private $username;
 
     /**
+     * @api
      * @param string $hashedPassword The hashed password of the member.
      * @param string $username The member's username.
      */

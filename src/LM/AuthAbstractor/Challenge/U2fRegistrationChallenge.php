@@ -31,12 +31,16 @@ use Twig_Environment;
  */
 class U2fRegistrationChallenge implements IChallenge
 {
+    /** @var FormFactoryInterface */
     private $formFactory;
 
+    /** @var HttpFoundationFactory */
     private $httpFoundationFactory;
 
+    /** @var Twig_Environment */
     private $twig;
 
+    /** @var U2fRegistrationManager */
     private $u2fRegistrationManager;
 
     /**

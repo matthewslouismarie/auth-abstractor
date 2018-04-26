@@ -17,6 +17,7 @@ use LM\Common\Model\StringObject;
  */
 class AuthenticationProcess implements IAuthenticationProcess
 {
+    /** @var TypedMap */
     private $typedMap;
 
     /**

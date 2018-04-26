@@ -23,14 +23,19 @@ use Twig_Environment;
  */
 class PasswordUpdateChallenge implements IChallenge
 {
+    /** @var IApplicationConfiguration */
     private $appConfig;
 
+    /** @var ValidNewPassword */
     private $constraint;
 
+    /** @var FormFactoryInterface */
     private $formFactory;
 
+    /** @var HttpFoundationFactory */
     private $httpFoundationFactory;
 
+    /** @var Twig_Environment */
     private $twig;
 
     /**

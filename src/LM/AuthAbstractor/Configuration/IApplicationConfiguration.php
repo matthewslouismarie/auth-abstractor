@@ -24,8 +24,6 @@ interface IApplicationConfiguration
     public function getAssetUri(string $assetId): string;
 
     /**
-     * @api
-     *
      * This method must return the application ID of the application. It is
      * necessary for U2F challenges to work.
      *
@@ -39,6 +37,7 @@ interface IApplicationConfiguration
      * should be an HTTPS link to the page holding a list of all the application
      * IDs associated with the application.
      *
+     * @api
      * @link https://fidoalliance.org/specs/fido-u2f-v1.2-ps-20170411/fido-u2f-overview-v1.2-ps-20170411.pdf
      * @return string The application ID.
      */

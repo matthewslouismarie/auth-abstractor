@@ -12,15 +12,17 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
  */
 class TokenStorage implements TokenStorageInterface
 {
+    /** @ignore */
     private $token;
 
+    /** @ignore */
     public function getToken()
     {
         return $token;
     }
 
     /**
-     * @todo Forces TypedData to be mutable, great…
+     * @ignore
      */
     public function setToken(TokenInterface $token = null)
     {

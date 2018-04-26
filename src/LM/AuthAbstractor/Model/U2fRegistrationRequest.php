@@ -18,8 +18,10 @@ use Serializable;
  */
 class U2fRegistrationRequest implements Serializable
 {
+    /** @var RegisterRequest */
     private $request;
 
+    /** @var SignRequest[] */
     private $signRequests;
 
     /**

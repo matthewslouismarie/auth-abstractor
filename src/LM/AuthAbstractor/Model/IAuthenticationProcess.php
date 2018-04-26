@@ -30,6 +30,7 @@ interface IAuthenticationProcess extends Serializable
     public function getCurrentChallenge(): string;
 
     /**
+     * @api
      * @deprecated
      * @internal
      * @return TypeMap
@@ -39,6 +40,7 @@ interface IAuthenticationProcess extends Serializable
     public function getTypedMap(): TypedMap;
 
     /**
+     * @api
      * @return int The maximum number of failed attempts in a row allowed before
      * the authentication process fails.
      * @todo The maximum number of failed attempts should be per challenge and
@@ -47,30 +49,35 @@ interface IAuthenticationProcess extends Serializable
     public function getMaxNFailedAttempts(): int;
 
     /**
+     * @api
      * @return IMember The currently logged-in member.
      * @todo Should be able to return null if the user is not logged-in!
      */
     public function getMember(): IMember;
 
     /**
+     * @api
      * @return int The current number of failed attempts the user made. It must
      * go back to zero whenever the user succeeds a submission.
      */
     public function getNFailedAttempts(): int;
 
     /**
+     * @api
      * @return PersistOperation[] An array of operations that the application
      * must persist somehow (e.g. in a database).
      */
     public function getPersistOperations(): array;
 
     /**
+     * @api
      * @return Status The status of the authentication process (ongoing, failed,
      * or succeeded).
      */
     public function getStatus(): Status;
 
     /**
+     * @api
      * @deprecated
      * @return string The username of the currently logged-in user.
      * @todo Delete, since getMember() already exists.
@@ -78,6 +85,7 @@ interface IAuthenticationProcess extends Serializable
     public function getUsername(): string;
 
     /**
+     * @api
      * This method must not modify the current authentication process.
      *
      * @return IAuthenticationProcess This must return a copy of itself with
@@ -86,32 +94,38 @@ interface IAuthenticationProcess extends Serializable
     public function incrementNFailedAttempts(): IAuthenticationProcess;
 
     /**
+     * @api
      * @return bool Whether the authentication process failed.
      */
     public function isFailed(): bool;
 
     /**
+     * @api
      * @return bool Whether the authentication process finished.
      */
     public function isFinished(): bool;
 
     /**
+     * @api
      * @return bool Whether the authentication process is ongoing.
      */
     public function isOngoing(): bool;
 
     /**
+     * @api
      * @return bool Whether the authentication process succeeded.
      */
     public function isSucceeded(): bool;
 
     /**
+     * @api
      * @return IAuthenticationProcess A copy of itself with the number of failed
      * attempts reset to 0.
      */
     public function resetNFailedAttempts(): IAuthenticationProcess;
 
     /**
+     * @api
      * @param int $nFailedAttempts The number of failed attempts.
      * @return IAuthenticationProcess A copy of itself with the updated number
      * of failed attempts.
@@ -119,6 +133,7 @@ interface IAuthenticationProcess extends Serializable
     public function setNFailedAttempts(int $nFailedAttempts): IAuthenticationProcess;
 
     /**
+     * @api
      * @return IAuthenticationProcess A copy of itself set to use the next
      * challenge.
      */

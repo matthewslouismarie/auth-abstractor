@@ -14,6 +14,7 @@ use Firehed\U2F\Server;
  */
 class U2fServerGenerator
 {
+    /** @var string */
     private $appId;
 
     /**

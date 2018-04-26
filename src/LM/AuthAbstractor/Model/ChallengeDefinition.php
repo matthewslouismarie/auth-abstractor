@@ -22,8 +22,10 @@ use Serializable;
  */
 class ChallengeDefinition implements Serializable
 {
+    /** @var string */
     private $classname;
 
+    /** @var int */
     private $number;
 
     public function __construct(string $classname, int $number = 1)

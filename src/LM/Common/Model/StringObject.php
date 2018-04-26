@@ -12,6 +12,7 @@ use UnexpectedValueException;
  */
 class StringObject implements Serializable
 {
+    /** @var string */
     private $string;
 
     /**

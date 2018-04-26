@@ -17,6 +17,7 @@ use UnexpectedValueException;
  */
 class TestingTokenStorage implements TokenStorageInterface
 {
+    /** @var string */
     private $dataDir;
 
     /**

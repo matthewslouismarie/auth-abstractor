@@ -19,6 +19,7 @@ interface IAuthenticationKernel
      * having initialised a new authentication process or retrieved the
      * current authentication process (e.g. from a PHP session).
      *
+     * @api
      * @param ServerRequestInterface $httpRequest The HTTP request.
      * @param AuthenticationProcess $process The current authentication process.
      * @param IAuthenticationCallback $callback A callback to execute if the

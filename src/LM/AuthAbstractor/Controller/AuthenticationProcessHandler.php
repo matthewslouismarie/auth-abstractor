@@ -19,10 +19,17 @@ use LM\AuthAbstractor\Model\IAuthenticationCallback;
  */
 class AuthenticationProcessHandler
 {
+    /** @var IApplicationConfiguration */
     private $appConfig;
 
+    /** @var ContainerInterface */
     private $container;
 
+    /**
+     * @param IApplicationConfiguration $appConfig The configuration of the
+     * application.
+     * @todo Remove $container param.
+     */
     public function __construct(
         IApplicationConfiguration $appConfig,
         ContainerInterface $container

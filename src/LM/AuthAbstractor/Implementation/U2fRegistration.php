@@ -11,12 +11,16 @@ use LM\AuthAbstractor\Model\IU2fRegistration;
  */
 class U2fRegistration implements IU2fRegistration
 {
+    /** @var string */
     private $attestationCertificate;
 
+    /** @var int */
     private $counter;
 
+    /** @var string */
     private $keyHandle;
 
+    /** @var string */
     private $publicKey;
 
     /**

@@ -20,8 +20,10 @@ use Firehed\U2F\SignRequest;
  */
 class U2fRegistrationManager
 {
+    /** @var U2fRegistrationFactory */
     private $u2fRegistrationFactory;
 
+    /** @var U2fServerGenerator */
     private $u2fServerGenerator;
 
     public function __construct(

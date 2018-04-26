@@ -22,12 +22,16 @@ use Twig_Environment;
  */
 class ExistingUsernameChallenge implements IChallenge
 {
+    /** @var IApplicationConfiguration */
     private $appConfig;
 
+    /** @var FormFactoryInterface */
     private $formFactory;
 
+    /** @var HttpFoundationFactory */
     private $httpFoundationFactory;
 
+    /** @var Twig_Environment */
     private $twig;
 
     /**
