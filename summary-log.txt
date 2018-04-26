@@ -1,6 +1,0 @@
-Total: 320
-Killed: 31
-Errored: 13
-Escaped: 18
-Timed Out: 0
-Not Covered: 258
