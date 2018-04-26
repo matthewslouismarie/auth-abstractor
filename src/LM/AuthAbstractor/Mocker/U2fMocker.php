@@ -67,11 +67,11 @@ class U2fMocker
     /**
      * @api
      * @param int $id The index of the U2F registration.
-     * @return IU2fRegistration A U2F registration.
+     * @return mixed[] An array.
      */
-    public function get(int $id): IU2fRegistration
+    public function get(int $id): array
     {
-        return $this->u2fRegistrations->get($id);
+        return $this->u2fRegistrations[$id];
     }
 
     /**
