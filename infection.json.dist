@@ -6,7 +6,7 @@
         ]
     },
     "logs": {
-        "summary": "summary-log.txt",
+        "summary": "tmp/summary-log.txt",
         "text": "tmp/infection-log.txt"
     },
     "tmpDir": "tmp"
