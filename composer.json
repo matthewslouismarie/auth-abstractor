@@ -20,7 +20,8 @@
     },
     "require-dev": {
         "phpunit/phpunit": "^7",
-        "friendsofphp/php-cs-fixer": "^2.11"
+        "friendsofphp/php-cs-fixer": "^2.11",
+        "infection/infection": "^0.8.1"
     },
     "require": {
         "php": ">=7.1.0",
