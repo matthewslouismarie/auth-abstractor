@@ -8,6 +8,11 @@ use LM\Common\Type\TypeCheckerTrait;
 use Serializable;
 use UnexpectedValueException;
 
+/**
+ * Object that provides the features of an array as an object.
+ *
+ * @todo Should implement the standard ArrayObject PHP interface.
+ */
 class ArrayObject implements Serializable
 {
     use TypeCheckerTrait;

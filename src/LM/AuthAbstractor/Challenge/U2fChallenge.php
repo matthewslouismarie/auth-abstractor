@@ -27,6 +27,11 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Twig_Environment;
 use UnexpectedValueException;
 
+/**
+ * A challenge for asking the user to prove their identity with their associated
+ * U2F device. The challenges will be generated from the user's U2F
+ * registrations, which are retrieved from the application configuration.
+ */
 class U2fChallenge implements IChallenge
 {
     private $appConfig;

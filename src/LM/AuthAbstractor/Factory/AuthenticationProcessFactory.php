@@ -14,10 +14,21 @@ use LM\Common\Model\IntegerObject;
 use LM\Common\Model\ArrayObject;
 use LM\Common\Model\StringObject;
 
+/**
+ * This is a factory class aiming at making new authentication processes
+ * easier for the application.
+ *
+ * It takes care of choosing an implementation of IAuthenticationProcess, and
+ * sets up its internals.
+ *
+ * @see \LM\AuthAbstractor\Model\IAuthenticationProcess
+ * @see \LM\AuthAbstractor\Model\AuthenticationProcess
+ */
 class AuthenticationProcessFactory
 {
     /**
      * @todo Put $additionalData in a separate scope.
+     * @todo Should return an IAuthenticationProcess instead of
      */
     public function createProcess(
         array $challenges,

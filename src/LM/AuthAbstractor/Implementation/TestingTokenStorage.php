@@ -9,6 +9,10 @@ use Symfony\Component\Security\Csrf\TokenStorage\TokenStorageInterface;
 use UnexpectedValueException;
 
 /**
+ * This is an implementation of TokenStorageInterface that is used in unit
+ * tests.
+ *
+ * @internal
  * @todo Add one using sessions?
  */
 class TestingTokenStorage implements TokenStorageInterface

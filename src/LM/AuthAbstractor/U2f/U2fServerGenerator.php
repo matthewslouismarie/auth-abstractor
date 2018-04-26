@@ -7,6 +7,11 @@ namespace LM\AuthAbstractor\U2f;
 use LM\AuthAbstractor\Configuration\IApplicationConfiguration;
 use Firehed\U2F\Server;
 
+/**
+ * This class is only a factory to create a Firehed Server object.
+ *
+ * @internal
+ */
 class U2fServerGenerator
 {
     private $appId;

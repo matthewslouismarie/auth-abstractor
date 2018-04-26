@@ -9,6 +9,12 @@ use LM\AuthAbstractor\Implementation\U2fRegistration;
 use LM\AuthAbstractor\Model\IU2fRegistration;
 use LM\Common\Model\ArrayObject;
 
+/**
+ * This class is used for unit testing U2F. It retrieves and instantiates
+ * IU2FRegistration objects.
+ *
+ * @see \LM\AuthAbstractor\Model\IU2fRegistration
+ */
 class U2fMocker
 {
     private $u2fRegistrations;

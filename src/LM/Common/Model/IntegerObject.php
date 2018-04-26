@@ -7,6 +7,9 @@ namespace LM\Common\Model;
 use Serializable;
 use UnexpectedValueException;
 
+/**
+ * Immutable object that represents an integer.
+ */
 class IntegerObject implements Serializable
 {
     private $integer;

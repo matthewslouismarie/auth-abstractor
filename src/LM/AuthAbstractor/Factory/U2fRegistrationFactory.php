@@ -9,7 +9,10 @@ use LM\AuthAbstractor\Implementation\U2fRegistration;
 use LM\AuthAbstractor\Model\IU2fRegistration;
 
 /**
- * @todo Unit tests
+ * This class provides methods Firehed U2F registrations into implementations of
+ * IU2fRegistration, and vice versa.
+ *
+ * @todo Add unit tests.
  */
 class U2fRegistrationFactory
 {

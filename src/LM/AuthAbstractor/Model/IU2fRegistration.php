@@ -7,6 +7,8 @@ namespace LM\AuthAbstractor\Model;
 use Serializable;
 
 /**
+ * Interface for representing a U2F registration.
+ *
  * @todo Add getOwnerId()?
  */
 interface IU2fRegistration extends Serializable

@@ -10,6 +10,13 @@ use Psr\Http\Message\ResponseInterface;
 use LM\AuthAbstractor\Model\IAuthenticationCallback;
 
 /**
+ * This is a convenience implementation of IAuthenticationCallback.
+ *
+ * If the callbacks you define are long, you might want to define your own
+ * implementation of IAuthenticationCallback, for readability and reusability
+ * purposes.
+ *
+ * @see \LM\AuthAbstractor\Model\IAuthenticationCallback
  * @todo Check closure signature?
  */
 class Callback implements IAuthenticationCallback

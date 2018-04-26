@@ -7,6 +7,10 @@ namespace LM\AuthAbstractor\Implementation;
 use LM\AuthAbstractor\Model\IMember;
 use Serializable;
 
+/**
+ * This is a convenience implementation of IMember. It only serves as data
+ * object storing two strings: a username and a hashed password.
+ */
 class Member implements IMember, Serializable
 {
     private $hashedPassword;

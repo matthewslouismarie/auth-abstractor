@@ -6,6 +6,9 @@ namespace LM\AuthAbstractor\Implementation;
 
 use LM\AuthAbstractor\Model\IU2fRegistration;
 
+/**
+ * Implementation of IU2fRegistration. Its strings are all encoded.
+ */
 class U2fRegistration implements IU2fRegistration
 {
     private $attestationCertificate;

@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace LM\AuthAbstractor\Validator;
 
+/**
+ * This class contains methods to validate passwords.
+ */
 class PasswordValidator
 {
     public function hasSpecialChars(string $password): bool

@@ -7,6 +7,14 @@ namespace LM\Common\Enum;
 use InvalidArgumentException;
 use ReflectionClass;
 
+/**
+ * This is a class that enums can inherit for convenience.
+ * 
+ * Any implementation of this class only needs to define constants, and does
+ * not need to define a constructor or any other method.
+ *
+ * @example Scalar.php An implementation.
+ */
 abstract class AbstractEnum implements IEnum
 {
     private $value;

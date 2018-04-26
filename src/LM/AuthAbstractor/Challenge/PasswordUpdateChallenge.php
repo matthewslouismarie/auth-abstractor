@@ -17,6 +17,10 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Twig_Environment;
 
+/**
+ * A challenge allowing the user to update their passwords. The requirements for
+ * the password are defined in the application configuration.
+ */
 class PasswordUpdateChallenge implements IChallenge
 {
     private $appConfig;

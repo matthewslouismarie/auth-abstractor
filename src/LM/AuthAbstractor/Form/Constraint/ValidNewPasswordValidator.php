@@ -7,6 +7,11 @@ namespace LM\AuthAbstractor\Form\Constraint;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
+/**
+ * The validator class associated with ValidNewPassword.
+ *
+ * @see \LM\AuthAbstractor\Form\Constraint\ValidNewPassword
+ */
 class ValidNewPasswordValidator extends ConstraintValidator
 {
     public function validate($password, Constraint $constraint)

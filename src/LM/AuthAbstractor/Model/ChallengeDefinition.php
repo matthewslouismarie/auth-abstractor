@@ -9,9 +9,15 @@ use LM\AuthAbstractor\Challenge\IChallenge;
 use Serializable;
 
 /**
+ * Not used yet. Might be in the future.
+ *
+ * Currently challenges are specified when instantiating the authentication
+ * process as an array FQCN strings. However, sometimes, we want to assign data
+ * to each challenge (e.g. the maximum number of attempts). Storing challenge
+ * definitions instead might be a solution.
+ *
  * @todo Will later be used to specify a maximum number of attempts per
  * challenge.
- * Not used yet. Might be in the future.
  */
 class ChallengeDefinition implements Serializable
 {

@@ -32,6 +32,15 @@ use Twig_Function;
 use Twig_Loader_Filesystem;
 use Symfony\Component\Validator\Validation;
 
+/**
+ * This is the main entry point of the library. It acts as an HTTP middleware.
+ *
+ * It is initialised with the configuration of the application. It can then
+ * be passed an HTTP request among other things and it will return an HTTP
+ * response (among other things).
+ *
+ * @todo Make it implement PSR-15.
+ */
 class AuthenticationKernel implements IAuthenticationKernel
 {
     private $appConfig;

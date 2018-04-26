@@ -11,6 +11,10 @@ use LM\AuthAbstractor\Factory\U2fRegistrationFactory;
 use LM\Common\Model\ArrayObject;
 use LM\AuthAbstractor\Model\IU2fRegistration;
 
+/**
+ * This class is used for generating U2F sign requests, and for processing their
+ * responses.
+ */
 class U2fAuthenticationManager
 {
     private $u2fRegistrationFactory;
