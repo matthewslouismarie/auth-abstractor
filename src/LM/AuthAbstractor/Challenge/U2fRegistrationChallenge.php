@@ -97,9 +97,12 @@ class U2fRegistrationChallenge implements IChallenge
         if ($form->isSubmitted() && $form->isValid()) {
             // try {
             $currentU2fRegistrationRequest = $process
-                    ->getTypedMap()
-                    ->get('current_u2f_registration_request', U2fRegistrationRequest::class)
-                ;
+                ->getTypedMap()
+                ->get('current_u2f_registration_request', U2fRegistrationRequest::class)
+            ;
+            // ob_start(); // tmp
+            // var_dump($form['u2fDeviceResponse']->getData());
+            // file_put_contents('/var/www/html/tmp.txt', ob_get_clean(), FILE_APPEND);
             $u2fRegistration = $this
                 ->u2fRegistrationManager
                 ->getU2fRegistrationFromResponse(
@@ -107,6 +110,9 @@ class U2fRegistrationChallenge implements IChallenge
                     $currentU2fRegistrationRequest->getRequest()
                 )
             ;
+            // ob_start(); // tmp
+            // var_dump($u2fRegistration);
+            // file_put_contents('/var/www/html/tmp.txt', ob_get_clean(), FILE_APPEND);
 
             $typedMap = $process
                 ->getTypedMap()
@@ -150,6 +156,9 @@ class U2fRegistrationChallenge implements IChallenge
                 IU2fRegistration::class
             ))
         ;
+        // ob_start(); // tmp
+        // var_dump($u2fRegistrationRequest); // tmp
+        // file_put_contents('/var/www/html/tmp.txt', ob_get_clean()); // tmp
 
         $httpResponse = new Response($this
             ->twig

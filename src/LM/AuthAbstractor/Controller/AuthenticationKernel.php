@@ -127,6 +127,16 @@ class AuthenticationKernel implements IAuthenticationKernel
     }
 
     /**
+     * Used for unit testing only.
+     *
+     * @internal
+     */
+    public function getContainer(): ContainerInterface
+    {
+        return $this->container;
+    }
+
+    /**
      * @todo Should check type before instantiating authentifier.
      */
     public function processHttpRequest(

@@ -14,16 +14,15 @@ use Firehed\U2F\Server;
  */
 class U2fServerGenerator
 {
-    /** @var string */
-    private $appId;
+    /** @var IApplicationConfiguration */
+    private $appConfig;
 
     /**
-     * @param IApplicationConfiguration $userConfig
-     * @todo Rename $userConfig to $appConfig
+     * @param IApplicationConfiguration $appConfig
      */
-    public function __construct(IApplicationConfiguration $userConfig)
+    public function __construct(IApplicationConfiguration $appConfig)
     {
-        $this->appId = $userConfig->getAppId();
+        $this->appConfig = $appConfig;
     }
 
     /**
@@ -32,10 +31,12 @@ class U2fServerGenerator
     public function getServer(): Server
     {
         $server = new Server();
-        $server
-            ->disableCAVerification()
-            ->setAppId($this->appId)
-        ;
+        if (null === $this->appConfig->getU2fCertificates()) {
+            $server->disableCAVerification();
+        } else {
+            $server->setTrustedCAs($this->appConfig->getU2fCertificates());
+        }
+        $server->setAppId($this->appConfig->getAppId());
 
         return $server;
     }

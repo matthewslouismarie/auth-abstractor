@@ -128,6 +128,11 @@ class ApplicationConfiguration implements IApplicationConfiguration
         return $this->tokenStorage;
     }
 
+    public function getU2fCertificates(): ?array
+    {
+        return null;
+    }
+
     public function getU2fRegistrations(string $username): array
     {
         return ($this->u2fRegistrationFinder)($username);
