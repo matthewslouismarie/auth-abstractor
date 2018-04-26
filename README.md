@@ -39,41 +39,112 @@ The `AuthenticationKernel` returns an HTTP response and a new
 `AuthenticationProcess`. You store the `AuthenticationProcess` somehow (e.g. in
 session), and you send back to the user the HTTP response.
 
+Note: in _auth-abstractor_, by authentication, I mean authentication and
+registration.
+
 
 
 ### Creating an `AuthenticationKernel` object
 
-AuthenticationKernel is the entry point of _auth-abstractor_. To use any of the
-features of _auth-abstractor_, you first need to initialise
-[AuthenticationKernel](https://github.com/matthewslouismarie/auth-abstractor/blob/master/src/LM/Authentifier/Controller/AuthenticationKernel.php) with an implementation of
-[IApplicationConfiguration](https://github.com/matthewslouismarie/auth-abstractor/blob/master/src/LM/Authentifier/Configuration/IApplicationConfiguration.php). AuthenticationKernel is an object that can be
+You need to construct an [AuthenticationKernel](https://matthewslouismarie.github.io/classes/LM.AuthAbstractor.Controller.AuthenticationKernel.html) by passing an implementation of [IApplicationConfiguration](https://matthewslouismarie.github.io/classes/LM.AuthAbstractor.Configuration.IApplicationConfiguration.html) to its constructor. You are not obliged to define your own
+implementation of `IApplicationConfiguration` however. Instead, you can also
+simply pass it a `ApplicationConfiguration` object.
+
+    $kernel = new AuthenticationKernel(new ApplicationConfiguration(
+        'https://example.org', // HTTPS URL of your app (for U2F)
+        'https://example.org/assets', // Assets base URL
+        // This function is responsible for fetching members from the database.
+        // It must return null if the member does not exist.
+        function (string $username) use ($repo): ?IMember {
+            return $repo->findOneBy([
+                'username' => $username,
+            ]);
+        }
+    ));
+
+[IMember](https://matthewslouismarie.github.io/classes/LM.AuthAbstractor.Model.IMember.html)
+is an interface for members (users with an account) of your application. If you
+already have a class that represents your members, you can simply make it
+implements `IMember` as well. Otherwise, you can also use a [convenience
+implementation](https://matthewslouismarie.github.io/classes/LM.AuthAbstractor.Implementation.Member.html).
+
+AuthenticationKernel is an object that can be
 common to your entire web applications, so you can register it as a service if
 your web application supports dependency injection (e.g. Symfony).
 
-## Handling the Authentication Process
+## Creating the Authentication Process
 
-_Authentication process_ corresponds to HTTP cycle for the user to authenticate.
-This can be logging in (entering the username and password) or proving the
-user's identity when the user is already logged in (e.g. entering the password)
-before performing a secure operation, such as transferring money. It can also be
-registering.
+The first time the user arrives on a page, say the login page, the
+authentication process does not exist. So you have to create it. It is advised
+to use the [AuthenticationProcessFactory](https://matthewslouismarie.github.io/classes/LM.AuthAbstractor.Factory.AuthenticationProcessFactory.html) to do that:
 
-Let's suppose you have an HTTP controller for your login page. Your controller
-will be responsible for:
+    $authProcess = (new AuthenticationProcessFactory())->createProcess([
+            CredentialChallenge::class, // class that is part of auth-abstractor
+        ]
+    );
 
-1. Initialise a new AuthenticationProcess object, e.g. when the user arrives
-on the login page, or retrieve it (e.g. from the session). When you initialise
-an AuthenticationProcess object, you need to pass certain parameters such as the
-_challenges_ (e.g. ask for password, U2F device, etc.) and a callback that will
-be executed when the authentication fails or succeeds.
-2. Pass the AuthenticationProcess object to the _processHttpRequest()_ method of
-your AuthenticationKernel object, along with the PSR-7 HTTP request.
-3. Store the AuthenticationProcess object returned by _processHttpRequest()_
-(e.g. in session) and send the HTTP response to the user.
-4. When the _authentication process_ succeeds (the user proved their identity)
-or fails (the user tried too many attempts), your callback is called and will
-return an HTTP response, which _processHttpRequest()_ will return back to the
-controller.
+You pass to `createProcess` an array of challenge class names. A challenge is a
+step in the authentication or registration process (e.g. a page asking for a
+password, or a page asking for the user to plug their U2F device in). These
+classes need to be implementations of [IChallenge](https://matthewslouismarie.github.io/classes/LM.AuthAbstractor.Challenge.IChallenge.html).
+You can define your owns of course. _auth-abstractor_ comes with the following challenges:
+ - `CredentialChallenge`, for asking the user for their username and password,
+ - `CredentialRegistrationChallenge`, for asking the user to create an account
+ and give a valid username and password,
+ - `ExistingUsernameChallenge`, for asking the user for a valid, existing
+ username.
+ - `PasswordChallenge`, for asking the user for their password,
+ - `PasswordUpdateChallenge`, for asking the user to find a new password,
+ - `U2fChallenge`, for asking the user to confirm their identity with their U2F
+ device.
+ - `U2fRegistrationChallenge`, for asking the user to register a new U2F device.
+
+You can combine these (i.e. combine several of these in the array you pass to
+`AuthenticationProcessFactory`. Sometimes, a certain order is necessary: e.g.
+the username of the user must be known before `PasswordChallenge` gets
+processed. One way to do that is to put a `ExistingUsernameChallenge` before.
+
+[`AuthenticationProcessFactory` supports additional, optional parameters](https://matthewslouismarie.github.io/classes/LM.AuthAbstractor.Factory.AuthenticationProcessFactory.html),
+for example, to specify the current user's username.
+
+# Processing the Authentication Process
+
+You now need to call `processHttpRequest` of the AuthenticationKernel.
+
+You pass it: a [PSR-7 representation of the HTTP request](https://www.php-fig.org/psr/psr-7/),
+the created or retrieved authentication process, and a callback.
+
+The callback needs to be an implementation of [IAuthenticationCallback](https://matthewslouismarie.github.io/classes/LM.AuthAbstractor.Model.IAuthenticationCallback.html),
+but you can simply instantiate a [Callback](https://matthewslouismarie.github.io/classes/LM.AuthAbstractor.Implementation.Callback.html) object.
+
+    $authResponse = $kernel->processHttpRequest(
+        $httpRequest,
+        $authProcess, // The $authProcess object just created or retrieved from session
+        new Callback(
+            function ($authProcess) { // if the user fails authenticating
+                new Response('You tried too many login attempts!');
+            },
+            function ($authProcess) { // if the user succeeds logging in
+                $_SESSION['logged_in'] = true;
+                new Response('You\'re logged in!');
+            }
+        )
+    );
+
+[Symfony provides tools for converting the Response and Request to and from PSR-7
+objects.](https://symfony.com/doc/current/components/psr7.html)
+
+You can then store the new `AuthenticationProcess` somehow (e.g. in session) that
+you will retrieve later instead of instantiating a new `AuthenticationProcess`
+object. And of course, you return an HTTP response.
+
+    // store new auth_process in session
+    $_SESSION['auth_process'] = $response->getProcess();
+
+    // display http response to user
+    return $response->getHttpResponse();
+
+[You can see a complete example of the use of _auth-abstractor_ here](https://github.com/matthewslouismarie/security-comparator/blob/41e6a420843d7aa6a00638bf98e1babde0aa2dba/symfony/src/Controller/TmpController.php#L38).
 
 ### Assets
 
@@ -84,3 +155,7 @@ folder which path is given by [getAssetUri()](https://github.com/matthewslouisma
 
 Of course, you can override the U2F views with your very own views which can
 use different JavaScript libraries.
+
+## API
+
+You can browse _auth-abstractor_'s API [here](https://matthewslouismarie.github.io).
