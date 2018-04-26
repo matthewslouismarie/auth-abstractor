@@ -7,7 +7,6 @@ namespace Tests\LM;
 use Exception;
 use LM\AuthAbstractor\Controller\AuthenticationKernel;
 use LM\AuthAbstractor\Implementation\ApplicationConfiguration;
-use LM\AuthAbstractor\Implementation\TestingTokenStorage;
 use PHPUnit\Framework\TestCase;
 
 /**

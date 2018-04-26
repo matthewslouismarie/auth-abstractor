@@ -1,5 +1,7 @@
 # auth-abstractor
 
+[![Build Status](https://travis-ci.org/matthewslouismarie/auth-abstractor.svg?branch=master)](https://travis-ci.org/matthewslouismarie/auth-abstractor)
+
 A PHP library which aims to completely abstract the authentication logic
 from your PHP web application. You won't even have to create the views!
 
@@ -7,19 +9,39 @@ It does so by acting as a middleware. Simply pass it the HTTP request and you
 will get back an HTTP response along with an object of the class
 AuthenticationProcess.
 
-## Installation
+## Features
 
-### Assets
+ - Web-framework-agnostic: _auth-abtractor_ can be used with any web-framework,
+ or without any web-framework at all!
+ - Simple to use: _auth-abstractor_ requires a minimal amount of code, even for
+ handling entire authentication or registration processes (e.g. creating a
+ registration page, or creating a login page).
+ - Powerful features: _auth-abstractor_ almost entirely abstracts the
+ authentication and registration process. Only a few lines of code from your
+ side are sufficient to create a full-fledged registration page, login page,
+ etc. _auth-abstractor_ takes care of displaying the views, hashing passwords,
+ and verifying responses.
+ - Customisable: _auth-abstractor_ can easily be customised and extended. More
+ ways to authenticate the user can easily be added, and default views can be
+ customised or entirely replaced.
 
-In order for U2F registration and authentication to work, you will need
-[google-u2f-api.js](https://www.npmjs.com/package/google-u2f-api.js) and
-[jquery](https://www.npmjs.com/package/jquery). These files need to be in the
-folder which path is given by [getAssetUri()](https://github.com/matthewslouismarie/auth-abstractor/blob/a97f0a64d5f0f8760d133f34afcf2a44ab1aa082/src/LM/Authentifier/Configuration/IApplicationConfiguration.php#L11).
+## How to use it
 
-Of course, you can override the U2F views with your very own views which can
-use different JavaScript libraries.
+### Overview
 
-## Configuration
+To use it, you first need to create an `AuthenticationKernel` object. This
+object can be shared among your entire web application (and can be registered as
+a service). Now, when the user arrives on a page, let's say a login page, you
+need to create a new `AuthenticationProcess` object. You then pass this object,
+along with the HTTP request, to the `AuthenticationKernel` object you created
+earlier.
+The `AuthenticationKernel` returns an HTTP response and a new 
+`AuthenticationProcess`. You store the `AuthenticationProcess` somehow (e.g. in
+session), and you send back to the user the HTTP response.
+
+
+
+### Creating an `AuthenticationKernel` object
 
 AuthenticationKernel is the entry point of _auth-abstractor_. To use any of the
 features of _auth-abstractor_, you first need to initialise
@@ -52,3 +74,13 @@ your AuthenticationKernel object, along with the PSR-7 HTTP request.
 or fails (the user tried too many attempts), your callback is called and will
 return an HTTP response, which _processHttpRequest()_ will return back to the
 controller.
+
+### Assets
+
+In order for U2F registration and authentication to work, you will need
+[google-u2f-api.js](https://www.npmjs.com/package/google-u2f-api.js) and
+[jquery](https://www.npmjs.com/package/jquery). These files need to be in the
+folder which path is given by [getAssetUri()](https://github.com/matthewslouismarie/auth-abstractor/blob/a97f0a64d5f0f8760d133f34afcf2a44ab1aa082/src/LM/Authentifier/Configuration/IApplicationConfiguration.php#L11).
+
+Of course, you can override the U2F views with your very own views which can
+use different JavaScript libraries.
