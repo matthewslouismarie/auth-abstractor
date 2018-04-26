@@ -6,4 +6,4 @@ script:
   - $TRAVIS_BUILD_DIR/check-code-quality.sh
 
 after_success:
-  - travis_retry php vendor/bin/php-coveralls
+  - bash <(curl -s https://codecov.io/bash)
