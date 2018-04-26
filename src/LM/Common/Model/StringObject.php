@@ -14,16 +14,25 @@ class StringObject implements Serializable
 {
     private $string;
 
+    /**
+     * @param string $string The value to initialise the object with.
+     */
     public function __construct(string $string)
     {
         $this->string = $string;
     }
 
+    /**
+     * @return string A string representation of the object.
+     */
     public function toString(): string
     {
         return $this->string;
     }
 
+    /**
+     * @deprecated
+     */
     public function serialize(): string
     {
         return serialize($this->string);

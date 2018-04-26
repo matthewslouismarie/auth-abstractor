@@ -33,6 +33,9 @@ class PasswordUpdateChallenge implements IChallenge
 
     private $twig;
 
+    /**
+     * @internal
+     */
     public function __construct(
         IApplicationConfiguration $appConfig,
         ValidNewPassword $constraint,

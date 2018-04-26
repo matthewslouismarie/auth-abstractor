@@ -19,6 +19,15 @@ class U2fRegistration implements IU2fRegistration
 
     private $publicKey;
 
+    /**
+     * @param string $attestationCertificate The websafe-base64 encoding of the
+     * attestation certificate of the U2F token.
+     * @param int $counter The counter of the U2F token.
+     * @param string $keyHandle The websafe-base64 encoding of the U2F
+     * registration key handle.
+     * @param string $publicKey The websafe-base64 encoding of the U2F
+     * registration public key.
+     */
     public function __construct(
         string $attestationCertificate,
         int $counter,

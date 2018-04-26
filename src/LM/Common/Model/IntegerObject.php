@@ -14,16 +14,26 @@ class IntegerObject implements Serializable
 {
     private $integer;
 
+    /**
+     * @param int $integer The value to initialise the object with.
+     */
     public function __construct(int $integer)
     {
         $this->integer = $integer;
     }
 
+    /**
+     * @deprecated
+     * @todo Delete.
+     */
     public function getInteger(): int
     {
         return $this->integer;
     }
 
+    /**
+     * @return int The integer value of the object.
+     */
     public function toInteger(): int
     {
         return $this->integer;

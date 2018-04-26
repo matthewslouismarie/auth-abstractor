@@ -19,6 +19,10 @@ class U2fMocker
 {
     private $u2fRegistrations;
 
+    /**
+     * @param IApplicationConfiguration $appConfig The configuration of the
+     * application.
+     */
     public function __construct(IApplicationConfiguration $appConfig)
     {
         $items = json_decode(file_get_contents($appConfig->getLibdir().'/u2f_registrations.json'));
@@ -26,6 +30,7 @@ class U2fMocker
     }
 
     /**
+     * @internal
      * @todo $items is mutated!
      */
     public function createFromArray(array $items, ArrayObject $list): ArrayObject
@@ -45,6 +50,11 @@ class U2fMocker
         }
     }
 
+    /**
+     * @api
+     * @param int $id The index of the U2F registration.
+     * @return IU2fRegistration A U2F registration.
+     */
     public function get(int $id): IU2fRegistration
     {
         return $this->u2fRegistrations->get($id);

@@ -24,6 +24,26 @@ use Psr\Http\Message\ServerRequestInterface;
  */
 interface IChallenge
 {
+    /**
+     * This method is called by the library on the current challenge.
+     *
+     * The kernel will call this method on the current challenge object of the
+     * authentication process. Challenges are implementations of IChallenge and
+     * are defined when first instantiating the authentication process. The
+     * method will return an HTTP response, whether the HTTP request was a
+     * submission and whether it failed, and a new authentication process. The
+     * HTTP response will be returned to the application (which should normally
+     * display it to the user).
+     *
+     * @link https://www.php-fig.org/psr/psr-7/
+     * @param AuthenticationProcess $authenticationProcess The current
+     * authentication process when the method starts.
+     * @param null|ServerRequestInterface $httpRequest A PSR-7 representation
+     * of an HTTP request.
+     * @return ChallengeResponse A challenge response.
+     * @todo Replace AuthenticationProcess and ChallengeResponse by
+     * IAuthenticationProcess and IChallengeResponse.
+     */
     public function process(
         AuthenticationProcess $authenticationProcess,
         ?ServerRequestInterface $httpRequest

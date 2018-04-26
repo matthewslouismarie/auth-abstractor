@@ -16,6 +16,13 @@ use LM\AuthAbstractor\Model\IU2fRegistration;
  */
 class U2fRegistrationFactory
 {
+    /**
+     * Converts a Firehed U2F Registration instance into an instance of
+     * IU2fRegistration.
+     *
+     * @param Registration $registration A Firehed U2F registration.
+     * @return IU2fRegistration
+     */
     public function fromFirehed(Registration $registration): IU2fRegistration
     {
         return new U2fRegistration(
@@ -27,6 +34,13 @@ class U2fRegistrationFactory
         ;
     }
 
+    /**
+     * Converts a IU2fRegistration instance into a Firehed Registration
+     * instance.
+     *
+     * @param IU2fRegistration $registration
+     * @return Registration
+     */
     public function toFirehed(IU2fRegistration $registration): Registration
     {
         return (new Registration())

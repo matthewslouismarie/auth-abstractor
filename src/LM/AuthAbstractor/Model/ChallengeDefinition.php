@@ -16,6 +16,7 @@ use Serializable;
  * to each challenge (e.g. the maximum number of attempts). Storing challenge
  * definitions instead might be a solution.
  *
+ * @ignore
  * @todo Will later be used to specify a maximum number of attempts per
  * challenge.
  */

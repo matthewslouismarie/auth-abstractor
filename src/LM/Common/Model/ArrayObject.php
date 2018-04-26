@@ -23,6 +23,11 @@ class ArrayObject implements Serializable
 
     private $type;
 
+    /**
+     * @param mixed[] $items An array of items to initialise the objec with. The
+     * constructor checks they are of the type $type.
+     * @param string $type The type of the items of the array object.
+     */
     public function __construct(array $items, string $type)
     {
         $this->items = [];
@@ -43,6 +48,9 @@ class ArrayObject implements Serializable
     }
 
     /**
+     * Returns a copy of the object with a value added to it.
+     *
+     * @param mixed $value The item to add to the array object.
      * @todo Rename to append.
      * @todo Remove $type parameter.
      */
@@ -68,6 +76,7 @@ class ArrayObject implements Serializable
     }
 
     /**
+     * @todo Delete
      * @todo Rename to add.
      * @todo Remove type parameter.
      */
@@ -80,12 +89,16 @@ class ArrayObject implements Serializable
         return new self($items, $this->type);
     }
 
+    /**
+     * @return bool Whether the array object's current item has a successor.
+     */
     public function hasNextItem(): bool
     {
         return $this->currentItemIndex + 1 < count($this->items);
     }
 
     /**
+     * @param string $key The key of the item.
      * @todo Remove type parameter.
      */
     public function get($key, string $type = null)
@@ -96,6 +109,9 @@ class ArrayObject implements Serializable
         return $item;
     }
 
+    /**
+     * @return $mixed The current item.
+     */
     public function getCurrentItem(string $class)
     {
         $currentItem = $this->items[$this->currentItemIndex];
@@ -112,11 +128,17 @@ class ArrayObject implements Serializable
         $this->currentItemIndex++;
     }
 
+    /**
+     * @return int The number of items the object holds.
+     */
     public function getSize(): int
     {
         return count($this->items);
     }
 
+    /**
+     * @return array An array representation of the object.
+     */
     public function toArray(string $type): array
     {
         foreach ($this->items as $item) {

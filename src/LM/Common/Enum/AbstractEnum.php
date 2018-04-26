@@ -9,7 +9,7 @@ use ReflectionClass;
 
 /**
  * This is a class that enums can inherit for convenience.
- * 
+ *
  * Any implementation of this class only needs to define constants, and does
  * not need to define a constructor or any other method.
  *
@@ -20,6 +20,8 @@ abstract class AbstractEnum implements IEnum
     private $value;
 
     /**
+     * @return string[] An array of constants defined by the enum.
+     *
      * @todo Shouldn't static methods be avoided?
      */
     public static function getConstants()
@@ -29,6 +31,12 @@ abstract class AbstractEnum implements IEnum
         return $reflectionClass->getConstants();
     }
 
+    /**
+     * This constructor saves subclasses of this class the burden of defining
+     * a constructor.
+     * @param string $value The value to initialise the enum with. It is checked
+     * for correctness. (It needs to be among the constants.)
+     */
     public function __construct(string $value)
     {
         if (!in_array($value, static::getConstants(), true)) {

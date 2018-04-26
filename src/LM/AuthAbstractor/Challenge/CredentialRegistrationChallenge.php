@@ -46,6 +46,7 @@ class CredentialRegistrationChallenge implements IChallenge
     }
 
     /**
+     * @internal
      * @todo Check for password complexity.
      */
     public function process(

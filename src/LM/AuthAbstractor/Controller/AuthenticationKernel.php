@@ -48,6 +48,10 @@ class AuthenticationKernel implements IAuthenticationKernel
     private $container;
 
     /**
+     * @param IApplicationConfiguration $appConfig The configuration of the
+     * application. It needs to be an implementation of
+     * IApplicationConfiguration. You are not obliged to define your own
+     * implementation, and can just use the Configuration class for convenience.
      * @todo Ensure container keeps and reuses objects.
      * @todo Form validation doesn't work. Delete?
      */

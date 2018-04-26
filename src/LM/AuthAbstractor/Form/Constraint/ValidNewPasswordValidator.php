@@ -14,6 +14,11 @@ use Symfony\Component\Validator\ConstraintValidator;
  */
 class ValidNewPasswordValidator extends ConstraintValidator
 {
+    /**
+     * Validates a given password and adds errors to the form if it has errors.
+     *
+     * @internal
+     */
     public function validate($password, Constraint $constraint)
     {
         $pwdValidator = $constraint->getPwdValidator();
@@ -53,6 +58,9 @@ class ValidNewPasswordValidator extends ConstraintValidator
         }
     }
 
+    /**
+     * @internal
+     */
     private function addError(string $message, string $password): void
     {
         $this

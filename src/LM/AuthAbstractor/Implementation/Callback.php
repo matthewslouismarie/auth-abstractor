@@ -25,6 +25,15 @@ class Callback implements IAuthenticationCallback
 
     private $successClosure;
 
+    /**
+     * @param Closure $failureClosure The closure to call if the authentication
+     * process fails. It must accept an AuthenticationProcess as an argument,
+     * and return a ResponseInterface.
+     * @param Closure $successClosure The closure to call if the authentication
+     * process succeeds. It must accept an AuthenticationProcess as an argument,
+     * and return a ResponseInterface.
+     * @todo Should actually accept IAuthenticationProcesses.
+     */
     public function __construct(Closure $failureClosure, Closure $successClosure)
     {
         $this->failureClosure = $failureClosure;

@@ -39,6 +39,9 @@ class U2fRegistrationChallenge implements IChallenge
 
     private $u2fRegistrationManager;
 
+    /**
+     * @internal
+     */
     public function __construct(
         FormFactoryInterface $formFactory,
         HttpFoundationFactory $httpFoundationFactory,
@@ -54,6 +57,7 @@ class U2fRegistrationChallenge implements IChallenge
     }
 
     /**
+     * @internal
      * @todo Maybe it should convert u2fRegistrations to ArrayObject, and then
      * U2fRegistrationManager would also take an ArrayObject as parameter.
      * @todo Handle invalid responses.
