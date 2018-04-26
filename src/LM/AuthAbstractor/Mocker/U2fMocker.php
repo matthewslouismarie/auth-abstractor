@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace LM\AuthAbstractor\Mocker;
 
+use Firehed\U2F\RegisterRequest;
 use LM\AuthAbstractor\Configuration\IApplicationConfiguration;
 use LM\AuthAbstractor\Implementation\U2fRegistration;
 use LM\AuthAbstractor\Model\IU2fRegistration;
@@ -41,12 +42,21 @@ class U2fMocker
     {
         if (0 !== count($items)) {
             $item = array_pop($items);
-            $list[$item['id']] = new U2fRegistration(
+            $list[$item['id']]['u2fRegistration'] = new U2fRegistration(
                 $item['u2fRegistration']['attestationCertificate'],
                 $item['u2fRegistration']['counter'],
                 $item['u2fRegistration']['keyHandle'],
                 $item['u2fRegistration']['publicKey']
             );
+            if (isset($item['registerRequest'])) {
+                $list[$item['id']]['registerRequest'] = (new RegisterRequest())
+                    ->setAppId($item['registerRequest']['appId'])
+                    ->setChallenge($item['registerRequest']['challenge'])
+                ;
+            }
+            if (isset($item['registerResponse'])) {
+                $list[$item['id']]['registerResponseStr'] = json_encode($item['registerResponse']);
+            }
 
             return $this->createFromArray($items, $list);
         } else {

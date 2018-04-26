@@ -22,6 +22,10 @@ class U2fMockerTest extends TestCase
             ->get(U2fMocker::class)
         ;
 
-        $this->assertSame(2, count($u2fMocker->getU2fRegistrations()));
+        $nU2fRegistrations = count(
+            json_decode(file_get_contents(__DIR__.'/../u2f_registrations.json'))
+        );
+
+        $this->assertSame($nU2fRegistrations, count($u2fMocker->getU2fRegistrations()));
     }
 }
