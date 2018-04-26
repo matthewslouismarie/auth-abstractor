@@ -48,7 +48,7 @@ registration.
 
 You need to construct an [AuthenticationKernel](https://matthewslouismarie.github.io/classes/LM.AuthAbstractor.Controller.AuthenticationKernel.html) by passing an implementation of [IApplicationConfiguration](https://matthewslouismarie.github.io/classes/LM.AuthAbstractor.Configuration.IApplicationConfiguration.html) to its constructor. You are not obliged to define your own
 implementation of `IApplicationConfiguration` however. Instead, you can also
-simply pass it a `ApplicationConfiguration` object.
+simply pass it a [`ApplicationConfiguration`](https://matthewslouismarie.github.io/classes/LM.AuthAbstractor.Implementation.ApplicationConfiguration.html) object.
 
     $kernel = new AuthenticationKernel(new ApplicationConfiguration(
         'https://example.org', // HTTPS URL of your app (for U2F)
@@ -68,11 +68,11 @@ already have a class that represents your members, you can simply make it
 implements `IMember` as well. Otherwise, you can also use a [convenience
 implementation](https://matthewslouismarie.github.io/classes/LM.AuthAbstractor.Implementation.Member.html).
 
-AuthenticationKernel is an object that can be
+`AuthenticationKernel` is an object that can be
 common to your entire web applications, so you can register it as a service if
 your web application supports dependency injection (e.g. Symfony).
 
-## Creating the Authentication Process
+### Creating the Authentication Process
 
 The first time the user arrives on a page, say the login page, the
 authentication process does not exist. So you have to create it. It is advised
@@ -107,7 +107,7 @@ processed. One way to do that is to put a `ExistingUsernameChallenge` before.
 [`AuthenticationProcessFactory` supports additional, optional parameters](https://matthewslouismarie.github.io/classes/LM.AuthAbstractor.Factory.AuthenticationProcessFactory.html),
 for example, to specify the current user's username.
 
-# Processing the Authentication Process
+### Processing the Authentication Process
 
 You now need to call `processHttpRequest` of the AuthenticationKernel.
 
@@ -146,6 +146,28 @@ object. And of course, you return an HTTP response.
 
 [You can see a complete example of the use of _auth-abstractor_ here](https://github.com/matthewslouismarie/security-comparator/blob/41e6a420843d7aa6a00638bf98e1babde0aa2dba/symfony/src/Controller/TmpController.php#L38).
 
+### Persisting the changes
+
+_auth-abstractor_ never changes your application directly. It does not know
+whether what kind of DBMS you're using, or even if you use a database at all!
+However, at some point, it needs to be able to tell you of changes you should
+persist. For example, if you create an authentication process with the
+`CredentialRegistrationChallenge`, you need to persist somewhere the member who
+created their account!
+
+The way to do that is simply to call getPersistOperation() on the
+AuthenticationProcess object. From the callback's handleSuccessfulProcess()
+method:
+
+    foreach ($authProcess->getPersistOperations() as $operation) {
+        if ($operation->getType()->is(new Operation(Operation::CREATE))) {
+            $member = $operation->getObject();
+            if (is_a($member, IMember::class)) {
+                // Saves $member in the database
+            }
+        }
+    }
+
 ### Assets
 
 In order for U2F registration and authentication to work, you will need
@@ -156,6 +178,6 @@ folder which path is given by [getAssetUri()](https://github.com/matthewslouisma
 Of course, you can override the U2F views with your very own views which can
 use different JavaScript libraries.
 
-## API
+## API Documentation
 
 You can browse _auth-abstractor_'s API [here](https://matthewslouismarie.github.io).
