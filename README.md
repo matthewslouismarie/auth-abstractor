@@ -10,6 +10,10 @@ It does so by acting as a middleware. Simply pass it the HTTP request and you
 will get back an HTTP response along with an object of the class
 AuthenticationProcess.
 
+## Documentation
+
+You can browse _auth-abstractor_'s API documentation [here](https://matthewslouismarie.github.io).
+
 ## Features
 
  - Web-framework-agnostic: _auth-abtractor_ can be used with any web-framework,
@@ -178,7 +182,3 @@ folder which path is given by [getAssetUri()](https://github.com/matthewslouisma
 
 Of course, you can override the U2F views with your very own views which can
 use different JavaScript libraries.
-
-## API Documentation
-
-You can browse _auth-abstractor_'s API [here](https://matthewslouismarie.github.io).
