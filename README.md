@@ -1,7 +1,8 @@
 # auth-abstractor
 
 [![Build Status](https://travis-ci.org/matthewslouismarie/auth-abstractor.svg?branch=master)](https://travis-ci.org/matthewslouismarie/auth-abstractor)
-[![Coverage Status](https://coveralls.io/repos/github/matthewslouismarie/auth-abstractor/badge.svg?branch=master)][![codecov](https://codecov.io/gh/matthewslouismarie/auth-abstractor/branch/master/graph/badge.svg)](https://codecov.io/gh/matthewslouismarie/auth-abstractor)
+[![codecov](https://codecov.io/gh/matthewslouismarie/auth-abstractor/branch/master/graph/badge.svg)](https://codecov.io/gh/matthewslouismarie/auth-abstractor)
+![Mutation Score](https://img.shields.io/badge/mutation%20score->70%25-brightgreen.svg)
 
 A PHP library which aims to completely abstract the authentication logic
 from your PHP web application. You won't even have to create the views!
