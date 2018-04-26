@@ -16,5 +16,26 @@
             "keyHandle": "9IgNQAg96imeXajKiWT0OAS7yAigK2/6AXHok9OyRbb0GPQCgOAaF44/hHP5N3U9C3Gg68VQmchcOJ7rB9LgWg==",
             "publicKey": "BCzatKhC90BuFFmpi26F6srgJKvuZmhBNOIkiMkzPMP0QsXJmIlgv0Br0AdzShXC7ipQvl/aile1VHhevbatBT8="
         }
+    },
+    {
+        "id": 2,
+        "registerRequest": {
+            "appId": "https://172.16.238.10",
+            "challenge": "vBlV5WwHuWrww-nlGV5aOw",
+            "version": "U2F_V2"
+        },
+        "registerResponse": {
+            "registrationData": "BQQRcVQiTvOX7L8mlUYeCVV6PTYgGf0nwt3Mb7m5ZtTBU5y7KYY38lltQrxWw-_NLAqXLUbbD06DSvQx_580pyF9QEWQaOyH99nWZpEc1YjmR63jiXgD-eKa9sOzpKC69u8vyf5kVUBLI8EHs4vVws8OBpRGwgl9KFnudBY0VHljQz0wggJKMIIBMqADAgECAgQSSnL-MA0GCSqGSIb3DQEBCwUAMC4xLDAqBgNVBAMTI1l1YmljbyBVMkYgUm9vdCBDQSBTZXJpYWwgNDU3MjAwNjMxMCAXDTE0MDgwMTAwMDAwMFoYDzIwNTAwOTA0MDAwMDAwWjAsMSowKAYDVQQDDCFZdWJpY28gVTJGIEVFIFNlcmlhbCAyNDk0MTQ5NzIxNTgwWTATBgcqhkjOPQIBBggqhkjOPQMBBwNCAAQ9ixu9L8v2CG4QdHFgFGhIQVPBxtO0topehV5uQHV-4ivNiYi_O-_XzfIcsL9dehUNhEr-mBA8bGYH2fquKHwCozswOTAiBgkrBgEEAYLECgIEFTEuMy42LjEuNC4xLjQxNDgyLjEuMTATBgsrBgEEAYLlHAIBAQQEAwIFIDANBgkqhkiG9w0BAQsFAAOCAQEAoU8e6gB29rhHahCivnLmDQJxu0ZbLfv8fBvRLTUZiZFwMmMdeV0Jf6MKJqMlY06FchvC0BqGMD9rwHXlmXMZ4SIUiwSW7sjR9PlM9BEN5ibCiUQ9Hw9buyOcoT6B0dWqnfWvjjYSZHW_wjrwYoMVclJ2L_aIebzw71eNVdZ_lRtPMrY8iupbD5nGfX2BSn_1pvUt-D6JSjpdnIuC5_i8ja9MgBdf-Jcv2nkzPsRl2AbqzJSPG6siBFqVVYpIwgIm2sAD1B-8ngXqKKa7XhCkneBgoKT2omdqNNaMSr6MYYdDVbkCfoKMqeBksALWLo2M8HRJIXU9NePIfF1XeUU-dzBGAiEAvA0RkteTaCFyo1kunmNvxQTnUknMd5-jkG5dan3QRRgCIQChjQMbKNq24OuhiGcYOQIBNbcHkSAzoQvWwE7ot0uLpQ",
+            "version":"U2F_V2",
+            "challenge":"vBlV5WwHuWrww-nlGV5aOw",
+            "appId":"https://172.16.238.10",
+            "clientData":"eyJ0eXAiOiJuYXZpZ2F0b3IuaWQuZmluaXNoRW5yb2xsbWVudCIsImNoYWxsZW5nZSI6InZCbFY1V3dIdVdyd3ctbmxHVjVhT3ciLCJvcmlnaW4iOiJodHRwczovLzE3Mi4xNi4yMzguMTAiLCJjaWRfcHVia2V5IjoidW51c2VkIn0"
+        },
+        "u2fRegistration": {
+            "attestationCertificate": "MIICSjCCATKgAwIBAgIEEkpy/jANBgkqhkiG9w0BAQsFADAuMSwwKgYDVQQDEyNZdWJpY28gVTJGIFJvb3QgQ0EgU2VyaWFsIDQ1NzIwMDYzMTAgFw0xNDA4MDEwMDAwMDBaGA8yMDUwMDkwNDAwMDAwMFowLDEqMCgGA1UEAwwhWXViaWNvIFUyRiBFRSBTZXJpYWwgMjQ5NDE0OTcyMTU4MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEPYsbvS/L9ghuEHRxYBRoSEFTwcbTtLaKXoVebkB1fuIrzYmIvzvv183yHLC/XXoVDYRK/pgQPGxmB9n6rih8AqM7MDkwIgYJKwYBBAGCxAoCBBUxLjMuNi4xLjQuMS40MTQ4Mi4xLjEwEwYLKwYBBAGC5RwCAQEEBAMCBSAwDQYJKoZIhvcNAQELBQADggEBAKFPHuoAdva4R2oQor5y5g0CcbtGWy37/Hwb0S01GYmRcDJjHXldCX+jCiajJWNOhXIbwtAahjA/a8B15ZlzGeEiFIsElu7I0fT5TPQRDeYmwolEPR8PW7sjnKE+gdHVqp31r442EmR1v8I68GKDFXJSdi/2iHm88O9XjVXWf5UbTzK2PIrqWw+Zxn19gUp/9ab1Lfg+iUo6XZyLguf4vI2vTIAXX/iXL9p5Mz7EZdgG6syUjxurIgRalVWKSMICJtrAA9QfvJ4F6iimu14QpJ3gYKCk9qJnajTWjEq+jGGHQ1W5An6CjKngZLAC1i6NjPB0SSF1PTXjyHxdV3lFPnc=",
+            "counter": 0,
+            "keyHandle": "RZBo7If32dZmkRzViOZHreOJeAP54pr2w7OkoLr27y/J/mRVQEsjwQezi9XCzw4GlEbCCX0oWe50FjRUeWNDPQ==",
+            "publicKey": "BBFxVCJO85fsvyaVRh4JVXo9NiAZ/SfC3cxvublm1MFTnLsphjfyWW1CvFbD780sCpctRtsPToNK9DH/nzSnIX0="
+        }
     }
 ]
