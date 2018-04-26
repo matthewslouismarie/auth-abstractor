@@ -44,6 +44,9 @@ class U2fChallenge implements IChallenge
 
     private $u2fAuthenticationManager;
 
+    /**
+     * @internal
+     */
     public function __construct(
         IApplicationConfiguration $appConfig,
         FormFactoryInterface $formFactory,
@@ -59,7 +62,7 @@ class U2fChallenge implements IChallenge
     }
 
     /**
-     * @todo Store IU2fRegistration objects instead.
+     * @internal
      */
     public function process(
         AuthenticationProcess $process,

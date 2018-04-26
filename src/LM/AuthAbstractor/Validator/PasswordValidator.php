@@ -9,6 +9,12 @@ namespace LM\AuthAbstractor\Validator;
  */
 class PasswordValidator
 {
+    /**
+     * Validates that a password contains special characters.
+     *
+     * @param string $password The password we want to validate.
+     * @return bool Whether the password is valid or not.
+     */
     public function hasSpecialChars(string $password): bool
     {
         switch (preg_match('/[^a-zA-Z0-9]/', $password)) {

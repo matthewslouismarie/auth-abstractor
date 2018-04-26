@@ -45,6 +45,7 @@ class CredentialChallenge implements IChallenge
     }
 
     /**
+     * @internal
      * @todo Store the registrations in the typed amp differently.
      * @todo Support for multiple key authentications.
      * @todo Remove break statements.

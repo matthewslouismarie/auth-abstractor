@@ -16,11 +16,18 @@ class U2fServerGenerator
 {
     private $appId;
 
+    /**
+     * @param IApplicationConfiguration $userConfig
+     * @todo Rename $userConfig to $appConfig
+     */
     public function __construct(IApplicationConfiguration $userConfig)
     {
         $this->appId = $userConfig->getAppId();
     }
 
+    /**
+     * @return Server An instance of Firehed server.
+     */
     public function getServer(): Server
     {
         $server = new Server();

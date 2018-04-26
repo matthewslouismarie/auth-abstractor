@@ -19,6 +19,9 @@ class TestingTokenStorage implements TokenStorageInterface
 {
     private $dataDir;
 
+    /**
+     * @param string $projectRootPath The root directory to the project.
+     */
     public function __construct(string $projectRootPath)
     {
         if (!file_exists($projectRootPath.'/tmp') && !mkdir($projectRootPath.'/tmp', 0744)) {

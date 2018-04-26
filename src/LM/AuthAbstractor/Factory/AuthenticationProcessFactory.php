@@ -27,8 +27,23 @@ use LM\Common\Model\StringObject;
 class AuthenticationProcessFactory
 {
     /**
+     * This method can be used to instantiate new authentication processes.
+     *
+     * @api
+     * @param string[] $challenges An array of FQCNs of challenges
+     * (implementations of IChallenge).
+     * @param int $maxNFailedAttempts The maximum number of attempts users
+     * can try in a row before the authentication process fails.
+     * @param null|string $username The username of the user, null if the user
+     * is not logged in yet.
+     * @param mixed[] $additionalData Additional data that can is
+     * application-specific and can be retrieved later by the callback. This
+     * data shouldn't be used by any challenge.
+     * @return AuthenticationProcess A new authentication process.
+     * @see \LM\AuthAbstractor\Challenge\IChallenge
      * @todo Put $additionalData in a separate scope.
      * @todo Should return an IAuthenticationProcess instead of
+     * AuthenticationProcess.
      */
     public function createProcess(
         array $challenges,

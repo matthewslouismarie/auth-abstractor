@@ -15,6 +15,8 @@ use Firehed\U2F\SignRequest;
 /**
  * This class is used for generating U2F register requests and processing their
  * responses.
+ *
+ * @internal
  */
 class U2fRegistrationManager
 {
@@ -30,6 +32,12 @@ class U2fRegistrationManager
         $this->u2fServerGenerator = $u2fServerGenerator;
     }
 
+    /**
+     * Generates a new U2F register requset.
+     *
+     * @param null|ArrayObject $registrations An array of IU2fRegistration.
+     * @todo Use an ArrayObject instead?
+     */
     public function generate(?ArrayObject $registrations = null): U2fRegistrationRequest
     {
         $server = $this
@@ -53,6 +61,14 @@ class U2fRegistrationManager
         return new U2fRegistrationRequest($request, $signRequests);
     }
 
+    /**
+     * Verifies and returns a new U2F registration from a response.
+     *
+     * @param string $u2fKeyResponse The response from the U2F token.
+     * @param RegisterRequest $request The U2F register request.
+     * @return IU2fRegistration The new U2F registration.
+     * @todo Rename $u2fKeyResponse to $u2fTokenResponse
+     */
     public function getU2fRegistrationFromResponse(
         string $u2fKeyResponse,
         RegisterRequest $request

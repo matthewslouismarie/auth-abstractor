@@ -17,17 +17,27 @@ class Member implements IMember, Serializable
 
     private $username;
 
+    /**
+     * @param string $hashedPassword The hashed password of the member.
+     * @param string $username The member's username.
+     */
     public function __construct(string $hashedPassword, string $username)
     {
         $this->hashedPassword = $hashedPassword;
         $this->username = $username;
     }
 
+    /**
+     * @return string The hashed password of the member.
+     */
     public function getHashedPassword(): string
     {
         return $this->hashedPassword;
     }
 
+    /**
+     * @return string The username of the member.
+     */
     public function getUsername(): string
     {
         return $this->username;

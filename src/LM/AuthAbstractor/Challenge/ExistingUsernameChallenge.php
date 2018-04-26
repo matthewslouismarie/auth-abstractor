@@ -45,6 +45,9 @@ class ExistingUsernameChallenge implements IChallenge
         $this->twig = $twig;
     }
 
+    /**
+     * @internal
+     */
     public function process(
         AuthenticationProcess $process,
         ?ServerRequestInterface $httpRequest

@@ -26,6 +26,8 @@ use Closure;
  */
 class ApplicationConfiguration implements IApplicationConfiguration
 {
+    private $appId;
+
     private $assetBaseUri;
 
     private $composerDir;
@@ -40,6 +42,21 @@ class ApplicationConfiguration implements IApplicationConfiguration
 
     private $u2fRegistrationFinder;
 
+    /**
+     * @param string $appId The application ID of the application. This is used
+     * for U2F challenges. The application ID is either:
+     *  - The ID of the mobile application, if the application is a mobile
+     * application. The format of it differs on Android and on Apple devices.
+     *  - The origin of the website (HTTPS protocol + domain name + port).
+     *  - A link to an HTTPS link listing all the application IDs of the
+     * application.
+     * @param string $assetBaseUri The local path in which assets are stored
+     * (i.e JavaScript files and CSS files).
+     * @param Closure $memberFinder A callable to find a user from their
+     * username. It must return null if the user does not exist.
+     * @param null|string $customTwigDir A custom Twig directory for overriding
+     * all, or some templates that come with auth-abstractor by default.
+     */
     public function __construct(
         string $appId,
         string $assetBaseUri,

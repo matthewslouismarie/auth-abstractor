@@ -8,6 +8,8 @@ namespace LM\Common\DataStructure;
  * This interface defines immutable maps that check the type of objects added
  * and removed from it.
  *
+ * @deprecated
+ * @internal
  * @todo The type should be set at construction time and left unchanged and
  * unspecified after.
  */

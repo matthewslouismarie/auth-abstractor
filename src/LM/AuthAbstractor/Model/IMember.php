@@ -10,9 +10,13 @@ namespace LM\AuthAbstractor\Model;
 interface IMember
 {
     /**
+     * @return string The member's username.
      * @todo Should it be id instead?
      */
     public function getUsername(): string;
 
+    /**
+     * @return string The member's hashed pasword.
+     */
     public function getHashedPassword(): string;
 }

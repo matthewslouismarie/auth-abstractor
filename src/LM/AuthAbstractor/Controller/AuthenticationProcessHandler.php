@@ -32,6 +32,7 @@ class AuthenticationProcessHandler
     }
 
     /**
+     * Used by the kernel to "apply" the current HTTP request on the current challenge.
      * @todo Remove callback from authentication process object.
      */
     public function handleAuthenticationProcess(

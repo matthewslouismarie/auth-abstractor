@@ -31,6 +31,9 @@ class PasswordChallenge implements IChallenge
 
     private $twig;
 
+    /**
+     * @internal
+     */
     public function __construct(
         IApplicationConfiguration $appConfig,
         FormFactoryInterface $formFactory,
@@ -43,6 +46,9 @@ class PasswordChallenge implements IChallenge
         $this->twig = $twig;
     }
 
+    /**
+     * @internal
+     */
     public function process(
         AuthenticationProcess $process,
         ?ServerRequestInterface $httpRequest

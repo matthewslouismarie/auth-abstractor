@@ -21,17 +21,28 @@ class PersistOperation implements Serializable
 
     private $operation;
 
+    /**
+     * @param Serializable $object The entity that needs to be persisted.
+     * @param Operation $operation The type of persistence (update, delete, or
+     * create).
+     */
     public function __construct(Serializable $object, Operation $operation)
     {
         $this->object = $object;
         $this->operation = $operation;
     }
 
+    /**
+     * @return Operation The type of persistence.
+     */
     public function getType(): Operation
     {
         return $this->operation;
     }
 
+    /**
+     * @return Serializable The entity to persist.
+     */
     public function getObject(): Serializable
     {
         return $this->object;

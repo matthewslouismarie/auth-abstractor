@@ -21,6 +21,9 @@ class ValidNewPassword extends Constraint
 
     private $pwdValidator;
 
+    /**
+     * @internal
+     */
     public function __construct(
         IApplicationConfiguration $config,
         PasswordValidator $pwdValidator
@@ -29,11 +32,20 @@ class ValidNewPassword extends Constraint
         $this->pwdValidator = $pwdValidator;
     }
 
+    /**
+     * @return IApplicationConfiguration The configuration of the application.
+     */
     public function getConfig(): IApplicationConfiguration
     {
         return $this->config;
     }
 
+    /**
+     * @return PasswordValidator The PasswordValidator instance used for
+     * validating the password in ValidNewPasswordValidator.
+     *
+     * @see ValidNewPasswordValidator
+     */
     public function getPwdValidator(): PasswordValidator
     {
         return $this->pwdValidator;

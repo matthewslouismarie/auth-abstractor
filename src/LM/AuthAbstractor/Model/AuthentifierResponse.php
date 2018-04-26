@@ -18,6 +18,10 @@ class AuthentifierResponse
 
     private $response;
 
+    /**
+     * @param AuthenticationProcess $process The current authentication process.
+     * @param null|ResponseInterface $response The HTTP response.
+     */
     public function __construct(
         AuthenticationProcess $process,
         ?ResponseInterface $response
@@ -26,11 +30,17 @@ class AuthentifierResponse
         $this->response = $response;
     }
 
+    /**
+     * @return AuthenticationProcess The authentication process.
+     */
     public function getProcess(): AuthenticationProcess
     {
         return $this->process;
     }
 
+    /**
+     * @return null|ResponseInterface The HTTP response.
+     */
     public function getHttpResponse(): ?ResponseInterface
     {
         return $this->response;
