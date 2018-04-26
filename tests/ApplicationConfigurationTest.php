@@ -4,10 +4,15 @@ declare(strict_types=1);
 
 namespace Tests\LM;
 
+use LM\AuthAbstractor\Test\KernelMocker;
+use LM\AuthAbstractor\U2f\U2fServerGenerator;
 use LM\AuthAbstractor\Implementation\ApplicationConfiguration;
 use LM\AuthAbstractor\Implementation\Member;
 use LM\AuthAbstractor\Implementation\TestingTokenStorage;
+use LM\AuthAbstractor\Mocker\U2fMocker;
+use LM\AuthAbstractor\U2f\U2fRegistrationManager;
 use PHPUnit\Framework\TestCase;
+use Firehed\U2F\SecurityException;
 
 class ApplicationConfigurationTest extends TestCase
 {
@@ -80,5 +85,72 @@ class ApplicationConfigurationTest extends TestCase
             $configuration->isExistingMember('user1'),
             false
         );
+    }
+
+    public function testNoCas()
+    {
+        $kernel = (new KernelMocker([]))->getKernel();
+        $u2fRegisterData =  $kernel
+            ->getContainer()
+            ->get(U2fMocker::class)
+            ->get(2)
+        ;
+        $this->expectException(SecurityException::class);
+        $kernel
+            ->getContainer()
+            ->get(U2fRegistrationManager::class)
+            ->getU2fRegistrationFromResponse(
+                $u2fRegisterData['registerResponseStr'],
+                $u2fRegisterData['registerRequest']
+            )
+        ;
+    }
+
+    public function testDisabledCaVerification()
+    {
+        $kernel = (new KernelMocker(null))->getKernel();
+        $u2fRegisterData =  $kernel
+            ->getContainer()
+            ->get(U2fMocker::class)
+            ->get(2)
+        ;
+        try {
+            $kernel
+                ->getContainer()
+                ->get(U2fRegistrationManager::class)
+                ->getU2fRegistrationFromResponse(
+                    $u2fRegisterData['registerResponseStr'],
+                    $u2fRegisterData['registerRequest']
+                )
+            ;
+            $this->assertTrue(true);
+        } catch (SecurityException $e) {
+            $this->fail();
+        }
+    }
+
+    public function testAllCas()
+    {
+        $kernel = (new KernelMocker(glob(__DIR__.'/certificates/*.pem')))
+            ->getKernel()
+        ;
+        $u2fRegisterData =  $kernel
+            ->getContainer()
+            ->get(U2fMocker::class)
+            ->get(2)
+        ;
+        try {
+            $kernel
+                ->getContainer()
+                ->get(U2fRegistrationManager::class)
+                ->getU2fRegistrationFromResponse(
+                    $u2fRegisterData['registerResponseStr'],
+                    $u2fRegisterData['registerRequest']
+                )
+            ;
+            $this->assertTrue(true);
+        } catch (SecurityException $e) {
+            $this->fail();
+        }
     }
 }

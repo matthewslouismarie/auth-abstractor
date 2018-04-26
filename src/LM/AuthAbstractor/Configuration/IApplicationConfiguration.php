@@ -74,6 +74,24 @@ interface IApplicationConfiguration
     public function getMember(string $username): IMember;
 
     /**
+     * This must return null if the CA verification is disabled, or an array
+     * of trusted CA filenames.
+     *
+     * CA filenames have the .pem format. All U2F tokens have a certificate.
+     * This certificate is common to a batch of U2F tokens and is normally not
+     * sufficient to identity a unique U2F token. You can specify an array of
+     * certificate filenames to only accept users who use certain brands of U2F
+     * tokens. Alternatively, if you return null, you will accept all brands of
+     * U2F tokens.
+     *
+     * @api
+     * @example tests/certificates/yubico.pem
+     * @return null|string[] An array of filenames containing certificates, or
+     * null if the certificate validation is disabled.
+     */
+    public function getU2fCertificates(): ?array;
+
+    /**
      * @api
      * @param string $username The username of the member.
      * @return IU2fRegistration[] The member's U2F regisrations.

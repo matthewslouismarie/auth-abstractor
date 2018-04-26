@@ -22,16 +22,19 @@ class KernelMocker
 {
     private $kernel;
 
-    public function __construct()
+    public function __construct(?array $cas = null)
     {
         $this->kernel = new AuthenticationKernel(
-            new class() implements IApplicationConfiguration {
+            new class($cas) implements IApplicationConfiguration {
                 const USERNAME = 'user';
+
+                private $cas;
 
                 private $tokenStorage;
 
-                public function __construct()
+                public function __construct(?array $cas)
                 {
+                    $this->cas = $cas;
                     $this->tokenStorage = new NativeSessionTokenStorage();
                 }
 
@@ -63,7 +66,7 @@ class KernelMocker
                 }
 
                 public function getU2fCertificates(): ?array {
-                    return null;
+                    return $this->cas;
                 }
 
                 public function getU2fRegistrations(string $username): array {
