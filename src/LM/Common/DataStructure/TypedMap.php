@@ -8,7 +8,8 @@ use LM\Common\Enum\Scalar;
 use LM\Common\Type\TypeCheckerTrait;
 
 /**
- * @todo Should implement a standardised interface.
+ * This is an implementation of ITypedMap.
+ *
  * @todo Force items it contains to be serializable?
  */
 class TypedMap implements ITypedMap

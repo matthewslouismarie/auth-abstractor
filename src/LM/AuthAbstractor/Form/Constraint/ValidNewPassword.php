@@ -8,6 +8,13 @@ use LM\AuthAbstractor\Configuration\IApplicationConfiguration;
 use LM\AuthAbstractor\Validator\PasswordValidator;
 use Symfony\Component\Validator\Constraint;
 
+/**
+ * A constraint checking the given password meets the criteria specified in the
+ * application configuration.
+ *
+ * @see \LM\AuthAbstractor\Challenge\PasswordUpdateChallenge
+ * @see \LM\AuthAbstractor\Configuration\IApplicationConfiguration
+ */
 class ValidNewPassword extends Constraint
 {
     private $config;

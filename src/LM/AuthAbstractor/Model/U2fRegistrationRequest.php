@@ -9,6 +9,12 @@ use Firehed\U2F\SignRequest;
 use LM\Common\Model\ArrayObject;
 use Serializable;
 
+/**
+ * This class is only used to store a generated U2F register request so that
+ * it can returned by some functions.
+ *
+ * @see \LM\AuthAbstractor\U2f\U2fRegistrationManager
+ */
 class U2fRegistrationRequest implements Serializable
 {
     private $request;

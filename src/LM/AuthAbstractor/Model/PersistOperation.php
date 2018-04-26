@@ -8,6 +8,13 @@ use LM\AuthAbstractor\Enum\Persistence\Operation;
 
 use Serializable;
 
+/**
+ * PersistOperation objects represent actions that need to be persisted by the
+ * application in some ways (e.g. in a database) when the authentication process
+ * finishes (i.e. succeeds or fails).
+ *
+ * @todo Use an interface?
+ */
 class PersistOperation implements Serializable
 {
     private $object;

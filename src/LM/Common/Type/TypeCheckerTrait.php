@@ -7,6 +7,11 @@ namespace LM\Common\Type;
 use InvalidArgumentException;
 use LM\Common\Enum\Scalar;
 
+/**
+ * Trait for checking types.
+ *
+ * @todo Turn it into a class instead?
+ */
 trait TypeCheckerTrait
 {
     public function isArrayType(string $type): bool

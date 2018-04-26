@@ -11,6 +11,10 @@ use LM\Common\Model\ArrayObject;
 use LM\Common\Model\IntegerObject;
 use LM\Common\Model\StringObject;
 
+/**
+ * This class is an implementation of IAuthenticationProcess. It stores the data
+ * associated with an authentication process.
+ */
 class AuthenticationProcess implements IAuthenticationProcess
 {
     private $typedMap;

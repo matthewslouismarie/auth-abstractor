@@ -9,6 +9,12 @@ use LM\Common\DataStructure\TypedMap;
 use LM\Common\Model\ArrayObject;
 use Serializable;
 
+/**
+ * Interface for authentication processes.
+ *
+ * @todo Use interfaces for ArrayObject, TypedMap and Status.
+ * @todo It is heavily coupled with specific challenges (e.g. getMember()).
+ */
 interface IAuthenticationProcess extends Serializable
 {
     public function getChallenges(): ArrayObject;

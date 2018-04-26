@@ -7,6 +7,9 @@ namespace LM\Common\Model;
 use Serializable;
 use UnexpectedValueException;
 
+/**
+ * Immutable object that represents a string.
+ */
 class StringObject implements Serializable
 {
     private $string;

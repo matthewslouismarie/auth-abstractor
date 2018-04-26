@@ -17,6 +17,9 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Twig_Environment;
 
+/**
+ * A challenge for registering credentials (username + password) from the user.
+ */
 class CredentialRegistrationChallenge implements IChallenge
 {
     private $appConfig;
@@ -27,6 +30,9 @@ class CredentialRegistrationChallenge implements IChallenge
 
     private $twig;
 
+    /**
+     * @internal
+     */
     public function __construct(
         IApplicationConfiguration $appConfig,
         FormFactoryInterface $formFactory,

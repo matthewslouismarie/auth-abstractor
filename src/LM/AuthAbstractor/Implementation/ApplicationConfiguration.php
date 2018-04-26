@@ -11,6 +11,17 @@ use Symfony\Component\Security\Csrf\TokenStorage\NativeSessionTokenStorage;
 use Closure;
 
 /**
+ * This is a convenience implementation of IApplicationConfiguration.
+ *
+ * It removes
+ * the burden of having to implement (and then instantiate)
+ * IApplicationConfiguration. It assumes the library is used as a Composer
+ * dependency. It also uses native PHP sessions. Finally, it does not let you
+ * define the password complexity settings. If you want more control over these
+ * options, you will need to provide your own implementation of
+ * IApplicationConfiguration.
+ *
+ * @see \LM\AuthAbstractor\Configuration\IApplicationConfiguration
  * @todo Put implementations in a different library?
  */
 class ApplicationConfiguration implements IApplicationConfiguration

@@ -23,6 +23,12 @@ use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormFactoryInterface;
 use Twig_Environment;
 
+/**
+ * A challenge for asking the user to register a new U2F device.
+ *
+ * @todo Prevent the user from registering the same U2F device if two
+ * U2fRegistrationChallenge are present in the same authentication process.
+ */
 class U2fRegistrationChallenge implements IChallenge
 {
     private $formFactory;

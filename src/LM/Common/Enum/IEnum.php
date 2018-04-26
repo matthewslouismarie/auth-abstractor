@@ -6,6 +6,9 @@ namespace LM\Common\Enum;
 
 use Serializable;
 
+/**
+ * Interface for enumerations.
+ */
 interface IEnum extends Serializable
 {
     public function getValue(): string;

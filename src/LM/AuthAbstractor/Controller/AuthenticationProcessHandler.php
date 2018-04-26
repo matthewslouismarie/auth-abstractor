@@ -12,6 +12,11 @@ use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory;
 use LM\AuthAbstractor\Model\IAuthenticationCallback;
 
+/**
+ * This is a class used by AuthenticationKernel to handle requests.
+ *
+ * @internal
+ */
 class AuthenticationProcessHandler
 {
     private $appConfig;

@@ -16,6 +16,10 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Twig_Environment;
 
+/**
+ * A challenge for asking the user to enter an existing username, which can
+ * be used by following challenges (e.g. PasswordChallenge or U2fChallenge).
+ */
 class ExistingUsernameChallenge implements IChallenge
 {
     private $appConfig;
@@ -26,6 +30,9 @@ class ExistingUsernameChallenge implements IChallenge
 
     private $twig;
 
+    /**
+     * @internal
+     */
     public function __construct(
         IApplicationConfiguration $appConfig,
         FormFactoryInterface $formFactory,

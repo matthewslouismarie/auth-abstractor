@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace LM\AuthAbstractor\Form\Csrf;
 
 /**
- * @todo Delete?
+ * @deprecated
+ * @todo Delete.
  */
 interface TokenStorageInterface
 {

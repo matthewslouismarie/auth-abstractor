@@ -6,6 +6,10 @@ namespace LM\AuthAbstractor\Form\Csrf;
 
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
+/**
+ * @deprecated
+ * @todo Delete.
+ */
 class TokenStorage implements TokenStorageInterface
 {
     private $token;

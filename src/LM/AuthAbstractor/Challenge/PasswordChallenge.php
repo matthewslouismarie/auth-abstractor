@@ -16,6 +16,11 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Twig_Environment;
 
+/**
+ * This challenge asks the user for their password. The username needs to be
+ * known first. (The username can be specified when creating the authentication
+ * process or by placing an ExistingUsernameChallenge before.)
+ */
 class PasswordChallenge implements IChallenge
 {
     private $appConfig;

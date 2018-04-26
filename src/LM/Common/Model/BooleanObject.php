@@ -7,6 +7,9 @@ namespace LM\Common\Model;
 use Serializable;
 use UnexpectedValueException;
 
+/**
+ * Immutable and serializable object that represents a boolean.
+ */
 class BooleanObject implements Serializable
 {
     private $boolean;

@@ -7,7 +7,10 @@ namespace LM\AuthAbstractor\Model;
 use Psr\Http\Message\ResponseInterface;
 
 /**
- * @todo Interface? After all, it is mentionned in IChallenge.
+ * This class is only used to store the value returned when the kernel finished
+ * processing the HTTP request.
+ *
+ * @todo Add an interface.
  */
 class AuthentifierResponse
 {

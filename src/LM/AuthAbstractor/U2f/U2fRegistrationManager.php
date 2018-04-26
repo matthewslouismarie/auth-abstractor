@@ -12,6 +12,10 @@ use Firehed\U2F\RegisterRequest;
 use Firehed\U2F\RegisterResponse;
 use Firehed\U2F\SignRequest;
 
+/**
+ * This class is used for generating U2F register requests and processing their
+ * responses.
+ */
 class U2fRegistrationManager
 {
     private $u2fRegistrationFactory;

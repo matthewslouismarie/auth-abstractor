@@ -16,6 +16,9 @@ use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormFactoryInterface;
 use Twig_Environment;
 
+/**
+ * A challenge providing credential-based authentication (username + password).
+ */
 class CredentialChallenge implements IChallenge
 {
     private $appConfig;
@@ -26,6 +29,9 @@ class CredentialChallenge implements IChallenge
 
     private $twig;
 
+    /**
+     * @internal
+     */
     public function __construct(
         IApplicationConfiguration $appConfig,
         FormFactoryInterface $formFactory,
