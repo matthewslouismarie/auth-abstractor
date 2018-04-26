@@ -18,6 +18,7 @@ class TypedMap implements ITypedMap
 {
     use TypeCheckerTrait;
 
+    /** @var array */
     private $items;
 
     /**

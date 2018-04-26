@@ -26,23 +26,32 @@ use Closure;
  */
 class ApplicationConfiguration implements IApplicationConfiguration
 {
+    /** @var IApplicationConfiguration */
     private $appId;
 
+    /** @var string */
     private $assetBaseUri;
 
+    /** @var string */
     private $composerDir;
 
+    /** @var string */
     private $libDir;
 
+    /** @var Closure */
     private $memberFinder;
 
+    /** @var mixed[] */
     private $pwdSettings;
 
+    /** @var TokenStorageInterface */
     private $tokenStorage;
 
+    /** @var Closure */
     private $u2fRegistrationFinder;
 
     /**
+     * @api
      * @param string $appId The application ID of the application. This is used
      * for U2F challenges. The application ID is either:
      *  - The ID of the mobile application, if the application is a mobile

@@ -29,6 +29,7 @@ use Symfony\Component\Form\Extension\Validator\ValidatorExtension;
 use Twig_Environment;
 use Twig_FactoryRuntimeLoader;
 use Twig_Function;
+use Psr\Container\ContainerInterface;
 use Twig_Loader_Filesystem;
 use Symfony\Component\Validator\Validation;
 
@@ -43,8 +44,10 @@ use Symfony\Component\Validator\Validation;
  */
 class AuthenticationKernel implements IAuthenticationKernel
 {
+    /** @var IApplicationConfiguration */
     private $appConfig;
 
+    /** ContainerInterface */
     private $container;
 
     /**

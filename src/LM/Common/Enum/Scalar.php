@@ -9,11 +9,15 @@ namespace LM\Common\Enum;
  */
 class Scalar extends AbstractEnum
 {
+    /** @var string */
     const _STR = 'string';
 
+    /** @var string */
     const _BOOL = 'boolean';
 
+    /** @var string */
     const _INT = 'integer';
 
+    /** @var string */
     const _ARRAY = 'array';
 }

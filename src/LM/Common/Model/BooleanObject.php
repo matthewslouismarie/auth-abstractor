@@ -12,6 +12,7 @@ use UnexpectedValueException;
  */
 class BooleanObject implements Serializable
 {
+    /** @var bool */
     private $boolean;
 
     /**

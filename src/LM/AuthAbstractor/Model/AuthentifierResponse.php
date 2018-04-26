@@ -11,9 +11,11 @@ use Psr\Http\Message\ResponseInterface;
  * processing the HTTP request.
  *
  * @todo Add an interface.
+ * @todo Use IAuthenticationProcess interface.
  */
 class AuthentifierResponse
 {
+    /** @var AuthenticationProcess */
     private $process;
 
     private $response;
@@ -31,6 +33,7 @@ class AuthentifierResponse
     }
 
     /**
+     * @api
      * @return AuthenticationProcess The authentication process.
      */
     public function getProcess(): AuthenticationProcess
@@ -39,6 +42,7 @@ class AuthentifierResponse
     }
 
     /**
+     * @api
      * @return null|ResponseInterface The HTTP response.
      */
     public function getHttpResponse(): ?ResponseInterface

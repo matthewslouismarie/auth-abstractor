@@ -17,6 +17,7 @@ use ReflectionClass;
  */
 abstract class AbstractEnum implements IEnum
 {
+    /** @var string */
     private $value;
 
     /**

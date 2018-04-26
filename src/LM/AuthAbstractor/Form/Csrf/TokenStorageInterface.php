@@ -10,7 +10,9 @@ namespace LM\AuthAbstractor\Form\Csrf;
  */
 interface TokenStorageInterface
 {
+    /** @ignore */
     public function getToken();
 
+    /** @ignore */
     public function setToken($token);
 }

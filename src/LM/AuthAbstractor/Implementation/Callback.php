@@ -21,11 +21,14 @@ use LM\AuthAbstractor\Model\IAuthenticationCallback;
  */
 class Callback implements IAuthenticationCallback
 {
+    /** @var Closure */
     private $failureClosure;
 
+    /** @var Closure */
     private $successClosure;
 
     /**
+     * @api
      * @param Closure $failureClosure The closure to call if the authentication
      * process fails. It must accept an AuthenticationProcess as an argument,
      * and return a ResponseInterface.

@@ -12,6 +12,7 @@ use UnexpectedValueException;
  */
 class IntegerObject implements Serializable
 {
+    /** @var int */
     private $integer;
 
     /**

@@ -17,8 +17,10 @@ use Serializable;
  */
 class PersistOperation implements Serializable
 {
+    /** @var Serializable */
     private $object;
 
+    /** @var Operation */
     private $operation;
 
     /**
@@ -33,6 +35,7 @@ class PersistOperation implements Serializable
     }
 
     /**
+     * @api
      * @return Operation The type of persistence.
      */
     public function getType(): Operation
@@ -41,6 +44,7 @@ class PersistOperation implements Serializable
     }
 
     /**
+     * @api
      * @return Serializable The entity to persist.
      */
     public function getObject(): Serializable

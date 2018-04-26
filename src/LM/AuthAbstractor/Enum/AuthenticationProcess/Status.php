@@ -12,9 +12,12 @@ use LM\Common\Enum\AbstractEnum;
  */
 class Status extends AbstractEnum
 {
+    /** @var string */
     const ONGOING = "ONGOING";
 
+    /** @var string */
     const SUCCEEDED = "SUCCEEDED";
 
+    /** @var string */
     const FAILED = "FAILED";
 }

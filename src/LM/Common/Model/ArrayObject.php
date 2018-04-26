@@ -17,10 +17,13 @@ class ArrayObject implements Serializable
 {
     use TypeCheckerTrait;
 
+    /** @var int */
     private $currentItemIndex;
 
+    /** @var mixed[] */
     private $items;
 
+    /** @var string */
     private $type;
 
     /**

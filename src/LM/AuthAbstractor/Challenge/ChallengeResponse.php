@@ -25,12 +25,16 @@ use LM\AuthAbstractor\Model\AuthenticationProcess;
  */
 class ChallengeResponse
 {
+    /** @var AuthenticationProcess */
     private $authenticationProcess;
 
+    /** @var null|Response */
     private $httpResponse;
 
+    /** @var bool */
     private $isFailedAttempt;
 
+    /** @var bool */
     private $isFinished;
 
     /**
@@ -54,6 +58,7 @@ class ChallengeResponse
     }
 
     /**
+     * @api
      * @return AuthenticationProcess The authentication process.
      * @todo It should return an IAuthenticationProcess instead.
      */

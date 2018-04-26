@@ -17,6 +17,9 @@ use LM\Common\Model\ArrayObject;
  */
 class U2fMocker
 {
+    /**
+     * @var IU2fRegistration[]
+     */
     private $u2fRegistrations;
 
     /**

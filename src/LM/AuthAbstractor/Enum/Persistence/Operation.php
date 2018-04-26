@@ -13,9 +13,12 @@ use LM\Common\Enum\AbstractEnum;
  */
 class Operation extends AbstractEnum
 {
+    /** @var string */
     const CREATE = "CREATE";
 
+    /** @var string */
     const DELETE = "DELETE";
 
+    /** @var string */
     const UPDATE = "UPDATE";
 }
