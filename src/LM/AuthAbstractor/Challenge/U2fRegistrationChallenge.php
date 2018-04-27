@@ -116,6 +116,8 @@ class U2fRegistrationChallenge implements IChallenge
             // var_dump($u2fRegistration);
             // file_put_contents('/var/www/html/tmp.txt', ob_get_clean(), FILE_APPEND);
 
+            $u2fRegistrations[] = $u2fRegistration;
+
             $typedMap = $process
                 ->getTypedMap()
                 ->set(
@@ -134,11 +136,11 @@ class U2fRegistrationChallenge implements IChallenge
                     new IntegerObject($nU2fRegistrations + 1),
                     IntegerObject::class
                 )
-                // ->set(
-                //     'u2f_registrations',
-                //     $u2fRegistrations->add($u2fRegistration, IU2fRegistration::class),
-                //     ArrayObject::class
-                // )
+                ->set(
+                    'u2f_registrations',
+                    $u2fRegistrations,
+                    Scalar::_ARRAY
+                )
             ;
             // } catch (ClientErrorException $e) {
             //     $form->addError(new FormError('You already used this U2F device'));
