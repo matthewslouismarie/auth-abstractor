@@ -51,8 +51,8 @@ class KernelMocker
         }
         if (!isset($options[self::KEY_PWD_SETTINGS])) {
             $options[self::KEY_PWD_SETTINGS] = [
-                'min_length' => 5,
-                'enforce_min_length' =>true,
+                'min_length' => 0,
+                'enforce_min_length' => false,
                 'uppercase' => false,
                 'special_chars' => false,
                 'numbers' => false,

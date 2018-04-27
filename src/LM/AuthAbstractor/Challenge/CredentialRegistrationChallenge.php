@@ -18,6 +18,9 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Twig_Environment;
 use Symfony\Component\HttpFoundation\Request;
+use LM\AuthAbstractor\Enum\Persistence\Operation;
+use LM\Common\Model\ArrayObject;
+use LM\AuthAbstractor\Model\PersistOperation;
 
 /**
  * A challenge for registering credentials (username + password) from the user.
@@ -94,16 +97,31 @@ class CredentialRegistrationChallenge implements IChallenge
         }
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $persistOperations = $process
+                ->getTypedMap()
+                ->has('persist_operations') ? $process
+                    ->getTypedMap()
+                    ->get('persist_operations', ArrayObject::class)
+            : new ArrayObject([], PersistOperation::class);
             // var_dump(Request::createFromGlobals());
+            $member = new Member(
+                password_hash($form->get('password')->getData(), PASSWORD_DEFAULT),
+                $form->get('username')->getData()
+            );
             $newDm = $process
                 ->getTypedMap()
                 ->add(
                     'member',
-                    new Member(
-                        password_hash($form->get('password')->getData(), PASSWORD_DEFAULT),
-                        $form->get('username')->getData()
-                    ),
+                    $member,
                     Member::class
+                )
+                ->set(
+                    'persist_operations',
+                    $persistOperations->add(
+                        new PersistOperation($member, new Operation(Operation::CREATE)),
+                        PersistOperation::class
+                    ),
+                    ArrayObject::class
                 )
             ;
 

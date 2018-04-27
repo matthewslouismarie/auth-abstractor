@@ -56,6 +56,15 @@ class TypedMap implements ITypedMap
     }
 
     /**
+     * @param string $key The key index in the map.
+     * @return bool Whether the map contains this key.
+     */
+    public function has(string $key): bool
+    {
+        return isset($this->items[$key]);
+    }
+
+    /**
      * Returns a copy of itself with the new item. If an item already exists
      * for the given key, it is overwritten.
      *

@@ -81,11 +81,15 @@ class AuthenticationProcess implements IAuthenticationProcess
 
     public function getPersistOperations(): array
     {
-        return $this
-            ->typedMap
-            ->get('persist_operations', ArrayObject::class)
-            ->toArray(PersistOperation::class)
-        ;
+        if ($this->typedMap->has('persist_operations')) {
+            return $this
+                ->typedMap
+                ->get('persist_operations', ArrayObject::class)
+                ->toArray(PersistOperation::class)
+            ;
+        } else {
+            return [];
+        }
     }
 
     public function getStatus(): Status
