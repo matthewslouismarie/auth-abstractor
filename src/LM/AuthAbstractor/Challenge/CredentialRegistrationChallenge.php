@@ -11,6 +11,7 @@ use LM\AuthAbstractor\Model\AuthenticationProcess;
 use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use LM\AuthAbstractor\Form\Constraint\ValidNewPassword;
+use LM\AuthAbstractor\Model\IChallengeResponse;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormError;

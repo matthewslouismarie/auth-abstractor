@@ -9,6 +9,7 @@ use LM\AuthAbstractor\Model\AuthenticationProcess;
 use LM\Common\Model\StringObject;
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
+use LM\AuthAbstractor\Model\IChallengeResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;

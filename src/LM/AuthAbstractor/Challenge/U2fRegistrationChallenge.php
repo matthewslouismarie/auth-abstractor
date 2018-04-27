@@ -14,6 +14,7 @@ use LM\AuthAbstractor\Model\U2fRegistrationRequest;
 use LM\AuthAbstractor\U2f\U2fRegistrationManager;
 use LM\Common\Enum\Scalar;
 use LM\Common\Model\ArrayObject;
+use LM\AuthAbstractor\Model\IChallengeResponse;
 use LM\Common\Model\IntegerObject;
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
