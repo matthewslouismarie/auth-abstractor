@@ -15,6 +15,7 @@ use LM\Common\Enum\Scalar;
 use LM\Common\Model\IntegerObject;
 use LM\Common\Model\ArrayObject;
 use LM\Common\Model\StringObject;
+use InvalidArgumentException;
 
 /**
  * This is a factory class aiming at making new authentication processes
@@ -86,6 +87,20 @@ class AuthenticationProcessFactory
             $dataArray['u2f_registrations'] = [];
         } elseif (isset($additionalData['u2f_registrations'])) {
             $dataArray['u2f_registrations'] = $additionalData['u2f_registrations'];
+        }
+
+        if (isset($additionalData['used_u2f_key_public_keys'])) {
+            if (!is_array($additionalData['used_u2f_key_public_keys'])) {
+                throw new InvalidArgumentException('used_u2f_key_public_keys');
+            }
+            foreach ($additionalData['used_u2f_key_public_keys'] as $pb) {
+                if (!is_string($pb)) {
+                    throw new InvalidArgumentException('Public key must be string');
+                }
+            }
+            $data['used_u2f_key_public_keys'] = $additionalData['used_u2f_key_public_keys'];
+        } else {
+            $data['used_u2f_key_public_keys'] = [];
         }
         $typedMap = new TypedMap($dataArray);
 

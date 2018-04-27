@@ -70,6 +70,8 @@ class U2fChallenge implements IChallenge
 
     /**
      * @internal
+     * @todo It is using the public key to identify the U2F registrations.
+     * Could be better.
      */
     public function process(
         IAuthenticationProcess $process,

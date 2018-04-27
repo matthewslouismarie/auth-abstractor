@@ -14,6 +14,8 @@ use LM\Common\Model\StringObject;
 /**
  * This class is an implementation of IAuthenticationProcess. It stores the data
  * associated with an authentication process.
+ *
+ * @todo Merge IAuthenticationProcess and TypedMap
  */
 class AuthenticationProcess implements IAuthenticationProcess
 {

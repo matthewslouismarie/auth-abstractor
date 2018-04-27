@@ -16,6 +16,10 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use LM\AuthAbstractor\Configuration\IApplicationConfiguration;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * @todo There should be an alternative, combined with
+ * CredentialRegistrationChallenge.
+ */
 class EmailRegistrationChallenge implements IChallenge
 {
     const CODE_MIN = 0;
