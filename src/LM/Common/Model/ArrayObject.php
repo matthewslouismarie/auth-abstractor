@@ -11,7 +11,8 @@ use UnexpectedValueException;
 /**
  * Object that provides the features of an array as an object.
  *
- * @todo Should implement the standard ArrayObject PHP interface.
+ * @deprecated
+ * @todo Delete?
  */
 class ArrayObject implements Serializable
 {
