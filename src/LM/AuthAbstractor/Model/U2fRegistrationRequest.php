@@ -13,6 +13,7 @@ use Serializable;
  * This class is only used to store a generated U2F register request so that
  * it can returned by some functions.
  *
+ * @todo Delete?
  * @internal
  * @see \LM\AuthAbstractor\U2f\U2fRegistrationManager
  */
@@ -37,6 +38,8 @@ class U2fRegistrationRequest implements Serializable
         $this->request = $request;
         if (null !== $signRequests) {
             $this->signRequests = $signRequests->toArray(SignRequest::class);
+        } else {
+            $this->signRequests = [];
         }
     }
 
