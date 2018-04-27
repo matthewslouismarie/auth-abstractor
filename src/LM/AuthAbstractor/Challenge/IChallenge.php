@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace LM\AuthAbstractor\Challenge;
 
 use LM\AuthAbstractor\Model\AuthenticationProcess;
+use LM\AuthAbstractor\Model\IChallengeResponse;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
@@ -47,6 +48,6 @@ interface IChallenge
     public function process(
         AuthenticationProcess $authenticationProcess,
         ?ServerRequestInterface $httpRequest
-    ): ChallengeResponse
+    ): IChallengeResponse
     ;
 }

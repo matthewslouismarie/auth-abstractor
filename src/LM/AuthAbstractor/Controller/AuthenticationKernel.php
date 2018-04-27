@@ -57,6 +57,7 @@ class AuthenticationKernel implements IAuthenticationKernel
      * implementation, and can just use the Configuration class for convenience.
      * @todo Ensure container keeps and reuses objects.
      * @todo Form validation doesn't work. Delete?
+     * @todo Make it possible to specify an anonymous challenge.
      */
     public function __construct(IApplicationConfiguration $appConfig)
     {

@@ -35,6 +35,7 @@ class AuthentifierResponse
     /**
      * @api
      * @return AuthenticationProcess The authentication process.
+     * @todo Rename to getAuthenticationProcess()? (for consistency)
      */
     public function getProcess(): AuthenticationProcess
     {
