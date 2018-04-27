@@ -4,20 +4,16 @@ declare(strict_types=1);
 
 use LM\AuthAbstractor\Test\KernelMocker;
 use PHPUnit\Framework\TestCase;
-use LM\AuthAbstractor\Challenge\U2fRegistrationChallenge;
 use Symfony\Component\HttpFoundation\Request;
 use LM\AuthAbstractor\Configuration\IApplicationConfiguration;
 use Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory;
-use LM\AuthAbstractor\Model\PersistOperation;
 use LM\AuthAbstractor\Model\AuthenticationProcess;
-use LM\Common\Model\IntegerObject;
-use LM\Common\Model\ArrayObject;
 use LM\Common\DataStructure\TypedMap;
 use LM\AuthAbstractor\Challenge\CredentialChallenge;
 
 class CredentialChallengeTest extends TestCase
-{ 
-    public function testCredentialChallenge()
+{
+    public function testValidCredentialRegistration()
     {
         $kernel = (new KernelMocker())->createKernel();
 

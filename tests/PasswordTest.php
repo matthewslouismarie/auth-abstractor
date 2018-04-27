@@ -24,7 +24,7 @@ class PasswordTest extends TestCase
                 'uppercase' => false,
                 'special_chars' => true,
                 'numbers' => true,
-            ]
+            ],
         ]);
         $process = $kernel
             ->getContainer()

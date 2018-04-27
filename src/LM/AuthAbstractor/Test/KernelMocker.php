@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 
 /**
  * Mocks the kernel.
- * 
+ *
  * It only supports one user
  *
  * @internal
@@ -65,12 +65,7 @@ class KernelMocker
             $options[self::KEY_USER_PWD] = self::USER_PWD;
         }
         return new AuthenticationKernel(
-            new class(
-                $options[self::KEY_U2F_CERTIFICATES],
-                $options[self::KEY_PWD_SETTINGS],
-                $options[self::KEY_USER_ID],
-                $options[self::KEY_USER_PWD]
-            ) implements IApplicationConfiguration {
+            new class($options[self::KEY_U2F_CERTIFICATES], $options[self::KEY_PWD_SETTINGS], $options[self::KEY_USER_ID], $options[self::KEY_USER_PWD]) implements IApplicationConfiguration {
                 private $cas;
 
                 private $hashedPassword;
