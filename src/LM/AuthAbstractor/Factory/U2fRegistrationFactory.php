@@ -13,7 +13,6 @@ use LM\AuthAbstractor\Model\IU2fRegistration;
  * IU2fRegistration, and vice versa.
  *
  * @internal
- * @todo Add unit tests.
  */
 class U2fRegistrationFactory
 {

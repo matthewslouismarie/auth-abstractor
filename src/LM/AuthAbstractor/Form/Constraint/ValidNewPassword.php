@@ -14,12 +14,11 @@ use Symfony\Component\Validator\Constraint;
  *
  * @see \LM\AuthAbstractor\Challenge\PasswordUpdateChallenge
  * @see \LM\AuthAbstractor\Configuration\IApplicationConfiguration
- * @todo Rename $config to $appConfig for consistency.
  */
 class ValidNewPassword extends Constraint
 {
     /** @var IApplicationConfiguration */
-    private $config;
+    private $appConfig;
 
     /** @var PasswordValidator */
     private $pwdValidator;
@@ -28,10 +27,10 @@ class ValidNewPassword extends Constraint
      * @internal
      */
     public function __construct(
-        IApplicationConfiguration $config,
+        IApplicationConfiguration $appConfig,
         PasswordValidator $pwdValidator
     ) {
-        $this->config = $config;
+        $this->appConfig = $appConfig;
         $this->pwdValidator = $pwdValidator;
     }
 
@@ -40,7 +39,7 @@ class ValidNewPassword extends Constraint
      */
     public function getConfig(): IApplicationConfiguration
     {
-        return $this->config;
+        return $this->appConfig;
     }
 
     /**

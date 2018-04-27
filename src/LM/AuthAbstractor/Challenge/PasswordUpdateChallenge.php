@@ -57,9 +57,6 @@ class PasswordUpdateChallenge implements IChallenge
         $this->twig = $twig;
     }
 
-    /**
-     * @todo Check for password complexity.
-     */
     public function process(
         IAuthenticationProcess $process,
         ?ServerRequestInterface $httpRequest

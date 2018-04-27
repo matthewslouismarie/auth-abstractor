@@ -20,8 +20,6 @@ use Psr\Http\Message\ServerRequestInterface;
  * @see \LM\AuthAbstractor\Factory\AuthenticationProcessFactory
  * @todo Should be renamed: U2fRegistrationChallenge is not a challenge for
  * instance.
- * @todo Should only mention IAuthenticationProcess and use an interface for
- * ChallengeResponse.
  */
 interface IChallenge
 {

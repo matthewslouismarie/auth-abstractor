@@ -6,6 +6,7 @@ namespace LM\AuthAbstractor\Factory;
 
 use LM\AuthAbstractor\Enum\AuthenticationProcess\Status;
 use LM\AuthAbstractor\Model\AuthenticationProcess;
+use LM\AuthAbstractor\Model\IAuthenticationProcess;
 use LM\AuthAbstractor\Model\IU2fRegistration;
 use LM\AuthAbstractor\Model\PersistOperation;
 use LM\Common\DataStructure\TypedMap;
@@ -50,7 +51,7 @@ class AuthenticationProcessFactory
         int $maxNFailedAttempts = 3,
         ?string $username = null,
         array $additionalData = []
-    ): AuthenticationProcess {
+    ): IAuthenticationProcess {
         $dataArray = array_merge($additionalData, [
             'used_u2f_key_public_keys' => new ArrayObject([], Scalar::_STR),
             'challenges' => new ArrayObject($challenges, Scalar::_STR),

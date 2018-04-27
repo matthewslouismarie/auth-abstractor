@@ -27,7 +27,6 @@ class AuthenticationProcessHandler
     /**
      * @param IApplicationConfiguration $appConfig The configuration of the
      * application.
-     * @todo Remove $container param.
      */
     public function __construct(
         IApplicationConfiguration $appConfig,
