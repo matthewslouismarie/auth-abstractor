@@ -23,7 +23,7 @@ class AuthenticationProcess implements IAuthenticationProcess
     /**
      * @param TypedMap $typedMap
      */
-    public function __construct(TypedMap $typedMap)
+    public function __construct(?TypedMap $typedMap = null)
     {
         $this->typedMap = $typedMap;
     }
