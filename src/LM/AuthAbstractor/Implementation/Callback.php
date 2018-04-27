@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace LM\AuthAbstractor\Implementation;
 
 use Closure;
-use LM\AuthAbstractor\Model\AuthenticationProcess;
+use LM\AuthAbstractor\Model\IAuthenticationProcess;
 use Psr\Http\Message\ResponseInterface;
 use LM\AuthAbstractor\Model\IAuthenticationCallback;
 
@@ -30,12 +30,11 @@ class Callback implements IAuthenticationCallback
     /**
      * @api
      * @param Closure $failureClosure The closure to call if the authentication
-     * process fails. It must accept an AuthenticationProcess as an argument,
+     * process fails. It must accept an IAuthenticationProcess as an argument,
      * and return a ResponseInterface.
      * @param Closure $successClosure The closure to call if the authentication
-     * process succeeds. It must accept an AuthenticationProcess as an argument,
+     * process succeeds. It must accept an IAuthenticationProcess as an argument,
      * and return a ResponseInterface.
-     * @todo Should actually accept IAuthenticationProcesses.
      */
     public function __construct(Closure $failureClosure, Closure $successClosure)
     {
@@ -43,12 +42,12 @@ class Callback implements IAuthenticationCallback
         $this->successClosure = $successClosure;
     }
 
-    public function handleFailedProcess(AuthenticationProcess $authProcess): ResponseInterface
+    public function handleFailedProcess(IAuthenticationProcess $authProcess): ResponseInterface
     {
         return ($this->failureClosure)($authProcess);
     }
 
-    public function handleSuccessfulProcess(AuthenticationProcess $authProcess): ResponseInterface
+    public function handleSuccessfulProcess(IAuthenticationProcess $authProcess): ResponseInterface
     {
         return ($this->successClosure)($authProcess);
     }

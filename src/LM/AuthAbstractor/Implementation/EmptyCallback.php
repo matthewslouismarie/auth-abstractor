@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace LM\AuthAbstractor\Implementation;
 
-use LM\AuthAbstractor\Model\AuthenticationProcess;
+use LM\AuthAbstractor\Model\IAuthenticationProcess;
 use Psr\Http\Message\ResponseInterface;
 use LM\AuthAbstractor\Model\IAuthenticationCallback;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,12 +23,12 @@ class EmptyCallback implements IAuthenticationCallback
         $this->diactoros = new DiactorosFactory();
     }
 
-    public function handleFailedProcess(AuthenticationProcess $authProcess): ResponseInterface
+    public function handleFailedProcess(IAuthenticationProcess $authProcess): ResponseInterface
     {
         return $this->diactoros->createResponse(new Response());
     }
 
-    public function handleSuccessfulProcess(AuthenticationProcess $authProcess): ResponseInterface
+    public function handleSuccessfulProcess(IAuthenticationProcess $authProcess): ResponseInterface
     {
         return $this->diactoros->createResponse(new Response());
     }

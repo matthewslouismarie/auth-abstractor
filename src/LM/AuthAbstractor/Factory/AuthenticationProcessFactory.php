@@ -43,8 +43,6 @@ class AuthenticationProcessFactory
      * @return AuthenticationProcess A new authentication process.
      * @see \LM\AuthAbstractor\Challenge\IChallenge
      * @todo Put $additionalData in a separate scope.
-     * @todo Should return an IAuthenticationProcess instead of
-     * AuthenticationProcess.
      */
     public function createProcess(
         array $challenges,
