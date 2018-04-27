@@ -142,7 +142,7 @@ class CredentialRegistrationChallenge implements IChallenge
         return new ChallengeResponse(
             $process,
             $response,
-            $form->isSubmitted(),
+            false,
             false
         )
         ;

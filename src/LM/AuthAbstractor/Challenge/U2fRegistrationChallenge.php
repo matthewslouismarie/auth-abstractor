@@ -186,7 +186,7 @@ class U2fRegistrationChallenge implements IChallenge
                 )
             ),
             $httpResponse,
-            $form->isSubmitted(),
+            false,
             false
         )
         ;

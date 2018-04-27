@@ -96,7 +96,7 @@ class EmailRegistrationChallenge implements IChallenge
         return new ChallengeResponse(
             $authenticationProcess,
             $response,
-            $form->isSubmitted(),
+            false,
             false
         )
         ;
