@@ -11,6 +11,7 @@ use Firehed\U2F\SignRequest;
 use LM\AuthAbstractor\Configuration\IApplicationConfiguration;
 use LM\AuthAbstractor\Enum\Persistence\Operation;
 use LM\AuthAbstractor\Model\AuthenticationProcess;
+use LM\AuthAbstractor\Model\IAuthenticationProcess;
 use LM\AuthAbstractor\Model\PersistOperation;
 use LM\AuthAbstractor\U2f\U2fAuthenticationManager;
 use LM\Common\Enum\Scalar;
@@ -71,7 +72,7 @@ class U2fChallenge implements IChallenge
      * @internal
      */
     public function process(
-        AuthenticationProcess $process,
+        IAuthenticationProcess $process,
         ?ServerRequestInterface $httpRequest
     ): IChallengeResponse {
         $username = $process

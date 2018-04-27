@@ -6,7 +6,7 @@ namespace LM\AuthAbstractor\Challenge;
 
 use Psr\Http\Message\ServerRequestInterface;
 use LM\AuthAbstractor\Configuration\IApplicationConfiguration;
-use LM\AuthAbstractor\Model\AuthenticationProcess;
+use LM\AuthAbstractor\Model\IAuthenticationProcess;
 use LM\Common\Model\StringObject;
 use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -55,7 +55,7 @@ class PasswordChallenge implements IChallenge
      * @internal
      */
     public function process(
-        AuthenticationProcess $process,
+        IAuthenticationProcess $process,
         ?ServerRequestInterface $httpRequest
     ): IChallengeResponse {
         $username = $process

@@ -8,6 +8,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use LM\AuthAbstractor\Configuration\IApplicationConfiguration;
 use LM\AuthAbstractor\Form\Constraint\ValidNewPassword;
 use LM\AuthAbstractor\Model\AuthenticationProcess;
+use LM\AuthAbstractor\Model\IAuthenticationProcess;
 use LM\Common\Enum\Scalar;
 use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -60,7 +61,7 @@ class PasswordUpdateChallenge implements IChallenge
      * @todo Check for password complexity.
      */
     public function process(
-        AuthenticationProcess $process,
+        IAuthenticationProcess $process,
         ?ServerRequestInterface $httpRequest
     ): IChallengeResponse {
         $form = $this

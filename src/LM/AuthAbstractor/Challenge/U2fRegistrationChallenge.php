@@ -8,6 +8,7 @@ use Firehed\U2F\ClientErrorException;
 use LM\AuthAbstractor\Enum\Persistence\Operation;
 use LM\AuthAbstractor\Factory\U2fRegistrationFactory;
 use LM\AuthAbstractor\Model\AuthenticationProcess;
+use LM\AuthAbstractor\Model\IAuthenticationProcess;
 use LM\AuthAbstractor\Model\IU2fRegistration;
 use LM\AuthAbstractor\Model\PersistOperation;
 use LM\AuthAbstractor\Model\U2fRegistrationRequest;
@@ -70,7 +71,7 @@ class U2fRegistrationChallenge implements IChallenge
      * and that devices cannot be registered twice.
      */
     public function process(
-        AuthenticationProcess $process,
+        IAuthenticationProcess $process,
         ?ServerRequestInterface $httpRequest
     ): IChallengeResponse {
         $u2fRegistrations = $process

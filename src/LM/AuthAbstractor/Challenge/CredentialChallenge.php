@@ -6,6 +6,7 @@ namespace LM\AuthAbstractor\Challenge;
 
 use LM\AuthAbstractor\Configuration\IApplicationConfiguration;
 use LM\AuthAbstractor\Model\AuthenticationProcess;
+use LM\AuthAbstractor\Model\IAuthenticationProcess;
 use LM\Common\Model\StringObject;
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
@@ -51,12 +52,9 @@ class CredentialChallenge implements IChallenge
 
     /**
      * @internal
-     * @todo Store the registrations in the typed amp differently.
-     * @todo Support for multiple key authentications.
-     * @todo Remove break statements.
      */
     public function process(
-        AuthenticationProcess $process,
+        IAuthenticationProcess $process,
         ?ServerRequestInterface $httpRequest
     ): IChallengeResponse {
         $form = $this

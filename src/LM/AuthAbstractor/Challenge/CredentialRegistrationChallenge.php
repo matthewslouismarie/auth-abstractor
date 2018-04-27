@@ -8,6 +8,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use LM\AuthAbstractor\Configuration\IApplicationConfiguration;
 use LM\AuthAbstractor\Implementation\Member;
 use LM\AuthAbstractor\Model\AuthenticationProcess;
+use LM\AuthAbstractor\Model\IAuthenticationProcess;
 use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use LM\AuthAbstractor\Form\Constraint\ValidNewPassword;
@@ -62,10 +63,9 @@ class CredentialRegistrationChallenge implements IChallenge
 
     /**
      * @internal
-     * @todo Check for password complexity.
      */
     public function process(
-        AuthenticationProcess $process,
+        IAuthenticationProcess $process,
         ?ServerRequestInterface $httpRequest
     ): IChallengeResponse {
         $form = $this

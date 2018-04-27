@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace LM\AuthAbstractor\Challenge;
 
-use LM\AuthAbstractor\Model\AuthenticationProcess;
+use LM\AuthAbstractor\Model\IAuthenticationProcess;
 use LM\AuthAbstractor\Model\IChallengeResponse;
 use Psr\Http\Message\ServerRequestInterface;
 
 class EmptyChallenge implements IChallenge
 {
     public function process(
-        AuthenticationProcess $authenticationProcess,
+        IAuthenticationProcess $authenticationProcess,
         ?ServerRequestInterface $httpRequest
     ): IChallengeResponse {
         return new ChallengeResponse(

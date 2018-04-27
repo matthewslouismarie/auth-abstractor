@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace LM\AuthAbstractor\Challenge;
 
-use LM\AuthAbstractor\Model\AuthenticationProcess;
+use LM\AuthAbstractor\Model\IAuthenticationProcess;
 use LM\AuthAbstractor\Model\IChallengeResponse;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -37,16 +37,14 @@ interface IChallenge
      * display it to the user).
      *
      * @link https://www.php-fig.org/psr/psr-7/
-     * @param AuthenticationProcess $authenticationProcess The current
+     * @param IAuthenticationProcess $authenticationProcess The current
      * authentication process when the method starts.
      * @param null|ServerRequestInterface $httpRequest A PSR-7 representation
      * of an HTTP request.
-     * @return ChallengeResponse A challenge response.
-     * @todo Replace AuthenticationProcess and ChallengeResponse by
-     * IAuthenticationProcess and IChallengeResponse.
+     * @return IChallengeResponse A challenge response.
      */
     public function process(
-        AuthenticationProcess $authenticationProcess,
+        IAuthenticationProcess $authenticationProcess,
         ?ServerRequestInterface $httpRequest
     ): IChallengeResponse
     ;
