@@ -7,6 +7,7 @@ namespace LM\AuthAbstractor\Controller;
 use DI\Container;
 use DI\ContainerBuilder;
 use LM\AuthAbstractor\Configuration\IApplicationConfiguration;
+use LM\AuthAbstractor\Factory\AuthenticationProcessFactory;
 use LM\AuthAbstractor\Model\IAuthenticationKernel;
 use LM\AuthAbstractor\Model\AuthenticationProcess;
 use LM\AuthAbstractor\Model\AuthentifierResponse;
@@ -138,7 +139,20 @@ class AuthenticationKernel implements IAuthenticationKernel
     }
 
     /**
+     * Returns the authentication process factory, which can be used to create
+     * authentication processes. This is the recommended way to create
+     * authentication processes, as it aims to be more backwards-compatible and
+     * is simply easier to use.
+     * @return AuthenticationProcessFactory An authenticationProcessFactory
+     */
+    public function getAuthenticationProcessFactory(): AuthenticationProcessFactory
+    {
+        return $this->container->get(AuthenticationProcessFactory::class);
+    }
+
+    /**
      * @todo Should check type before instantiating authentifier.
+     * @todo Move somewhere else?
      */
     public function processHttpRequest(
         ServerRequestInterface $httpRequest,

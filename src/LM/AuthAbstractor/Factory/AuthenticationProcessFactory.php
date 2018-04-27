@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace LM\AuthAbstractor\Factory;
 
+use LM\AuthAbstractor\Configuration\IApplicationConfiguration;
 use LM\AuthAbstractor\Enum\AuthenticationProcess\Status;
 use LM\AuthAbstractor\Model\AuthenticationProcess;
 use LM\AuthAbstractor\Model\IAuthenticationProcess;
@@ -27,6 +28,14 @@ use LM\Common\Model\StringObject;
  */
 class AuthenticationProcessFactory
 {
+    /** @var IApplicationConfiguration */
+    private $appConfig;
+
+    public function __construct(IApplicationConfiguration $appConfig)
+    {
+        $this->appConfig = $appConfig;
+    }
+
     /**
      * This method can be used to instantiate new authentication processes.
      *
@@ -43,6 +52,7 @@ class AuthenticationProcessFactory
      * @return AuthenticationProcess A new authentication process.
      * @see \LM\AuthAbstractor\Challenge\IChallenge
      * @todo Put $additionalData in a separate scope.
+     * @todo Check $additionalData's format is correct.
      */
     public function createProcess(
         array $challenges,
@@ -57,13 +67,27 @@ class AuthenticationProcessFactory
             'n_failed_attempts' => new IntegerObject(0),
             'persist_operations' => new ArrayObject([], PersistOperation::class),
             'status' => new Status(Status::ONGOING),
-            'u2f_registrations' => [],
             'new_u2f_registrations' => new ArrayObject([], IU2fRegistration::class),
             'n_u2f_registrations' => new IntegerObject(0),
         ]);
         if (null !== $username) {
             $dataArray['username'] = new StringObject($username);
         }
+
+        if (
+            !isset($additionalData['u2f_registrations']) &&
+            null !== $username
+        ) {
+            $dataArray['u2f_registrations'] = $this->appConfig->getU2fRegistrations($username);
+        } elseif (
+            !isset($additionalData['u2f_registrations']) &&
+            null === $username
+        ) {
+            $dataArray['u2f_registrations'] = [];
+        } elseif (isset($additionalData['u2f_registrations'])) {
+            $dataArray['u2f_registrations'] = $additionalData['u2f_registrations'];
+        }
+
         $typedMap = new TypedMap($dataArray);
 
         return new AuthenticationProcess($typedMap);

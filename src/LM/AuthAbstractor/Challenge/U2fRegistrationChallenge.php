@@ -69,6 +69,11 @@ class U2fRegistrationChallenge implements IChallenge
      * @todo Handle invalid responses.
      * @todo Make sure multiple U2F devices can be registered correctly,
      * and that devices cannot be registered twice.
+     * @todo security: An important part of the state of the application is
+     * frozen during the authentication process. This includes the U2F owned by
+     * the current user (if any), among other things. However, security
+     * decisions are based on potentially obsolete frozen versions of
+     * parameters.
      */
     public function process(
         IAuthenticationProcess $process,
