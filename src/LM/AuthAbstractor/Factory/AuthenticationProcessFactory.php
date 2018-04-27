@@ -87,7 +87,6 @@ class AuthenticationProcessFactory
         } elseif (isset($additionalData['u2f_registrations'])) {
             $dataArray['u2f_registrations'] = $additionalData['u2f_registrations'];
         }
-
         $typedMap = new TypedMap($dataArray);
 
         return new AuthenticationProcess($typedMap);
