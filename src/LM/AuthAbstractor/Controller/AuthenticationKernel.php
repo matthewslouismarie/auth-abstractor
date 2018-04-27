@@ -96,12 +96,12 @@ class AuthenticationKernel implements IAuthenticationKernel
 
         $defaultFormTheme = "form_div_layout.html.twig";
 
-        $formEngine = new TwigRendererEngine(array($defaultFormTheme), $twig);
-        $twig->addRuntimeLoader(new Twig_FactoryRuntimeLoader(array(
+        $formEngine = new TwigRendererEngine([$defaultFormTheme], $twig);
+        $twig->addRuntimeLoader(new Twig_FactoryRuntimeLoader([
             FormRenderer::class => function () use ($formEngine, $csrfManager) {
                 return new FormRenderer($formEngine, $csrfManager);
             },
-        )));
+        ]));
         $twig->addExtension(new FormExtension());
         $validator = Validation::createValidator();
         $formFactory = Forms::createFormFactoryBuilder()
