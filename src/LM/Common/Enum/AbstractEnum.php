@@ -14,6 +14,8 @@ use ReflectionClass;
  * not need to define a constructor or any other method.
  *
  * @example Scalar.php An implementation.
+ * @deprecated
+ * @todo Don't use enums at all.
  */
 abstract class AbstractEnum implements IEnum
 {

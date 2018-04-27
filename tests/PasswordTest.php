@@ -17,16 +17,15 @@ class PasswordTest extends TestCase
 {
     public function testPasswordComplexity()
     {
-        $kernel = (new KernelMocker(
-            null,
-            [
+        $kernel = (new KernelMocker())->createKernel([
+            KernelMocker::KEY_PWD_SETTINGS => [
                 'min_length' => 5,
                 'enforce_min_length' =>true,
                 'uppercase' => false,
                 'special_chars' => true,
                 'numbers' => true,
             ]
-        ))->getKernel();
+        ]);
         $process = $kernel
             ->getContainer()
             ->get(AuthenticationProcessFactory::class)

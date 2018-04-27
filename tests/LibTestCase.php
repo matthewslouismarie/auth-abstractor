@@ -102,7 +102,7 @@ abstract class LibTestCase extends TestCase
         );
     }
 
-    public function getKernel(): AuthenticationKernel
+    public function createKernel(): AuthenticationKernel
     {
         return $this->kernel;
     }

@@ -17,7 +17,7 @@ class U2fMockerTest extends TestCase
      */
     public function testU2fMocker()
     {
-        $kernel = (new KernelMocker())->getKernel();
+        $kernel = (new KernelMocker())->createKernel();
         $u2fMocker = $kernel
             ->getContainer()
             ->get(U2fMocker::class)

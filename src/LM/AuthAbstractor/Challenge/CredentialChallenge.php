@@ -93,7 +93,7 @@ class CredentialChallenge implements IChallenge
             return new ChallengeResponse(
                 $authProcess,
                 null,
-                true,
+                false,
                 true
             )
             ;

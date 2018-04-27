@@ -22,7 +22,7 @@ class U2fRegistrationChallengeTest extends TestCase
 {
     public function testValidU2fRegistration()
     {
-        $kernel = (new KernelMocker())->getKernel();
+        $kernel = (new KernelMocker())->createKernel();
 
         $challengeResponse0 = $kernel
             ->getContainer()

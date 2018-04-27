@@ -17,22 +17,63 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 
 /**
+ * Mocks the kernel.
+ * 
+ * It only supports one user
+ *
  * @internal
  * @todo Maybe it should be moved in tests?
  */
 class KernelMocker
 {
-    private $kernel;
+    const KEY_PWD_SETTINGS = 'pwdSettings';
 
-    const USERNAME = 'user';
+    const KEY_U2F_CERTIFICATES = 'u2fCertificates';
 
-    public function __construct(
-        ?array $cas = null,
-        ?array $pwdSettings = null
-    ) {
-        $this->kernel = new AuthenticationKernel(
-            new class($cas, $pwdSettings, self::USERNAME) implements IApplicationConfiguration {
+    const KEY_USER_ID = 'userId';
+
+    const KEY_USER_PWD = 'userPwd';
+
+    const USER_ID = 'user';
+
+    const USER_PWD = 'pwd';
+
+    /**
+     * @param array $options An array of options for initialising the kernel.
+     * The available options are the constants of KernelMocker that begin with
+     * KEY_.
+     * @return IAuthenticationKernel A kernel that can be used for unit testing.
+     */
+    public function createKernel(array $options = []): IAuthenticationKernel
+    {
+        if (!isset($options[self::KEY_U2F_CERTIFICATES])) {
+            $options[self::KEY_U2F_CERTIFICATES] = null;
+        }
+        if (!isset($options[self::KEY_PWD_SETTINGS])) {
+            $options[self::KEY_PWD_SETTINGS] = [
+                'min_length' => 5,
+                'enforce_min_length' =>true,
+                'uppercase' => false,
+                'special_chars' => false,
+                'numbers' => false,
+            ];
+        }
+        if (!isset($options[self::KEY_USER_ID])) {
+            $options[self::KEY_USER_ID] = self::USER_ID;
+        }
+        if (!isset($options[self::KEY_USER_PWD])) {
+            $options[self::KEY_USER_PWD] = self::USER_PWD;
+        }
+        return new AuthenticationKernel(
+            new class(
+                $options[self::KEY_U2F_CERTIFICATES],
+                $options[self::KEY_PWD_SETTINGS],
+                $options[self::KEY_USER_ID],
+                $options[self::KEY_USER_PWD]
+            ) implements IApplicationConfiguration {
                 private $cas;
+
+                private $hashedPassword;
 
                 private $tokenStorage;
             
@@ -40,17 +81,13 @@ class KernelMocker
 
                 public function __construct(
                     ?array $cas,
-                    ?array $pwdSettings,
-                    string $username
+                    array $pwdSettings,
+                    string $username,
+                    string $password
                 ) {
                     $this->cas = $cas;
-                    $this->pwdSettings = $pwdSettings ?? [
-                        'min_length' => 5,
-                        'enforce_min_length' =>true,
-                        'uppercase' => false,
-                        'special_chars' => false,
-                        'numbers' => false,
-                    ];
+                    $this->hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+                    $this->pwdSettings = $pwdSettings;
                     $this->tokenStorage = new SessionTokenStorage(new Session(
                         new MockArraySessionStorage()
                     ));
@@ -87,7 +124,10 @@ class KernelMocker
                     if ($this->username !== $username) {
                         throw new InvalidArgumentException();
                     }
-                    return new Member(password_hash('pwd', PASSWORD_DEFAULT), 'user');
+                    return new Member(
+                        $this->hashedPassword,
+                        $this->username
+                    );
                 }
 
                 public function getU2fCertificates(): ?array
@@ -116,13 +156,5 @@ class KernelMocker
                 }
             }
         );
-    }
-
-    /**
-     * @return IAuthenticationKernel A kernel that can be used for unit testing.
-     */
-    public function getKernel(): IAuthenticationKernel
-    {
-        return $this->kernel;
     }
 }

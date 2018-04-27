@@ -1,2 +1,1 @@
-sudo docker exec -it $1 bash ./check-code-quality.sh
-git commit -am "$2"
+sudo docker exec authabstractor bash ./check-code-quality.sh

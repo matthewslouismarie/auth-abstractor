@@ -88,7 +88,9 @@ class ApplicationConfigurationTest extends TestCase
 
     public function testNoCas()
     {
-        $kernel = (new KernelMocker([]))->getKernel();
+        $kernel = (new KernelMocker())->createKernel([
+            KernelMocker::KEY_U2F_CERTIFICATES => [],
+        ]);
         $u2fRegisterData =  $kernel
             ->getContainer()
             ->get(U2fMocker::class)
@@ -107,7 +109,9 @@ class ApplicationConfigurationTest extends TestCase
 
     public function testDisabledCaVerification()
     {
-        $kernel = (new KernelMocker(null))->getKernel();
+        $kernel = (new KernelMocker())->createKernel([
+            KernelMocker::KEY_U2F_CERTIFICATES => null,
+        ]);
         $u2fRegisterData =  $kernel
             ->getContainer()
             ->get(U2fMocker::class)
@@ -130,9 +134,9 @@ class ApplicationConfigurationTest extends TestCase
 
     public function testAllCas()
     {
-        $kernel = (new KernelMocker(glob(__DIR__.'/certificates/*.pem')))
-            ->getKernel()
-        ;
+        $kernel = (new KernelMocker())->createKernel([
+            KernelMocker::KEY_U2F_CERTIFICATES => glob(__DIR__.'/certificates/*.pem'),
+        ]);
         $u2fRegisterData =  $kernel
             ->getContainer()
             ->get(U2fMocker::class)

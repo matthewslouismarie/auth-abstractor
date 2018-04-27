@@ -46,7 +46,7 @@ class AuthenticationProcessTest extends LibTestCase
     {
         $this->markTestSkipped('Must be updated.');
 
-        $this->assertNotNull($this->getKernel());
+        $this->assertNotNull($this->createKernel());
         $mocker = $this->get(U2fMocker::class);
         $process = $this
             ->get(AuthenticationProcessFactory::class)
