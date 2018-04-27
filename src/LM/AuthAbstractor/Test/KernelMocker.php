@@ -24,21 +24,24 @@ class KernelMocker
 {
     private $kernel;
 
+    const USERNAME = 'user';
+
     public function __construct(
         ?array $cas = null,
         ?array $pwdSettings = null
     ) {
         $this->kernel = new AuthenticationKernel(
-            new class($cas, $pwdSettings) implements IApplicationConfiguration {
-                const USERNAME = 'user';
-
+            new class($cas, $pwdSettings, self::USERNAME) implements IApplicationConfiguration {
                 private $cas;
 
                 private $tokenStorage;
+            
+                private $username;
 
                 public function __construct(
                     ?array $cas,
-                    ?array $pwdSettings
+                    ?array $pwdSettings,
+                    string $username
                 ) {
                     $this->cas = $cas;
                     $this->pwdSettings = $pwdSettings ?? [
@@ -51,6 +54,7 @@ class KernelMocker
                     $this->tokenStorage = new SessionTokenStorage(new Session(
                         new MockArraySessionStorage()
                     ));
+                    $this->username = $username;
                 }
 
                 public function getAssetUri(string $assetId): string
@@ -80,7 +84,7 @@ class KernelMocker
 
                 public function getMember(string $username): IMember
                 {
-                    if (self::USERNAME !== $username) {
+                    if ($this->username !== $username) {
                         throw new InvalidArgumentException();
                     }
                     return new Member(password_hash('pwd', PASSWORD_DEFAULT), 'user');
@@ -108,7 +112,7 @@ class KernelMocker
 
                 public function isExistingMember(string $username): bool
                 {
-                    return self::USERNAME === $username;
+                    return $this->username === $username;
                 }
             }
         );
