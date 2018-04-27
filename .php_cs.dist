@@ -23,6 +23,43 @@ return PhpCsFixer\Config::create()
         'date_time_immutable' => true,
         'declare_strict_types' => true,
         'array_syntax' => ['syntax' => 'short'],
+        // escape_implicit_backslashes
+        // explicit_indirect_variable
+        // explicit_string_variable
+        // increment_style
+        // is_null
+        // linebreak_after_opening_tag
+        // list_syntax
+        // magic_constant_casing
+        // mb_str_functions
+        // method_chaining_indentation
+        // modernize_types_casting + another one at the beginnig of the list
+        // multiline_comment_opening_closing
+        // multiline_whitespace_before_semicolons **
+        // native_function_invocation? (faster, apparently)
+        // new_with_braces
+        // no_alias_functions (master function?)
+        // no_alternative_syntax
+        // no_blank_lines_after_class_opening **
+        // no_blank_lines_after_phpdoc
+        // no_break_comment ???
+        // no_empty_comment
+        // no_empty_phpdoc
+        // no_empty_statement
+        // no_extra_blank_lines
+        // no_homoglyph_names
+        // no_leading_import_slash
+        // no_leading_namespace_whitespace
+        // no_mixed_echo_print
+        // no_multiline_whitespace_around_double_arrow?
+        // no_null_property_initialization
+        // no_php4_constructor
+        // no_short_bool_cast??
+        // no_singleline_whitespace_before_semicolons **
+        // no_spaces_around_offset **
+        // no_unneeded_control_parentheses??
+        // no_unneeded_curly_braces
+        // no_unneeded_final_method
     ])
     ->setFinder($finder)
 ;
