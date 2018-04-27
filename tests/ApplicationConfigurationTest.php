@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\LM;
 
 use LM\AuthAbstractor\Test\KernelMocker;
-use LM\AuthAbstractor\U2f\U2fServerGenerator;
 use LM\AuthAbstractor\Implementation\ApplicationConfiguration;
 use LM\AuthAbstractor\Implementation\Member;
 use LM\AuthAbstractor\Implementation\TestingTokenStorage;

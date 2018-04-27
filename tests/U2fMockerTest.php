@@ -5,10 +5,6 @@ declare(strict_types=1);
 namespace Tests\LM;
 
 use Firehed\U2f\RegisterRequest;
-use InvalidArgumentException;
-use LM\AuthAbstractor\Implementation\Member;
-use LM\Common\DataStructure\TypedMap;
-use LM\Common\Enum\Scalar;
 use LM\AuthAbstractor\Test\KernelMocker;
 use PHPUnit\Framework\TestCase;
 use LM\AuthAbstractor\Model\IU2fRegistration;
@@ -55,6 +51,6 @@ class U2fMockerTest extends TestCase
     {
         json_decode($string);
 
-        return (json_last_error() === JSON_ERROR_NONE);
+        return (JSON_ERROR_NONE === json_last_error());
     }
 }

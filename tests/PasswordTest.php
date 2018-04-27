@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\LM;
 
 use LM\AuthAbstractor\Test\KernelMocker;
@@ -53,8 +55,8 @@ class PasswordTest extends TestCase
                         ->getContainer()
                         ->get(IApplicationConfiguration::class)
                         ->getTokenStorage()
-                        ->getToken('form')
-                ]
+                        ->getToken('form'),
+                ],
             ]
         );
         $response = $kernel->processHttpRequest(

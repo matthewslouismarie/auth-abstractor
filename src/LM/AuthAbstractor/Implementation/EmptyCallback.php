@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace LM\AuthAbstractor\Implementation;
 
-use Closure;
 use LM\AuthAbstractor\Model\AuthenticationProcess;
 use Psr\Http\Message\ResponseInterface;
 use LM\AuthAbstractor\Model\IAuthenticationCallback;

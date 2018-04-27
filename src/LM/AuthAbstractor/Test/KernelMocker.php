@@ -1,11 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LM\AuthAbstractor\Test;
 
-use Exception;
 use LM\AuthAbstractor\Controller\AuthenticationKernel;
 use LM\AuthAbstractor\Configuration\IApplicationConfiguration;
-use PHPUnit\Framework\TestCase;
 use LM\AuthAbstractor\Model\IMember;
 use LM\AuthAbstractor\Model\IAuthenticationKernel;
 use LM\AuthAbstractor\Mocker\U2fMocker;
@@ -15,7 +15,6 @@ use Symfony\Component\Security\Csrf\TokenStorage\SessionTokenStorage;
 use InvalidArgumentException;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
-
 
 /**
  * @internal
@@ -27,8 +26,8 @@ class KernelMocker
 
     public function __construct(
         ?array $cas = null,
-        ?array $pwdSettings = null)
-    {
+        ?array $pwdSettings = null
+    ) {
         $this->kernel = new AuthenticationKernel(
             new class($cas, $pwdSettings) implements IApplicationConfiguration {
                 const USERNAME = 'user';
@@ -54,50 +53,61 @@ class KernelMocker
                     ));
                 }
 
-                public function getAssetUri(string $assetId): string {
+                public function getAssetUri(string $assetId): string
+                {
                     return 'https://example.org';
                 }
 
-                public function getAppId(): string {
+                public function getAppId(): string
+                {
                     return 'https://example.org';
                 }
 
-                public function getComposerDir(): string {
+                public function getComposerDir(): string
+                {
                     return realpath(__DIR__.'/../../../../vendor');
                 }
 
-                public function getCustomTwigDir(): ?string {
+                public function getCustomTwigDir(): ?string
+                {
                     return null;
                 }
 
-                public function getLibDir(): string {
+                public function getLibDir(): string
+                {
                     return realpath(__DIR__.'/../../../..');
                 }
 
-                public function getMember(string $username): IMember {
+                public function getMember(string $username): IMember
+                {
                     if (self::USERNAME !== $username) {
                         throw new InvalidArgumentException();
                     }
                     return new Member(password_hash('pwd', PASSWORD_DEFAULT), 'user');
                 }
 
-                public function getU2fCertificates(): ?array {
+                public function getU2fCertificates(): ?array
+                {
                     return $this->cas;
                 }
 
-                public function getU2fRegistrations(string $username): array {
+                public function getU2fRegistrations(string $username): array
+                {
                     return (new U2fMocker($this))->getU2fRegistrations();
                 }
 
-                public function getPwdSettings(): array {
+                public function getPwdSettings(): array
+                {
                     return $this->pwdSettings;
                 }
 
-                public function getTokenStorage(): TokenStorageInterface {
+                public function getTokenStorage(): TokenStorageInterface
+                {
                     return $this->tokenStorage;
                 }
 
-                public function isExistingMember(string $username): bool {
+                public function isExistingMember(string $username): bool
+                {
                     return self::USERNAME === $username;
                 }
             }

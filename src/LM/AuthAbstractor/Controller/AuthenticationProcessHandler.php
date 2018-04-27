@@ -9,7 +9,6 @@ use LM\AuthAbstractor\Model\AuthenticationProcess;
 use LM\AuthAbstractor\Model\AuthentifierResponse;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory;
 use LM\AuthAbstractor\Model\IAuthenticationCallback;
 
 /**
@@ -54,12 +53,7 @@ class AuthenticationProcessHandler
             ;
             $challengeResponse = $challenge->process($process, $httpRequest);
 
-            $psr7Factory = new DiactorosFactory();
-
-            $psrHttpResponse = null;
-            if (null !== $challengeResponse->getHttpResponse()) {
-                $psrHttpResponse = $psr7Factory->createResponse($challengeResponse->getHttpResponse());
-            }
+            $psrHttpResponse = $challengeResponse->getHttpResponse();
 
             if ($challengeResponse->isFinished()) {
                 return new AuthentifierResponse(

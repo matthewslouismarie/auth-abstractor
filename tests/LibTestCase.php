@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\LM;
 
-use Exception;
 use LM\AuthAbstractor\Controller\AuthenticationKernel;
 use LM\AuthAbstractor\Configuration\IApplicationConfiguration;
 use PHPUnit\Framework\TestCase;
@@ -36,42 +35,51 @@ abstract class LibTestCase extends TestCase
                     $this->tokenStorage = new NativeSessionTokenStorage();
                 }
 
-                public function getAssetUri(string $assetId): string {
+                public function getAssetUri(string $assetId): string
+                {
                     return 'https://example.org';
                 }
 
-                public function getAppId(): string {
+                public function getAppId(): string
+                {
                     return 'https://example.org';
                 }
 
-                public function getComposerDir(): string {
+                public function getComposerDir(): string
+                {
                     return realpath(__DIR__.'/../vendor');
                 }
 
-                public function getCustomTwigDir(): ?string {
+                public function getCustomTwigDir(): ?string
+                {
                     return null;
                 }
 
-                public function getLibDir(): string {
+                public function getLibDir(): string
+                {
                     return realpath(__DIR__.'/..');
                 }
 
-                public function getMember(string $username): IMember {
+                public function getMember(string $username): IMember
+                {
                     if (self::USERNAME !== $username) {
                         throw new InvalidArgumentException();
                     }
                     return new Member(password_hash('pwd', PASSWORD_DEFAULT), 'user');
                 }
 
-                public function getU2fCertificates(): ?array {
+                public function getU2fCertificates(): ?array
+                {
                     return null;
                 }
 
-                public function getU2fRegistrations(string $username): array {
+                public function getU2fRegistrations(string $username): array
+                {
                     return (new U2fMocker($this))->getU2fRegistrations();
                 }
 
-                public function getPwdSettings(): array {
+                public function getPwdSettings(): array
+                {
                     return [
                         'min_length' => 5,
                         'enforce_min_length' =>true,
@@ -81,11 +89,13 @@ abstract class LibTestCase extends TestCase
                     ];
                 }
 
-                public function getTokenStorage(): TokenStorageInterface {
+                public function getTokenStorage(): TokenStorageInterface
+                {
                     return $this->tokenStorage;
                 }
 
-                public function isExistingMember(string $username): bool {
+                public function isExistingMember(string $username): bool
+                {
                     return self::USERNAME === $member->getUsername();
                 }
             }
