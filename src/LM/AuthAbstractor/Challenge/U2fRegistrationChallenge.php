@@ -97,60 +97,60 @@ class U2fRegistrationChallenge implements IChallenge
 
         $typedMap = null;
         if ($form->isSubmitted() && $form->isValid()) {
-            // try {
-            $currentU2fRegistrationRequest = $process
-                ->getTypedMap()
-                ->get('current_u2f_registration_request', U2fRegistrationRequest::class)
-            ;
-            // ob_start(); // tmp
-            // var_dump($form['u2fDeviceResponse']->getData());
-            // file_put_contents('/var/www/html/tmp.txt', ob_get_clean(), FILE_APPEND);
-            $u2fRegistration = $this
-                ->u2fRegistrationManager
-                ->getU2fRegistrationFromResponse(
-                    $form['u2fDeviceResponse']->getData(),
-                    $currentU2fRegistrationRequest->getRequest()
-                )
-            ;
-            // ob_start(); // tmp
-            // var_dump($u2fRegistration);
-            // file_put_contents('/var/www/html/tmp.txt', ob_get_clean(), FILE_APPEND);
+            try {
+                $currentU2fRegistrationRequest = $process
+                    ->getTypedMap()
+                    ->get('current_u2f_registration_request', U2fRegistrationRequest::class)
+                ;
+                // ob_start(); // tmp
+                // var_dump($form['u2fDeviceResponse']->getData());
+                // file_put_contents('/var/www/html/tmp.txt', ob_get_clean(), FILE_APPEND);
+                $u2fRegistration = $this
+                    ->u2fRegistrationManager
+                    ->getU2fRegistrationFromResponse(
+                        $form['u2fDeviceResponse']->getData(),
+                        $currentU2fRegistrationRequest->getRequest()
+                    )
+                ;
+                // ob_start(); // tmp
+                // var_dump($u2fRegistration);
+                // file_put_contents('/var/www/html/tmp.txt', ob_get_clean(), FILE_APPEND);
 
-            $u2fRegistrations[] = $u2fRegistration;
+                $u2fRegistrations[] = $u2fRegistration;
 
-            $typedMap = $process
-                ->getTypedMap()
-                ->set(
-                    'persist_operations',
-                    $process
-                        ->getTypedMap()
-                        ->get('persist_operations', ArrayObject::class)
-                        ->add(
-                            new PersistOperation($u2fRegistration, new Operation(Operation::CREATE)),
-                            PersistOperation::class
-                        ),
-                    ArrayObject::class
-                )
-                ->set(
-                    'n_u2f_registrations',
-                    new IntegerObject($nU2fRegistrations + 1),
-                    IntegerObject::class
-                )
-                ->set(
-                    'u2f_registrations',
-                    $u2fRegistrations,
-                    Scalar::_ARRAY
-                )
-            ;
-            // } catch (ClientErrorException $e) {
-            //     $form->addError(new FormError('You already used this U2F device'));
-            // }
-            return new ChallengeResponse(
-                new AuthenticationProcess($typedMap),
-                null,
-                false,
-                true
-            );
+                $typedMap = $process
+                    ->getTypedMap()
+                    ->set(
+                        'persist_operations',
+                        $process
+                            ->getTypedMap()
+                            ->get('persist_operations', ArrayObject::class)
+                            ->add(
+                                new PersistOperation($u2fRegistration, new Operation(Operation::CREATE)),
+                                PersistOperation::class
+                            ),
+                        ArrayObject::class
+                    )
+                    ->set(
+                        'n_u2f_registrations',
+                        new IntegerObject($nU2fRegistrations + 1),
+                        IntegerObject::class
+                    )
+                    ->set(
+                        'u2f_registrations',
+                        $u2fRegistrations,
+                        Scalar::_ARRAY
+                    )
+                ;
+                return new ChallengeResponse(
+                    new AuthenticationProcess($typedMap),
+                    null,
+                    false,
+                    true
+                );
+            } catch (ClientErrorException $e) {
+                $form->addError(new FormError('You already used this U2F device'));
+            }
         }
 
         $u2fRegistrationRequest = $this
