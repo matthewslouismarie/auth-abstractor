@@ -143,6 +143,7 @@ class AuthenticationKernel implements IAuthenticationKernel
      * authentication processes. This is the recommended way to create
      * authentication processes, as it aims to be more backwards-compatible and
      * is simply easier to use.
+     *
      * @return AuthenticationProcessFactory An authenticationProcessFactory
      */
     public function getAuthenticationProcessFactory(): AuthenticationProcessFactory

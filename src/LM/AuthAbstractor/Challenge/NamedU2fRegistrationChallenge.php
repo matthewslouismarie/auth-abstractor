@@ -11,6 +11,7 @@ use LM\AuthAbstractor\Model\AuthenticationProcess;
 use LM\AuthAbstractor\Model\IAuthenticationProcess;
 use LM\AuthAbstractor\Model\IU2fRegistration;
 use LM\AuthAbstractor\Model\PersistOperation;
+use LM\AuthAbstractor\Implementation\NamedU2fRegistration;
 use LM\AuthAbstractor\Model\U2fRegistrationRequest;
 use LM\AuthAbstractor\U2f\U2fRegistrationManager;
 use LM\Common\Enum\Scalar;
@@ -26,9 +27,10 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Twig_Environment;
 
 /**
- * A challenge for asking the user to register a new U2F device.
+ * A challenge for asking the user to register a new U2F token, this time,
+ * requiring them to enter a name for it.
  */
-class U2fRegistrationChallenge implements IChallenge
+class NamedU2fRegistrationChallenge implements IChallenge
 {
     /** @var FormFactoryInterface */
     private $formFactory;
@@ -61,15 +63,6 @@ class U2fRegistrationChallenge implements IChallenge
 
     /**
      * @internal
-     * @todo Maybe it should convert u2fRegistrations to ArrayObject, and then
-     * U2fRegistrationManager would also take an ArrayObject as parameter.
-     * @todo Handle invalid responses.
-     * @todo security: An important part of the state of the application is
-     * frozen during the authentication process. This includes the U2F owned by
-     * the current user (if any), among other things. However, security
-     * decisions are based on potentially obsolete frozen versions of
-     * parameters.
-     * @todo Rename u2fDeviceResponse to u2fTokenResponse
      */
     public function process(
         IAuthenticationProcess $process,
@@ -88,7 +81,8 @@ class U2fRegistrationChallenge implements IChallenge
         $form = $this
             ->formFactory
             ->createBuilder()
-            ->add('u2fDeviceResponse', HiddenType::class)
+            ->add('u2fRegistrationName')
+            ->add('u2fTokenResponse', HiddenType::class)
             ->getForm()
         ;
 
@@ -103,19 +97,20 @@ class U2fRegistrationChallenge implements IChallenge
                     ->getTypedMap()
                     ->get('current_u2f_registration_request', U2fRegistrationRequest::class)
                 ;
-                // ob_start(); // tmp
-                // var_dump($form['u2fDeviceResponse']->getData());
-                // file_put_contents('/var/www/html/tmp.txt', ob_get_clean(), FILE_APPEND);
-                $u2fRegistration = $this
+                $u2fRegTmp = $this
                     ->u2fRegistrationManager
                     ->getU2fRegistrationFromResponse(
-                        $form['u2fDeviceResponse']->getData(),
+                        $form['u2fTokenResponse']->getData(),
                         $currentU2fRegistrationRequest->getRequest()
                     )
                 ;
-                // ob_start(); // tmp
-                // var_dump($u2fRegistration);
-                // file_put_contents('/var/www/html/tmp.txt', ob_get_clean(), FILE_APPEND);
+                $u2fRegistration = new NamedU2fRegistration(
+                    $u2fRegTmp->getAttestationCertificate(),
+                    $u2fRegTmp->getCounter(),
+                    $u2fRegTmp->getKeyHandle(),
+                    $form['u2fRegistrationName']->getData(),
+                    $u2fRegTmp->getPublicKey()
+                );
 
                 $u2fRegistrations[] = $u2fRegistration;
 
@@ -161,9 +156,6 @@ class U2fRegistrationChallenge implements IChallenge
                 IU2fRegistration::class
             ))
         ;
-        // ob_start(); // tmp
-        // var_dump($u2fRegistrationRequest); // tmp
-        // file_put_contents('/var/www/html/tmp.txt', ob_get_clean()); // tmp
 
         $httpResponse = new Response($this
             ->twig
