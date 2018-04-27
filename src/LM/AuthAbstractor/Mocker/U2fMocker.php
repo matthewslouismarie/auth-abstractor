@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace LM\AuthAbstractor\Mocker;
 
 use Firehed\U2F\RegisterRequest;
+use Firehed\U2F\SignRequest;
 use LM\AuthAbstractor\Configuration\IApplicationConfiguration;
 use LM\AuthAbstractor\Implementation\U2fRegistration;
 use LM\AuthAbstractor\Model\IU2fRegistration;
@@ -57,6 +58,25 @@ class U2fMocker
             if (isset($item['registerResponse'])) {
                 $list[$item['id']]['registerResponseStr'] = json_encode($item['registerResponse']);
             }
+            if (isset($item['u2fAuthentications'])) {
+                $list[$item['id']]['u2fAuthentications'] = [];
+                foreach ($item['u2fAuthentications'] as $u2fAuth) {
+                    $signRequests = array_map(
+                        function ($object) {
+                            return (new SignRequest())
+                                ->setAppId($object['appId'])
+                                ->setChallenge($object['challenge'])
+                                ->setKeyHandle(base64_decode($object['keyHandle'], true))
+                            ;
+                        },
+                        $u2fAuth['signRequests']
+                    );
+                    $list[$item['id']]['u2fAuthentications'][] = [
+                        'signRequests' => $signRequests,
+                        'signResponse' => $u2fAuth['signResponse'],
+                    ];
+                }
+            }
 
             return $this->createFromArray($items, $list);
         } else {
@@ -76,10 +96,24 @@ class U2fMocker
 
     /**
      * @api
-     * @return IU2fRegistration[] An array of U2F registrations.
+     * @return array An array of U2F registrations and related data.
      */
     public function getU2fRegistrations(): array
     {
         return $this->u2fRegistrations;
+    }
+
+    /**
+     * @api
+     * @return IU2fRegistration[] An array of U2F registrations only.
+     */
+    public function getU2fRegistrationsOnly(): array
+    {
+        return array_map(
+            function ($item) {
+                return $item['u2fRegistration'];
+            },
+            $this->u2fRegistrations
+        );
     }
 }

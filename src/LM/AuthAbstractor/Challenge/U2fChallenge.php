@@ -154,7 +154,7 @@ class U2fChallenge implements IChallenge
                 return new ChallengeResponse(
                     new AuthenticationProcess($newDm),
                     null,
-                    true,
+                    false,
                     true
                 )
                 ;

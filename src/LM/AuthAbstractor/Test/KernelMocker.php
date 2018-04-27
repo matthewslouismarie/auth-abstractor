@@ -132,7 +132,7 @@ class KernelMocker
 
                 public function getU2fRegistrations(string $username): array
                 {
-                    return (new U2fMocker($this))->getU2fRegistrations();
+                    return (new U2fMocker($this))->getU2fRegistrationsOnly();
                 }
 
                 public function getPwdSettings(): array

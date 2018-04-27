@@ -37,5 +37,31 @@
             "keyHandle": "RZBo7If32dZmkRzViOZHreOJeAP54pr2w7OkoLr27y/J/mRVQEsjwQezi9XCzw4GlEbCCX0oWe50FjRUeWNDPQ==",
             "publicKey": "BBFxVCJO85fsvyaVRh4JVXo9NiAZ/SfC3cxvublm1MFTnLsphjfyWW1CvFbD780sCpctRtsPToNK9DH/nzSnIX0="
         }
+    },
+    {
+        "id": 3,
+        "u2fRegistration": {
+            "attestationCertificate": "MIICSjCCATKgAwIBAgIEEkpy/jANBgkqhkiG9w0BAQsFADAuMSwwKgYDVQQDEyNZdWJpY28gVTJGIFJvb3QgQ0EgU2VyaWFsIDQ1NzIwMDYzMTAgFw0xNDA4MDEwMDAwMDBaGA8yMDUwMDkwNDAwMDAwMFowLDEqMCgGA1UEAwwhWXViaWNvIFUyRiBFRSBTZXJpYWwgMjQ5NDE0OTcyMTU4MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEPYsbvS/L9ghuEHRxYBRoSEFTwcbTtLaKXoVebkB1fuIrzYmIvzvv183yHLC/XXoVDYRK/pgQPGxmB9n6rih8AqM7MDkwIgYJKwYBBAGCxAoCBBUxLjMuNi4xLjQuMS40MTQ4Mi4xLjEwEwYLKwYBBAGC5RwCAQEEBAMCBSAwDQYJKoZIhvcNAQELBQADggEBAKFPHuoAdva4R2oQor5y5g0CcbtGWy37/Hwb0S01GYmRcDJjHXldCX+jCiajJWNOhXIbwtAahjA/a8B15ZlzGeEiFIsElu7I0fT5TPQRDeYmwolEPR8PW7sjnKE+gdHVqp31r442EmR1v8I68GKDFXJSdi/2iHm88O9XjVXWf5UbTzK2PIrqWw+Zxn19gUp/9ab1Lfg+iUo6XZyLguf4vI2vTIAXX/iXL9p5Mz7EZdgG6syUjxurIgRalVWKSMICJtrAA9QfvJ4F6iimu14QpJ3gYKCk9qJnajTWjEq+jGGHQ1W5An6CjKngZLAC1i6NjPB0SSF1PTXjyHxdV3lFPnc=",
+            "counter": 0,
+            "keyHandle": "v8IplXz0zSQUXVYjvSWNcP/70AamVDoaROr1UcREnWaARrRABftdhhaKTFsYTgOj5CH6BUYxztAN9qrU3WcBZg==",
+            "publicKey": "BPXPn5wJaS5cnRfe45NYPv/1foHyRIPMFn4ABhzu8jXbnuGbZXHrDS3gmwP1OywFqADOYsQMg14GbQk1+RDBhHQ="
+        },
+        "u2fAuthentications": [
+            {
+                "signRequests": [
+                    {
+                        "appId": "https://172.16.238.10",
+                        "challenge": "nNrcjIiaoqevsEddvOnPeA",
+                        "keyHandle": "v8IplXz0zSQUXVYjvSWNcP/70AamVDoaROr1UcREnWaARrRABftdhhaKTFsYTgOj5CH6BUYxztAN9qrU3WcBZg==",
+                        "version": "U2F_V2"
+                    }
+                ],
+                "signResponse": {
+                    "keyHandle":"v8IplXz0zSQUXVYjvSWNcP_70AamVDoaROr1UcREnWaARrRABftdhhaKTFsYTgOj5CH6BUYxztAN9qrU3WcBZg",
+                    "clientData":"eyJ0eXAiOiJuYXZpZ2F0b3IuaWQuZ2V0QXNzZXJ0aW9uIiwiY2hhbGxlbmdlIjoibk5yY2pJaWFvcWV2c0VkZHZPblBlQSIsIm9yaWdpbiI6Imh0dHBzOi8vMTcyLjE2LjIzOC4xMCIsImNpZF9wdWJrZXkiOiJ1bnVzZWQifQ",
+                    "signatureData":"AQAAAtkwRgIhANOhOtr3LswnPZ_lBZbJeHJBGNDPq_viVZ7BPhilscJTAiEA2LBpW_KCrWHzr_B0-ex6GwADPMrRm3bunsx2ZeO5P1g"
+                }
+            }
+        ]
     }
 ]

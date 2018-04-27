@@ -6,6 +6,7 @@ namespace Tests\LM;
 
 use Firehed\U2f\RegisterRequest;
 use LM\AuthAbstractor\Test\KernelMocker;
+use Firehed\U2F\SignRequest;
 use PHPUnit\Framework\TestCase;
 use LM\AuthAbstractor\Model\IU2fRegistration;
 use LM\AuthAbstractor\Mocker\U2fMocker;
@@ -41,6 +42,20 @@ class U2fMockerTest extends TestCase
                 $this->assertTrue(is_a($u2fRegDatum['registerRequest'], RegisterRequest::class));
             }
         }
+
+        $u2fReg3 = $u2fMocker->get(3);
+        $this->assertTrue(isset($u2fReg3['u2fAuthentications']));
+        $u2fAuth3 = $u2fReg3['u2fAuthentications'];
+        $this->assertTrue(is_array($u2fAuth3));
+        foreach ($u2fAuth3 as $u2fAuth) {
+            $this->assertTrue(isset($u2fAuth['signRequests']));
+            $this->assertTrue(is_array($u2fAuth['signRequests']));
+            $this->assertTrue(is_a($u2fAuth['signRequests'][0], SignRequest::class));
+            $this->assertTrue(isset($u2fAuth['signResponse']));
+            $this->assertTrue(is_array($u2fAuth['signResponse']));
+        }
+
+        $this->assertSame(4, count($u2fMocker->getU2fRegistrationsOnly()));
     }
 
     /**
