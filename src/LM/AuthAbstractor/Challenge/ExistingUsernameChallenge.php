@@ -55,7 +55,7 @@ class ExistingUsernameChallenge implements IChallenge
     public function process(
         AuthenticationProcess $process,
         ?ServerRequestInterface $httpRequest
-    ): ChallengeResponse {
+    ): IChallengeResponse {
         $form = $this
             ->formFactory
             ->createBuilder()

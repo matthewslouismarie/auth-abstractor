@@ -71,7 +71,7 @@ class U2fRegistrationChallenge implements IChallenge
     public function process(
         AuthenticationProcess $process,
         ?ServerRequestInterface $httpRequest
-    ): ChallengeResponse {
+    ): IChallengeResponse {
         $u2fRegistrations = $process
             ->getTypedMap()
             ->get('u2f_registrations', Scalar::_ARRAY)

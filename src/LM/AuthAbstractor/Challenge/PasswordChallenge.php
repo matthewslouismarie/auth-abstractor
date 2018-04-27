@@ -56,7 +56,7 @@ class PasswordChallenge implements IChallenge
     public function process(
         AuthenticationProcess $process,
         ?ServerRequestInterface $httpRequest
-    ): ChallengeResponse {
+    ): IChallengeResponse {
         $username = $process
             ->getTypedMap()
             ->get('username', StringObject::class)
