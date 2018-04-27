@@ -18,7 +18,7 @@ class EmptyChallenge implements IChallenge
             $authenticationProcess,
             null,
             false,
-            true
+            false
         );
     }
 }

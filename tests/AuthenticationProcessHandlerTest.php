@@ -51,5 +51,10 @@ class AuthenticationProcessHandlerTest extends TestCase
             $process->getNFailedAttempts(),
             $newProcess->getNFailedAttempts()
         );
+        $this->assertSame(
+            $process->getNFailedAttempts(),
+            $newProcess->getNFailedAttempts()
+        );
+        $this->assertTrue($newProcess->isSucceeded());
     }
 }
