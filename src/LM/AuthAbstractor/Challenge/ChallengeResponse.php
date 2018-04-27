@@ -5,10 +5,14 @@ declare(strict_types=1);
 namespace LM\AuthAbstractor\Challenge;
 
 use Symfony\Component\HttpFoundation\Response;
-use LM\AuthAbstractor\Model\AuthenticationProcess;
+use LM\AuthAbstractor\Model\IAuthenticationProcess;
+use Psr\Http\Message\ResponseInterface;
+use Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory;
+use LM\AuthAbstractor\Model\IChallengeResponse;
 
 /**
- * The only use of this class is to be returned by challenges.
+ * The only use of this class is to be returned by challenges. It accepts
+ * Symfony responses objects but return ResponseInterface objects.
  *
  * They contain the HTTP response, the new authentication process, and whether
  * the request was a failed attempt and is finished. For instance, a challenge
@@ -21,11 +25,11 @@ use LM\AuthAbstractor\Model\AuthenticationProcess;
  *         true // whether the submission was valid (e.g. a valid password)
  *     );
  *
- * @todo It should implement an interface.
+ * @todo Move in Implementation
  */
-class ChallengeResponse
+class ChallengeResponse implements IChallengeResponse
 {
-    /** @var AuthenticationProcess */
+    /** @var IAuthenticationProcess */
     private $authenticationProcess;
 
     /** @var null|Response */
@@ -38,7 +42,7 @@ class ChallengeResponse
     private $isFinished;
 
     /**
-     * @param AuthenticationProcess $authenticationProcess The authentication
+     * @param IAuthenticationProcess $authenticationProcess The authentication
      * process.
      * @param null|Response $httpResponse The HTTP response.
      * @param bool $isFailedAttempt Whether the HTTP request was a failed
@@ -46,7 +50,7 @@ class ChallengeResponse
      * @param bool $isFinished Whether the current challenge is finished.
      */
     public function __construct(
-        AuthenticationProcess $authenticationProcess,
+        IAuthenticationProcess $authenticationProcess,
         ?Response $httpResponse,
         bool $isFailedAttempt,
         bool $isFinished
@@ -57,36 +61,27 @@ class ChallengeResponse
         $this->isFinished = $isFinished;
     }
 
-    /**
-     * @api
-     * @return AuthenticationProcess The authentication process.
-     * @todo It should return an IAuthenticationProcess instead.
-     */
-    public function getAuthenticationProcess(): AuthenticationProcess
+    public function getAuthenticationProcess(): IAuthenticationProcess
     {
         return $this->authenticationProcess;
     }
 
-    /**
-     * @return Response The HTTP response.
-     * @todo It should return a ResponseInterface instead.
-     */
-    public function getHttpResponse(): ?Response
+    public function getHttpResponse(): ?ResponseInterface
     {
-        return $this->httpResponse;
+        if (null === $this->httpResponse) {
+            return null;
+        } else {
+            $diactorosFactory = new DiactorosFactory();
+
+            return $diactorosFactory->createResponse($this->httpResponse);
+        }
     }
 
-    /**
-     * @return bool Whether the HTTP request was a failed attempt.
-     */
     public function isFailedAttempt(): bool
     {
         return $this->isFailedAttempt;
     }
 
-    /**
-     * @return bool Whether the current challenge is finished or not.
-     */
     public function isFinished(): bool
     {
         return $this->isFinished;
