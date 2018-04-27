@@ -25,7 +25,7 @@ class TypedMap implements ITypedMap
      * @param array $items A scalar array of items to initialise the object
      * with.
      */
-    public function __construct(array $items)
+    public function __construct(array $items = [])
     {
         foreach (array_keys($items) as $key) {
             $this->checkType($key, Scalar::_STR);

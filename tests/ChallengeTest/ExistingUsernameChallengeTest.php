@@ -2,42 +2,41 @@
 
 declare(strict_types=1);
 
+namespace Tests\LM\ChallengeTest;
+
 use LM\AuthAbstractor\Test\KernelMocker;
 use PHPUnit\Framework\TestCase;
+use LM\AuthAbstractor\Challenge\ExistingUsernameChallenge;
 use Symfony\Component\HttpFoundation\Request;
 use LM\AuthAbstractor\Configuration\IApplicationConfiguration;
 use Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory;
 use LM\AuthAbstractor\Model\AuthenticationProcess;
 use LM\Common\DataStructure\TypedMap;
-use LM\AuthAbstractor\Challenge\CredentialRegistrationChallenge;
 
-class CredentialRegistrationChallengeTest extends TestCase
+class ExistingUsernameChallengeTest extends TestCase
 {
-    public function testValidCredentialRegistration()
+    public function testValidExistingUsernameSubmission()
     {
         $kernel = (new KernelMocker())->createKernel();
 
         $challenge = $kernel
             ->getContainer()
-            ->get(CredentialRegistrationChallenge::class)
+            ->get(ExistingUsernameChallenge::class)
         ;
 
         $challengeResponse0 = $challenge->process(
-            new AuthenticationProcess(new TypedMap([])),
+            new AuthenticationProcess(new TypedMap()),
             null
         );
         $this->assertFalse($challengeResponse0->isFailedAttempt());
         $this->assertFalse($challengeResponse0->isFinished());
+        $this->assertNotNull($challengeResponse0->getHttpResponse());
         $httpRequest1 = (new DiactorosFactory())->createRequest(Request::create(
             'http://localhost',
             'POST',
             [
                 'form' => [
-                    'username' => 'new::'.KernelMocker::USER_ID,
-                    'password' => [
-                        'first' => KernelMocker::USER_PWD,
-                        'second' => KernelMocker::USER_PWD,
-                    ],
+                    'username' => KernelMocker::USER_ID,
                     '_token' => $kernel
                         ->getContainer()
                         ->get(IApplicationConfiguration::class)
@@ -46,14 +45,6 @@ class CredentialRegistrationChallengeTest extends TestCase
                 ],
             ]
         ));
-        $this->assertSame(
-            0,
-            count(
-                $challengeResponse0
-                ->getAuthenticationProcess()
-                ->getPersistOperations()
-            )
-        );
         $challengeResponse1 = $challenge->process(
             $challengeResponse0->getAuthenticationProcess(),
             $httpRequest1
@@ -61,13 +52,5 @@ class CredentialRegistrationChallengeTest extends TestCase
         $this->assertFalse($challengeResponse1->isFailedAttempt());
         $this->assertTrue($challengeResponse1->isFinished());
         $this->assertNull($challengeResponse1->getHttpResponse());
-        $this->assertSame(
-            1,
-            count(
-                $challengeResponse1
-                ->getAuthenticationProcess()
-                ->getPersistOperations()
-            )
-        );
     }
 }

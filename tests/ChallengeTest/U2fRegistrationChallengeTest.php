@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\LM;
+namespace Tests\LM\ChallengeTest;
 
 use LM\AuthAbstractor\Test\KernelMocker;
 use PHPUnit\Framework\TestCase;
