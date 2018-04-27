@@ -10,12 +10,14 @@ use LM\AuthAbstractor\Implementation\Member;
 use LM\AuthAbstractor\Model\AuthenticationProcess;
 use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use LM\AuthAbstractor\Form\Constraint\ValidNewPassword;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Twig_Environment;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * A challenge for registering credentials (username + password) from the user.
@@ -24,6 +26,9 @@ class CredentialRegistrationChallenge implements IChallenge
 {
     /** @var IApplicationConfiguration */
     private $appConfig;
+
+    /** @var ValidNewPassword */
+    private $constraint;
 
     /** @var FormFactoryInterface */
     private $formFactory;
@@ -39,11 +44,13 @@ class CredentialRegistrationChallenge implements IChallenge
      */
     public function __construct(
         IApplicationConfiguration $appConfig,
+        ValidNewPassword $constraint,
         FormFactoryInterface $formFactory,
         HttpFoundationFactory $httpFoundationFactory,
         Twig_Environment $twig
     ) {
         $this->appConfig = $appConfig;
+        $this->constraint = $constraint;
         $this->formFactory = $formFactory;
         $this->httpFoundationFactory = $httpFoundationFactory;
         $this->twig = $twig;
@@ -62,6 +69,9 @@ class CredentialRegistrationChallenge implements IChallenge
             ->createBuilder()
             ->add('username')
             ->add('password', RepeatedType::class, [
+                'constraints' => [
+                    $this->constraint,
+                ],
                 'type' => PasswordType::class,
                 'invalid_message' => 'The password fields must match.',
                 'required' => true,
@@ -84,6 +94,7 @@ class CredentialRegistrationChallenge implements IChallenge
         }
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // var_dump(Request::createFromGlobals());
             $newDm = $process
                 ->getTypedMap()
                 ->add(
