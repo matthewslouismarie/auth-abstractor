@@ -17,6 +17,8 @@ use LM\AuthAbstractor\Configuration\IApplicationConfiguration;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
+ * A challenge for asking the user for their email address.
+ *
  * @todo There should be an alternative, combined with
  * CredentialRegistrationChallenge.
  */

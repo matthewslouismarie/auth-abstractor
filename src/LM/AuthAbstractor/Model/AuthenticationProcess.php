@@ -141,6 +141,9 @@ class AuthenticationProcess implements IAuthenticationProcess
         return $this->setNFailedAttempts(0);
     }
 
+    /**
+     * @internal
+     */
     public function setNFailedAttempts(int $nFailedAttempts): IAuthenticationProcess
     {
         $newDm = $this
@@ -164,6 +167,9 @@ class AuthenticationProcess implements IAuthenticationProcess
         }
     }
 
+    /**
+     * @internal
+     */
     public function setToNextChallenge(): IAuthenticationProcess
     {
         $challenges = $this->getChallenges();

@@ -18,6 +18,9 @@ use LM\AuthAbstractor\Configuration\IApplicationConfiguration;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Form\FormError;
 
+/**
+ * A challenge for asking the user to enter a code sent by email.
+ */
 class EmailChallenge implements IChallenge
 {
     const CODE_MIN = 0;
