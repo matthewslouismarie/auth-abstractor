@@ -24,15 +24,6 @@ class IntegerObject implements Serializable
     }
 
     /**
-     * @deprecated
-     * @todo Delete.
-     */
-    public function getInteger(): int
-    {
-        return $this->integer;
-    }
-
-    /**
      * @return int The integer value of the object.
      */
     public function toInteger(): int
