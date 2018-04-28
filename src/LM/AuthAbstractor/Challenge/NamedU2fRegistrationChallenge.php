@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace LM\AuthAbstractor\Challenge;
 
+use Firehed\U2F\InvalidDataException;
 use Firehed\U2F\ClientErrorException;
 use LM\AuthAbstractor\Enum\Persistence\Operation;
 use LM\AuthAbstractor\Factory\U2fRegistrationFactory;
@@ -146,6 +147,8 @@ class NamedU2fRegistrationChallenge implements IChallenge
                 );
             } catch (ClientErrorException $e) {
                 $form->addError(new FormError('You already used this U2F device'));
+            } catch (InvalidDataException $e) {
+                $form->addError(new FormError('The response is invalid.'));
             }
         }
 
