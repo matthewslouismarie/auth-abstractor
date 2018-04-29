@@ -3,6 +3,9 @@
 [![Build Status](https://travis-ci.org/matthewslouismarie/auth-abstractor.svg?branch=master)](https://travis-ci.org/matthewslouismarie/auth-abstractor)
 [![codecov](https://codecov.io/gh/matthewslouismarie/auth-abstractor/branch/master/graph/badge.svg)](https://codecov.io/gh/matthewslouismarie/auth-abstractor)
 ![Mutation Score](https://img.shields.io/badge/mutation%20score->70%25-brightgreen.svg)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/matthewslouismarie/auth-abstractor/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/matthewslouismarie/auth-abstractor/?branch=master)
+[![Code Intelligence Status](https://scrutinizer-ci.com/g/matthewslouismarie/auth-abstractor/badges/code-intelligence.svg?b=master)](https://scrutinizer-ci.com/code-intelligence)
+
 
 A PHP library which aims to completely abstract the authentication logic
 from your PHP web application. You won't even have to create the views!
