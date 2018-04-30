@@ -11,6 +11,7 @@ use LM\AuthAbstractor\Model\AuthenticationProcess;
 use LM\AuthAbstractor\Model\IAuthenticationProcess;
 use LM\AuthAbstractor\Model\IU2fRegistration;
 use LM\AuthAbstractor\Model\PersistOperation;
+use LM\AuthAbstractor\Implementation\ChallengeResponse;
 use LM\AuthAbstractor\Model\U2fRegistrationRequest;
 use LM\AuthAbstractor\U2f\U2fRegistrationManager;
 use Firehed\U2F\InvalidDataException;

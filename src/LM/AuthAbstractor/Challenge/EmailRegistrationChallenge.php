@@ -9,6 +9,7 @@ use LM\AuthAbstractor\Model\IChallengeResponse;
 use LM\AuthAbstractor\Model\AuthenticationProcess;
 use Psr\Http\Message\ServerRequestInterface;
 use LM\Common\Enum\Scalar;
+use LM\AuthAbstractor\Implementation\ChallengeResponse;
 use Twig_Environment;
 use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
 use Symfony\Component\Form\FormFactoryInterface;

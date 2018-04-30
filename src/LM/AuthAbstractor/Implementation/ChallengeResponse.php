@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace LM\AuthAbstractor\Challenge;
+namespace LM\AuthAbstractor\Implementation;
 
 use Symfony\Component\HttpFoundation\Response;
 use LM\AuthAbstractor\Model\IAuthenticationProcess;

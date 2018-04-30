@@ -6,6 +6,7 @@ namespace LM\AuthAbstractor\Challenge;
 
 use LM\AuthAbstractor\Model\IAuthenticationProcess;
 use LM\AuthAbstractor\Model\IChallengeResponse;
+use LM\AuthAbstractor\Implementation\ChallengeResponse;
 use Psr\Http\Message\ServerRequestInterface;
 
 class EmptyChallenge implements IChallenge

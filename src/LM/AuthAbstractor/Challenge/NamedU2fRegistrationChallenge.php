@@ -14,6 +14,7 @@ use LM\AuthAbstractor\Model\IU2fRegistration;
 use LM\AuthAbstractor\Model\PersistOperation;
 use LM\AuthAbstractor\Implementation\NamedU2fRegistration;
 use LM\AuthAbstractor\Model\U2fRegistrationRequest;
+use LM\AuthAbstractor\Implementation\ChallengeResponse;
 use LM\AuthAbstractor\U2f\U2fRegistrationManager;
 use LM\Common\Enum\Scalar;
 use LM\Common\Model\ArrayObject;

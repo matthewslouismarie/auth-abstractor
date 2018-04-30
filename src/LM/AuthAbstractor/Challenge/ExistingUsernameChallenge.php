@@ -12,6 +12,7 @@ use LM\Common\Model\StringObject;
 use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use LM\AuthAbstractor\Implementation\ChallengeResponse;
 use Symfony\Component\Form\FormError;
 use LM\AuthAbstractor\Model\IChallengeResponse;
 use Symfony\Component\Form\FormFactoryInterface;

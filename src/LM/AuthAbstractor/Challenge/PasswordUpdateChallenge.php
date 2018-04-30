@@ -7,6 +7,7 @@ namespace LM\AuthAbstractor\Challenge;
 use Psr\Http\Message\ServerRequestInterface;
 use LM\AuthAbstractor\Configuration\IApplicationConfiguration;
 use LM\AuthAbstractor\Form\Constraint\ValidNewPassword;
+use LM\AuthAbstractor\Implementation\ChallengeResponse;
 use LM\AuthAbstractor\Model\AuthenticationProcess;
 use LM\AuthAbstractor\Model\IAuthenticationProcess;
 use LM\Common\Enum\Scalar;

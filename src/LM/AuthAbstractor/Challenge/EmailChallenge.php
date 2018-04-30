@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace LM\AuthAbstractor\Challenge;
 
 use LM\AuthAbstractor\Model\IAuthenticationProcess;
+use LM\AuthAbstractor\Implementation\ChallengeResponse;
 use LM\AuthAbstractor\Model\IChallengeResponse;
 use LM\AuthAbstractor\Model\AuthenticationProcess;
 use Psr\Http\Message\ServerRequestInterface;

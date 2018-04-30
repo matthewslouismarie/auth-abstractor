@@ -10,6 +10,7 @@ use Firehed\U2F\SecurityException;
 use Firehed\U2F\SignRequest;
 use LM\AuthAbstractor\Configuration\IApplicationConfiguration;
 use LM\AuthAbstractor\Enum\Persistence\Operation;
+use LM\AuthAbstractor\Implementation\ChallengeResponse;
 use LM\AuthAbstractor\Model\AuthenticationProcess;
 use LM\AuthAbstractor\Model\IAuthenticationProcess;
 use LM\AuthAbstractor\Model\PersistOperation;
