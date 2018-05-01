@@ -67,6 +67,7 @@ You need to construct an [AuthenticationKernel](https://matthewslouismarie.githu
 implementation of `IApplicationConfiguration` however. Instead, you can also
 simply pass it a [`ApplicationConfiguration`](https://matthewslouismarie.github.io/classes/LM.AuthAbstractor.Implementation.ApplicationConfiguration.html) object.
 
+    <?php
     $kernel = new AuthenticationKernel(new ApplicationConfiguration(
         'https://example.org', // HTTPS URL of your app (for U2F)
         'https://example.org/assets', // Assets base URL
