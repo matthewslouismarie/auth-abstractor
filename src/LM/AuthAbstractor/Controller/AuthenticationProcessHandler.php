@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace LM\AuthAbstractor\Controller;
 
-use LM\AuthAbstractor\Configuration\IApplicationConfiguration;
-use LM\AuthAbstractor\Model\AuthenticationProcess;
-use LM\AuthAbstractor\Model\AuthentifierResponse;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use LM\AuthAbstractor\Model\IAuthenticationCallback;
+use LM\AuthAbstractor\Model\IAuthenticationProcess;
+use LM\AuthAbstractor\Model\IAuthentifierResponse;
+use LM\AuthAbstractor\Implementation\AuthentifierResponse;
 
 /**
  * This is a class used by AuthenticationKernel to handle requests.
@@ -18,22 +18,14 @@ use LM\AuthAbstractor\Model\IAuthenticationCallback;
  */
 class AuthenticationProcessHandler
 {
-    /** @var IApplicationConfiguration */
-    private $appConfig;
-
     /** @var ContainerInterface */
     private $container;
 
     /**
-     * @param IApplicationConfiguration $appConfig The configuration of the
-     * application.
      * @param ContainerInterface $container The container of auth-abtractor.
      */
-    public function __construct(
-        IApplicationConfiguration $appConfig,
-        ContainerInterface $container
-    ) {
-        $this->appConfig = $appConfig;
+    public function __construct(ContainerInterface $container)
+    {
         $this->container = $container;
     }
 
@@ -42,9 +34,9 @@ class AuthenticationProcessHandler
      */
     public function handleAuthenticationProcess(
         ?ServerRequestInterface $httpRequest,
-        AuthenticationProcess $process,
+        IAuthenticationProcess $process,
         IAuthenticationCallback $callback
-    ): AuthentifierResponse {
+    ): IAuthentifierResponse {
         if ($process->isOngoing()) {
             $challenge = $this
                 ->container
