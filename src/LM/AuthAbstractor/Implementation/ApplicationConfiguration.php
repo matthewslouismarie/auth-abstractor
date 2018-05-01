@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace LM\AuthAbstractor\Implementation;
 
+use InvalidArgumentException;
 use LM\AuthAbstractor\Configuration\IApplicationConfiguration;
 use LM\AuthAbstractor\Model\IMember;
 use Symfony\Component\Security\Csrf\TokenStorage\TokenStorageInterface;
 use Symfony\Component\Security\Csrf\TokenStorage\NativeSessionTokenStorage;
 use Closure;
+use Exception;
 
 /**
  * This is a convenience implementation of IApplicationConfiguration.
@@ -26,11 +28,14 @@ use Closure;
  */
 class ApplicationConfiguration implements IApplicationConfiguration
 {
-    /** @var IApplicationConfiguration */
+    /** @var string */
     private $appId;
 
     /** @var string */
     private $assetBaseUri;
+
+    /** @var string */
+    private $customTwigDir;
 
     /** @var string */
     private $composerDir;
@@ -74,12 +79,29 @@ class ApplicationConfiguration implements IApplicationConfiguration
     ) {
         $this->appId = $appId;
         $this->assetBaseUri = $assetBaseUri;
-        $this->composerDir = realpath(__DIR__.'/../../../../../..');
+        $this->composerDir = $this->findComposerDir(__DIR__);
+        $this->customTwigDir = $customTwigDir;
         $this->memberFinder = $memberFinder;
         $this->tokenStorage = new NativeSessionTokenStorage();
         $this->u2fRegistrationFinder = $u2fRegistrationFinder ?? function ($username) {
             return [];
         };
+    }
+
+    /**
+     * @todo Move in another class?
+     */
+    private function findComposerDir(string $folder): string
+    {
+        if (is_dir("{$folder}/vendor") && is_file("{$folder}/composer.json")) {
+            return "{$folder}/vendor";
+        }
+
+        if ('/' === $folder) {
+            throw new Exception('Composer not found');
+        }
+
+        return $this->findComposerDir(realpath("{$folder}/.."));
     }
 
     public function getAppId(): string
@@ -99,17 +121,26 @@ class ApplicationConfiguration implements IApplicationConfiguration
 
     public function getCustomTwigDir(): ?string
     {
-        return null;
+        return $this->customTwigDir;
     }
 
     public function getLibdir(): string
     {
-        return $this->composerDir.'/matthewslouismarie/auth-abstractor';
+        return realpath(__DIR__.'/../../../..');
     }
 
+    /**
+     * @todo Not efficient.
+     * @todo What if the state change between isExistingUsername() and the
+     * second call to $this->memberFinder?
+     * @todo Exception for non existent member.
+     */
     public function getMember(string $username): IMember
     {
-        return ($this->memberFinder)($username);
+        if ($this->isExistingMember($username)) {
+            return ($this->memberFinder)($username);
+        }
+        throw new InvalidArgumentException();
     }
 
     public function getPwdSettings(): array
