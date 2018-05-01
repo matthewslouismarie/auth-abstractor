@@ -67,6 +67,7 @@ You need to construct an [AuthenticationKernel](https://matthewslouismarie.githu
 implementation of `IApplicationConfiguration` however. Instead, you can also
 simply pass it a [`ApplicationConfiguration`](https://matthewslouismarie.github.io/classes/LM.AuthAbstractor.Implementation.ApplicationConfiguration.html) object.
 
+```php
     $kernel = new AuthenticationKernel(new ApplicationConfiguration(
         'https://example.org', // HTTPS URL of your app (for U2F)
         'https://example.org/assets', // Assets base URL
@@ -78,6 +79,7 @@ simply pass it a [`ApplicationConfiguration`](https://matthewslouismarie.github.
             ]);
         }
     ));
+```
 
 [IMember](https://matthewslouismarie.github.io/classes/LM.AuthAbstractor.Model.IMember.html)
 is an interface for members (users with an account) of your application. If you
@@ -95,12 +97,14 @@ The first time the user arrives on a page, say the login page, the
 authentication process does not exist. So you have to create it. It is advised
 to use the [AuthenticationProcessFactory](https://matthewslouismarie.github.io/classes/LM.AuthAbstractor.Factory.AuthenticationProcessFactory.html) to do that:
 
+```php
     $authProcess = $kernel
         ->getAuthenticationProcessFactory()
         ->createProcess([
             CredentialChallenge::class, // class that is part of auth-abstractor
         ]
     );
+```
 
 You pass to `createProcess` an array of challenge class names. A challenge is a
 step in the authentication or registration process (e.g. a page asking for a
@@ -143,6 +147,7 @@ the created or retrieved authentication process, and a callback.
 The callback needs to be an implementation of [IAuthenticationCallback](https://matthewslouismarie.github.io/classes/LM.AuthAbstractor.Model.IAuthenticationCallback.html),
 but you can simply instantiate a [Callback](https://matthewslouismarie.github.io/classes/LM.AuthAbstractor.Implementation.Callback.html) object.
 
+```php
     $authResponse = $kernel->processHttpRequest(
         $httpRequest,
         $authProcess, // The $authProcess object just created or retrieved from session
@@ -156,6 +161,7 @@ but you can simply instantiate a [Callback](https://matthewslouismarie.github.io
             }
         )
     );
+```
 
 [Symfony provides tools for converting the Response and Request to and from PSR-7
 objects.](https://symfony.com/doc/current/components/psr7.html)
@@ -164,11 +170,13 @@ You can then store the new `AuthenticationProcess` somehow (e.g. in session) tha
 you will retrieve later instead of instantiating a new `AuthenticationProcess`
 object. And of course, you return an HTTP response.
 
+```php
     // store new auth_process in session
     $_SESSION['auth_process'] = $response->getAuthenticationProcess();
 
     // display http response to user
     return $response->getHttpResponse();
+```
 
 [You can see a complete example of the use of _auth-abstractor_ here](https://github.com/matthewslouismarie/security-comparator/blob/41e6a420843d7aa6a00638bf98e1babde0aa2dba/symfony/src/Controller/TmpController.php#L38).
 
@@ -185,6 +193,7 @@ The way to do that is simply to call getPersistOperation() on the
 AuthenticationProcess object. From the callback's handleSuccessfulProcess()
 method:
 
+```php
     foreach ($authProcess->getPersistOperations() as $operation) {
         if ($operation->getType()->is(new Operation(Operation::CREATE))) {
             $member = $operation->getObject();
@@ -193,6 +202,7 @@ method:
             }
         }
     }
+```
 
 ### Assets
 
