@@ -1,7 +1,7 @@
 {
     "name": "matthewslouismarie/auth-abstractor",
     "type": "library",
-    "description": "Complete abstracton of credential and U2F authentication",
+    "description": "Complete abstraction of credential and U2F authentication",
     "keywords": ["authentication", "U2F", "middleware", "password"],
     "homepage": "https://github.com/matthewslouismarie/auth-abstractor",
     "authors": [
