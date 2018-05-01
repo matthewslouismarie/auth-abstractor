@@ -32,7 +32,7 @@ class AuthentifierResponse implements IAuthentifierResponse
         $this->response = $response;
     }
 
-    public function getProcess(): IAuthenticationProcess
+    public function getAuthenticationProcess(): IAuthenticationProcess
     {
         return $this->process;
     }

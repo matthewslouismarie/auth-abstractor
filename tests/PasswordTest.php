@@ -61,7 +61,7 @@ class PasswordTest extends TestCase
         $response = $kernel->processHttpRequest(
             (new DiactorosFactory())
                 ->createRequest($request2),
-            $response->getProcess(),
+            $response->getAuthenticationProcess(),
             new EmptyCallback()
         );
         $responseBody = $response

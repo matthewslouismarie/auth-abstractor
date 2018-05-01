@@ -45,7 +45,7 @@ class AuthenticationProcessHandlerTest extends TestCase
             $process,
             new EmptyCallback()
         );
-        $newProcess = $authResponse->getProcess();
+        $newProcess = $authResponse->getAuthenticationProcess();
         $this->assertNull($authResponse->getHttpResponse());
         $this->assertSame(
             $process->getMaxNFailedAttempts(),

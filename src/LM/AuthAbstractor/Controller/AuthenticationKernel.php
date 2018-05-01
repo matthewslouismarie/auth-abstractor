@@ -170,20 +170,20 @@ class AuthenticationKernel implements IAuthenticationKernel
             ->get(AuthenticationProcessHandler::class)
         ;
 
-        $IAuthentifierResponse = null;
+        $authentifierResponse = null;
         $lastProcess = $process;
         $httpResponse = null;
         while (null === $httpResponse) {
-            $IAuthentifierResponse = $processHandler->handleAuthenticationProcess(
+            $authentifierResponse = $processHandler->handleAuthenticationProcess(
                 $httpRequest,
                 $lastProcess,
                 $callback
             );
-            $lastProcess = $IAuthentifierResponse->getProcess();
+            $lastProcess = $authentifierResponse->getAuthenticationProcess();
             $httpRequest = null;
-            $httpResponse = $IAuthentifierResponse->getHttpResponse();
+            $httpResponse = $authentifierResponse->getHttpResponse();
         }
 
-        return $IAuthentifierResponse;
+        return $authentifierResponse;
     }
 }

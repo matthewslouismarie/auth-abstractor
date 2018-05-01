@@ -56,7 +56,7 @@ class AuthenticationKernelTest extends TestCase
                 $process,
                 new EmptyCallback()
             );
-            $process = $authResponse->getProcess();
+            $process = $authResponse->getAuthenticationProcess();
             $this->assertTrue($process->isOngoing());
         }
     }

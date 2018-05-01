@@ -15,9 +15,8 @@ interface IAuthentifierResponse
     /**
      * @api
      * @return IAuthenticationProcess The authentication process.
-     * @todo Rename to getAuthenticationProcess()? (for consistency)
      */
-    public function getProcess(): IAuthenticationProcess;
+    public function getAuthenticationProcess(): IAuthenticationProcess;
 
     /**
      * @api
