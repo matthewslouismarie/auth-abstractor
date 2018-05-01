@@ -4,7 +4,7 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-vendor/bin/infection --coverage=coverage --min-covered-msi=70 --threads=2
+vendor/bin/infection --coverage=coverage --min-msi=70 --threads=6
 
 if [ $? -ne 0 ]; then
     exit 1

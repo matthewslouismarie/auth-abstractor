@@ -148,7 +148,7 @@ you will retrieve later instead of instantiating a new `AuthenticationProcess`
 object. And of course, you return an HTTP response.
 
     // store new auth_process in session
-    $_SESSION['auth_process'] = $response->getProcess();
+    $_SESSION['auth_process'] = $response->getAuthenticationProcess();
 
     // display http response to user
     return $response->getHttpResponse();
@@ -186,3 +186,16 @@ folder which path is given by [getAssetUri()](https://github.com/matthewslouisma
 
 Of course, you can override the U2F views with your very own views which can
 use different JavaScript libraries.
+
+# TODOs
+ - Don't use hard-coded values to access the typed map
+ - Challenges shouldn't reply on an implementation of IAuthenticationProcess
+ - The library should be challenge-agnostic. (No part of the code should directly
+ reference an IChallenge implementation, except classes used exclusively by
+ challenges.) Currently, IApplicationConfiguration and IAuthenticationProcess
+ are coupled with some IChallenge specifications.
+ - Should challenges be able to access the typed map directly and modify it
+ directly? The authentication handler could take care of this. This would
+ mean challenges wouldn't need to worry about the validity of the typed map.
+ But the keys and their associated types would need to be known by the auth
+ handler.
