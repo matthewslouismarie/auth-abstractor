@@ -7,6 +7,9 @@
 [![Code Intelligence Status](https://scrutinizer-ci.com/g/matthewslouismarie/auth-abstractor/badges/code-intelligence.svg?b=master)](https://scrutinizer-ci.com/code-intelligence)
 
 
+    composer require matthewslouismarie/auth-abstractor
+
+
 A PHP library which aims to completely abstract the authentication logic
 from your PHP web application. You won't even have to create the views!
 
@@ -51,6 +54,11 @@ session), and you send back to the user the HTTP response.
 Note: in _auth-abstractor_, by authentication, I mean authentication and
 registration.
 
+_[security-comparator](https://github.com/matthewslouismarie/security-comparator)_ is a web application that makes use of _auth-abstractor_ to abstract the entirety of the registration and the authentication process.
+
+You can even view [a one page example](https://github.com/matthewslouismarie/security-comparator/blob/master/symfony/src/Controller/TmpController.php) demonstrating the use of _auth-abstractor_ with
+Symfony.
+
 
 
 ### Creating an `AuthenticationKernel` object
@@ -87,7 +95,9 @@ The first time the user arrives on a page, say the login page, the
 authentication process does not exist. So you have to create it. It is advised
 to use the [AuthenticationProcessFactory](https://matthewslouismarie.github.io/classes/LM.AuthAbstractor.Factory.AuthenticationProcessFactory.html) to do that:
 
-    $authProcess = (new AuthenticationProcessFactory())->createProcess([
+    $authProcess = $kernel
+        ->getAuthenticationProcessFactory()
+        ->createProcess([
             CredentialChallenge::class, // class that is part of auth-abstractor
         ]
     );
@@ -100,8 +110,11 @@ You can define your owns of course. _auth-abstractor_ comes with the following c
  - `CredentialChallenge`, for asking the user for their username and password,
  - `CredentialRegistrationChallenge`, for asking the user to create an account
  and give a valid username and password,
+ - `EmailChallenge`, for asking the user to enter a code sent to their email
+ address.
  - `ExistingUsernameChallenge`, for asking the user for a valid, existing
  username.
+ - `NamedU2fRegistrationChallenge`, same as `U2fChallenge`, but asks for a name,
  - `PasswordChallenge`, for asking the user for their password,
  - `PasswordUpdateChallenge`, for asking the user to find a new password,
  - `U2fChallenge`, for asking the user to confirm their identity with their U2F
@@ -112,6 +125,10 @@ You can combine these (i.e. combine several of these in the array you pass to
 `AuthenticationProcessFactory`. Sometimes, a certain order is necessary: e.g.
 the username of the user must be known before `PasswordChallenge` gets
 processed. One way to do that is to put a `ExistingUsernameChallenge` before.
+
+Each challenge relies on a certain numbers of parameters being defined. You are
+pass the parameters when you create the authentication process using the
+authentication process factory.
 
 [`AuthenticationProcessFactory` supports additional, optional parameters](https://matthewslouismarie.github.io/classes/LM.AuthAbstractor.Factory.AuthenticationProcessFactory.html),
 for example, to specify the current user's username.
