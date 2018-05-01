@@ -77,6 +77,7 @@ class Type
      * @throws InvalidArgumentException if the value is not of the specified
      * type.
      * @todo Use is_a or instanceof instead?
+     * @todo Long switch-like statement.
      */
     public function check($value): void
     {

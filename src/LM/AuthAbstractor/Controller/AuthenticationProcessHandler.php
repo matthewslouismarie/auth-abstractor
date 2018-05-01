@@ -27,6 +27,7 @@ class AuthenticationProcessHandler
     /**
      * @param IApplicationConfiguration $appConfig The configuration of the
      * application.
+     * @param ContainerInterface $container The container of auth-abtractor.
      */
     public function __construct(
         IApplicationConfiguration $appConfig,

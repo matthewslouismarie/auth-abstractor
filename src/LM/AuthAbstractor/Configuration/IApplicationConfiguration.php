@@ -18,6 +18,7 @@ use Symfony\Component\Security\Csrf\TokenStorage\TokenStorageInterface;
  *
  * @see \LM\AuthAbstractor\Implementation\ApplicationConfiguration for a
  * convenience implementation.
+ * @todo This class is too heavily tied to specfic challenges.
  */
 interface IApplicationConfiguration
 {
@@ -88,6 +89,8 @@ interface IApplicationConfiguration
      * @example tests/certificates/yubico.pem
      * @return null|string[] An array of filenames containing certificates, or
      * null if the certificate validation is disabled.
+     * @todo This is coupled with U2F challenges, it should be challenge-
+     * agnostic.
      */
     public function getU2fCertificates(): ?array;
 
@@ -95,6 +98,7 @@ interface IApplicationConfiguration
      * @api
      * @param string $username The username of the member.
      * @return IU2fRegistration[] The member's U2F regisrations.
+     * @todo This is coupled with U2F registrations.
      */
     public function getU2fRegistrations(string $username): array;
 
@@ -105,6 +109,7 @@ interface IApplicationConfiguration
      * (bool), special_chars (bool) and numbers (bool).
      * @todo This method relies on the presence of hard-coded array keys and on
      * the correctness of their associated value.
+     * @todo This is coupled to Password challenges.
      */
     public function getPwdSettings(): array;
 

@@ -48,7 +48,7 @@ class AuthenticationKernel implements IAuthenticationKernel
     /** @var IApplicationConfiguration */
     private $appConfig;
 
-    /** ContainerInterface */
+    /** @var ContainerInterface */
     private $container;
 
     /**
@@ -132,6 +132,7 @@ class AuthenticationKernel implements IAuthenticationKernel
      * Used for unit testing only.
      *
      * @internal
+     * @return ContainerInterface The container of auth-abstractor.
      */
     public function getContainer(): ContainerInterface
     {

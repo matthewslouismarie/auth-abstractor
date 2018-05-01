@@ -11,6 +11,9 @@ use Psr\Http\Message\ServerRequestInterface;
 
 class EmptyChallenge implements IChallenge
 {
+    /**
+     * @internal
+     */
     public function process(
         IAuthenticationProcess $authenticationProcess,
         ?ServerRequestInterface $httpRequest

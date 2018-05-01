@@ -11,6 +11,7 @@ use LM\Common\Enum\Scalar;
  * Trait for checking types.
  *
  * @todo Turn it into a class instead?
+ * @deprecated
  */
 trait TypeCheckerTrait
 {

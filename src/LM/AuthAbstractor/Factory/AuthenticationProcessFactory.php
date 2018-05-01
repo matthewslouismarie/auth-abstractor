@@ -32,6 +32,9 @@ class AuthenticationProcessFactory
     /** @var IApplicationConfiguration */
     private $appConfig;
 
+    /**
+     * @internal
+     */
     public function __construct(IApplicationConfiguration $appConfig)
     {
         $this->appConfig = $appConfig;

@@ -32,14 +32,14 @@ interface IChallenge
      * method will return an HTTP response, whether the HTTP request was a
      * submission and whether it failed, and a new authentication process. The
      * HTTP response will be returned to the application (which should normally
-     * display it to the user).
+     * display it to the user of the web application).
      *
      * @link https://www.php-fig.org/psr/psr-7/
      * @param IAuthenticationProcess $authenticationProcess The current
      * authentication process when the method starts.
      * @param null|ServerRequestInterface $httpRequest A PSR-7 representation
      * of an HTTP request.
-     * @return IChallengeResponse A challenge response.
+     * @return IChallengeResponse A challenge response
      */
     public function process(
         IAuthenticationProcess $authenticationProcess,

@@ -24,8 +24,10 @@ use Symfony\Component\Form\FormError;
  */
 class EmailChallenge implements IChallenge
 {
+    /** @var int */
     const CODE_MIN = 0;
 
+    /** @var int */
     const CODE_MAX = 999999;
 
     /** @var IApplicationConfiguration */
@@ -55,6 +57,9 @@ class EmailChallenge implements IChallenge
         $this->twig = $twig;
     }
 
+    /**
+     * @internal
+     */
     public function process(
         IAuthenticationProcess $authenticationProcess,
         ?ServerRequestInterface $httpRequest
