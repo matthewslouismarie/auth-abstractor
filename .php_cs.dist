@@ -15,7 +15,7 @@ return PhpCsFixer\Config::create()
         'strict_comparison' => true,
         'space_after_semicolon' => true,
         'single_blank_line_before_namespace' => true,
-        'simplified_null_return' => true,
+        'simplified_null_return' => false,
         'align_multiline_comment' => true,
         'array_indentation' => true,
         'blank_line_after_opening_tag' => true,
