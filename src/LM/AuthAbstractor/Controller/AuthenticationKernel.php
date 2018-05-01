@@ -10,7 +10,7 @@ use LM\AuthAbstractor\Configuration\IApplicationConfiguration;
 use LM\AuthAbstractor\Factory\AuthenticationProcessFactory;
 use LM\AuthAbstractor\Model\IAuthenticationKernel;
 use LM\AuthAbstractor\Model\AuthenticationProcess;
-use LM\AuthAbstractor\Model\AuthentifierResponse;
+use LM\AuthAbstractor\Model\IAuthentifierResponse;
 use LM\AuthAbstractor\Model\IAuthenticationCallback;
 use LM\AuthAbstractor\Exception\FinishedProcessException;
 use Psr\Http\Message\ServerRequestInterface;
@@ -160,7 +160,7 @@ class AuthenticationKernel implements IAuthenticationKernel
         ServerRequestInterface $httpRequest,
         AuthenticationProcess $process,
         IAuthenticationCallback $callback
-    ): AuthentifierResponse {
+    ): IAuthentifierResponse {
         if ($process->isFinished()) {
             throw new FinishedProcessException();
         }
@@ -170,20 +170,20 @@ class AuthenticationKernel implements IAuthenticationKernel
             ->get(AuthenticationProcessHandler::class)
         ;
 
-        $authentifierResponse = null;
+        $IAuthentifierResponse = null;
         $lastProcess = $process;
         $httpResponse = null;
         while (null === $httpResponse) {
-            $authentifierResponse = $processHandler->handleAuthenticationProcess(
+            $IAuthentifierResponse = $processHandler->handleAuthenticationProcess(
                 $httpRequest,
                 $lastProcess,
                 $callback
             );
-            $lastProcess = $authentifierResponse->getProcess();
+            $lastProcess = $IAuthentifierResponse->getProcess();
             $httpRequest = null;
-            $httpResponse = $authentifierResponse->getHttpResponse();
+            $httpResponse = $IAuthentifierResponse->getHttpResponse();
         }
 
-        return $authentifierResponse;
+        return $IAuthentifierResponse;
     }
 }

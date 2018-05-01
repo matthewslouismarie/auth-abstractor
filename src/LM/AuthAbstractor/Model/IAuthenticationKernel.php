@@ -26,7 +26,7 @@ interface IAuthenticationKernel
      * authentication process fails or succeeds (e.g. if the user manages to
      * prove their identity or not). You do not have to roll your own
      * IAuthenticationCallback implementation and can just instantiate Callback.
-     * @return AuthentifierResponse An object containing an HTTP response that
+     * @return IAuthentifierResponse An object containing an HTTP response that
      * should be sent back to the user, and a new authentication process that
      * should be stored to be retrieved later (e.g. in session).
      * @see \LM\AuthAbstractor\Implementation\Callback
@@ -37,5 +37,5 @@ interface IAuthenticationKernel
         ServerRequestInterface $httpRequest,
         AuthenticationProcess $process,
         IAuthenticationCallback $callback
-    ): AuthentifierResponse;
+    ): IAuthentifierResponse;
 }
