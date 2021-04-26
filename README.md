@@ -226,3 +226,4 @@ use different JavaScript libraries.
  mean challenges wouldn't need to worry about the validity of the typed map.
  But the keys and their associated types would need to be known by the auth
  handler.
+ - Update Composer packages.

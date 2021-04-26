@@ -34,7 +34,7 @@
         "symfony/twig-bridge": "^4.0",
         "symfony/translation": "^4.0",
         "symfony/config": "^4.0",
-        "symfony/http-foundation": "^4.0",
+        "symfony/http-foundation": "^4.2.12",
         "symfony/psr-http-message-bridge": "^1.0",
         "psr/container": "^1.0",
         "firehed/u2f": "dev-master",
