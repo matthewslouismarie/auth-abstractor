@@ -19,7 +19,7 @@ AuthenticationProcess.
 
 ## Documentation
 
-You can browse _auth-abstractor_'s API documentation [here](https://matthewslouismarie.github.io).
+You can browse _auth-abstractor_'s API documentation [here](https://matthewslouismarie.github.io/auth-abstractor/).
 
 ## Features
 
@@ -63,9 +63,9 @@ Symfony.
 
 ### Creating an `AuthenticationKernel` object
 
-You need to construct an [AuthenticationKernel](https://matthewslouismarie.github.io/classes/LM.AuthAbstractor.Controller.AuthenticationKernel.html) by passing an implementation of [IApplicationConfiguration](https://matthewslouismarie.github.io/classes/LM.AuthAbstractor.Configuration.IApplicationConfiguration.html) to its constructor. You are not obliged to define your own
+You need to construct an `AuthenticationKernel` by passing an implementation of `IApplicationConfiguration` to its constructor. You are not obliged to define your own
 implementation of `IApplicationConfiguration` however. Instead, you can also
-simply pass it a [`ApplicationConfiguration`](https://matthewslouismarie.github.io/classes/LM.AuthAbstractor.Implementation.ApplicationConfiguration.html) object.
+simply pass it a `ApplicationConfiguration` object.
 
 ```php
     $kernel = new AuthenticationKernel(new ApplicationConfiguration(
@@ -81,11 +81,10 @@ simply pass it a [`ApplicationConfiguration`](https://matthewslouismarie.github.
     ));
 ```
 
-[IMember](https://matthewslouismarie.github.io/classes/LM.AuthAbstractor.Model.IMember.html)
-is an interface for members (users with an account) of your application. If you
+`IMember` is an interface for members (users with an account) of your application. If you
 already have a class that represents your members, you can simply make it
-implements `IMember` as well. Otherwise, you can also use a [convenience
-implementation](https://matthewslouismarie.github.io/classes/LM.AuthAbstractor.Implementation.Member.html).
+implements `IMember` as well. Otherwise, you can also use the convenience
+implementation `Member`.
 
 `AuthenticationKernel` is an object that can be
 common to your entire web applications, so you can register it as a service if
@@ -109,7 +108,7 @@ to use the [AuthenticationProcessFactory](https://matthewslouismarie.github.io/c
 You pass to `createProcess` an array of challenge class names. A challenge is a
 step in the authentication or registration process (e.g. a page asking for a
 password, or a page asking for the user to plug their U2F device in). These
-classes need to be implementations of [IChallenge](https://matthewslouismarie.github.io/classes/LM.AuthAbstractor.Challenge.IChallenge.html).
+classes need to be implementations of `IChallenge`.
 You can define your owns of course. _auth-abstractor_ comes with the following challenges:
  - `CredentialChallenge`, for asking the user for their username and password,
  - `CredentialRegistrationChallenge`, for asking the user to create an account
@@ -134,7 +133,7 @@ Each challenge relies on a certain numbers of parameters being defined. You are
 pass the parameters when you create the authentication process using the
 authentication process factory.
 
-[`AuthenticationProcessFactory` supports additional, optional parameters](https://matthewslouismarie.github.io/classes/LM.AuthAbstractor.Factory.AuthenticationProcessFactory.html),
+`AuthenticationProcessFactory` supports additional, optional parameters,
 for example, to specify the current user's username.
 
 ### Processing the Authentication Process
@@ -144,8 +143,8 @@ You now need to call `processHttpRequest` of the AuthenticationKernel.
 You pass it: a [PSR-7 representation of the HTTP request](https://www.php-fig.org/psr/psr-7/),
 the created or retrieved authentication process, and a callback.
 
-The callback needs to be an implementation of [IAuthenticationCallback](https://matthewslouismarie.github.io/classes/LM.AuthAbstractor.Model.IAuthenticationCallback.html),
-but you can simply instantiate a [Callback](https://matthewslouismarie.github.io/classes/LM.AuthAbstractor.Implementation.Callback.html) object.
+The callback needs to be an implementation of `IAuthenticationCallback`,
+but you can simply instantiate a `Callback`.
 
 ```php
     $authResponse = $kernel->processHttpRequest(
